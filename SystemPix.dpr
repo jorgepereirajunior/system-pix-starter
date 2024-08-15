@@ -23,7 +23,8 @@ uses
   SystemPixApp.CancelBilling.Modal in 'frontend\src\modules\modals\SystemPixApp.CancelBilling.Modal.pas' {CancelBillingModal},
   SystemPixApp.Constants in 'frontend\src\shared\constants\SystemPixApp.Constants.pas',
   SystemPixApp.Styles in 'frontend\src\shared\styles\SystemPixApp.Styles.pas',
-  SystemPixApp.SaleScreen.Functions in 'frontend\src\modules\transactions\functions\SystemPixApp.SaleScreen.Functions.pas';
+  SystemPixApp.SaleScreen.Functions in 'frontend\src\modules\transactions\functions\SystemPixApp.SaleScreen.Functions.pas',
+  SystemPixApp.QRCodeScreen.Utils in 'frontend\src\modules\transactions\utils\SystemPixApp.QRCodeScreen.Utils.pas';
 
 {$R *.res}
 

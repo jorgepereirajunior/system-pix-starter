@@ -105,6 +105,7 @@ uses
   SystemPixApp.PaymentStatusEntity,
 
   SystemPixApp.QRCodeScreen.Functions,
+  SystemPixApp.QRCodeScreen.Utils,
 
   SystemPixApp.CompleteBilling.Functions,
 
@@ -173,11 +174,11 @@ begin
 
             if (CompletedBilling.status = stcCONCLUIDA) then begin
 
-              TQRCodeScreenFunctions.UpdateBoxPaymentStatus(Self, PAY_MADE_EFFECTIVE);
+              TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_MADE_EFFECTIVE);
 
-              TQRCodeScreenFunctions.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
-              TQRCodeScreenFunctions.UpdateReversalPaymentButton(Self, IS_VISIBLE, IS_PRIMARY);
-              TQRCodeScreenFunctions.UpdateCloseButton(Self, IS_VISIBLE, IS_SECONDARY, PDV_COLOR_PAYMENT_EFFECTIVE);
+              TQRCodeScreenUtils.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
+              TQRCodeScreenUtils.UpdateReversalPaymentButton(Self, IS_VISIBLE, IS_PRIMARY);
+              TQRCodeScreenUtils.UpdateCloseButton(Self, IS_VISIBLE, IS_SECONDARY, PDV_COLOR_PAYMENT_EFFECTIVE);
 
               InstantBillingTimer.Enabled := false;
 
@@ -188,10 +189,10 @@ begin
 
             if (CompletedBilling.status = stcREMOVIDA_PELO_USUARIO_RECEBEDOR) then begin
 
-              TQRCodeScreenFunctions.UpdateBoxPaymentStatus(Self, PAY_CANCELED);
+              TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_CANCELED);
 
-              TQRCodeScreenFunctions.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
-              TQRCodeScreenFunctions.UpdateCloseButton(Self, IS_VISIBLE, IS_PRIMARY, PDV_COLOR_PAYMENT_CANCELED);
+              TQRCodeScreenUtils.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
+              TQRCodeScreenUtils.UpdateCloseButton(Self, IS_VISIBLE, IS_PRIMARY, PDV_COLOR_PAYMENT_CANCELED);
 
               InstantBillingTimer.Enabled := false;
 
@@ -228,12 +229,12 @@ end;
 
 procedure TQRCodeScreen.MakeMainContent;
 begin
-  TQRCodeScreenFunctions.UpdateBoxPaymentStatus(Self, PAY_ON_HOLD);
-  TQRCodeScreenFunctions.UpdateCancelPaymentButton(Self, IS_VISIBLE, IS_PRIMARY);
+  TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_ON_HOLD);
+  TQRCodeScreenUtils.UpdateCancelPaymentButton(Self, IS_VISIBLE, IS_PRIMARY);
   
-  TQRCodeScreenFunctions.SetQRCodeArea(Self);
-  TQRCodeScreenFunctions.SetCopyPasteArea(Self);
-  TQRCodeScreenFunctions.SetBillingData(Self);
+  TQRCodeScreenUtils.SetQRCodeArea(Self);
+  TQRCodeScreenUtils.SetCopyPasteArea(Self);
+  TQRCodeScreenUtils.SetBillingData(Self);
 end;
 
 
@@ -260,11 +261,11 @@ begin
 
             if (CompletedBilling.Pix.Items[0].Devolutions.Items.Last.Status = stdDEVOLVIDO) then begin
 
-              TQRCodeScreenFunctions.UpdateBoxPaymentStatus(Self, PAY_EXTORTED);
+              TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_EXTORTED);
 
-              TQRCodeScreenFunctions.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
-              TQRCodeScreenFunctions.UpdateReversalPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
-              TQRCodeScreenFunctions.UpdateCloseButton(Self, IS_VISIBLE, IS_PRIMARY, PDV_COLOR_PAYMENT_EXTORTED);
+              TQRCodeScreenUtils.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
+              TQRCodeScreenUtils.UpdateReversalPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
+              TQRCodeScreenUtils.UpdateCloseButton(Self, IS_VISIBLE, IS_PRIMARY, PDV_COLOR_PAYMENT_EXTORTED);
 
               CompleteBillingTimer.Enabled := false;
             end;
@@ -324,7 +325,7 @@ end;
 procedure TQRCodeScreen.HandleCopyToClipBoard(Sender: TObject);
 
 begin
-  TQRCodeScreenFunctions.CopyToClipBoard(CopyNPasteMemo.Text);
+  TQRCodeScreenUtils.CopyToClipBoard(CopyNPasteMemo.Text);
 end;
 
 

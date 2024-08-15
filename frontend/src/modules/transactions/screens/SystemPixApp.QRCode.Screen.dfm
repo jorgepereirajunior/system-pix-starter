@@ -50,14 +50,16 @@ object QRCodeScreen: TQRCodeScreen
       object LabelPaymentStatus: TLabel
         Left = 10
         Top = 10
-        Width = 98
-        Height = 13
+        Width = 494
+        Height = 60
         Align = alClient
         Alignment = taCenter
         Caption = 'LabelPaymentStatus'
         Color = clWindow
         ParentColor = False
         Layout = tlCenter
+        ExplicitWidth = 98
+        ExplicitHeight = 13
       end
     end
     object BoxQRCode: TPanel
@@ -80,12 +82,14 @@ object QRCodeScreen: TQRCodeScreen
         object LabelQRCodeTilte: TLabel
           Left = 0
           Top = 0
-          Width = 85
-          Height = 13
+          Width = 534
+          Height = 41
           Align = alClient
           Alignment = taCenter
           Caption = 'LabelQRCodeTilte'
           Layout = tlCenter
+          ExplicitWidth = 85
+          ExplicitHeight = 13
         end
       end
       object BoxQRCodeImage: TPanel
@@ -146,12 +150,14 @@ object QRCodeScreen: TQRCodeScreen
         object LabelCopyNPasteTitle: TLabel
           Left = 0
           Top = 0
-          Width = 104
-          Height = 13
+          Width = 534
+          Height = 41
           Align = alClient
           Alignment = taCenter
           Caption = 'LabelCopyNPasteTitle'
           Layout = tlCenter
+          ExplicitWidth = 104
+          ExplicitHeight = 13
         end
       end
       object BoxCopyNPasteMemo: TPanel
