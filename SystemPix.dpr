@@ -17,7 +17,10 @@ uses
   SystemPixApp.GeneratedBilling.Functions in 'frontend\src\modules\billings\functions\SystemPixApp.GeneratedBilling.Functions.pas',
   SystemPixApp.InstantBilling.Functions in 'frontend\src\modules\billings\functions\SystemPixApp.InstantBilling.Functions.pas',
   SystemPixApp.RequestedBilling.Functions in 'frontend\src\modules\billings\functions\SystemPixApp.RequestedBilling.Functions.pas',
-  SystemPixApp.RevisedBilling.Functions in 'frontend\src\modules\billings\functions\SystemPixApp.RevisedBilling.Functions.pas';
+  SystemPixApp.RevisedBilling.Functions in 'frontend\src\modules\billings\functions\SystemPixApp.RevisedBilling.Functions.pas',
+  SystemPixApp.QRCodeScreen.Functions in 'frontend\src\modules\transactions\functions\SystemPixApp.QRCodeScreen.Functions.pas',
+  SystemPixApp.PaymentStatusEntity in 'frontend\src\helpers\payment\enitites\SystemPixApp.PaymentStatusEntity.pas',
+  SystemPixApp.CancelBilling.Modal in 'frontend\src\modules\modals\SystemPixApp.CancelBilling.Modal.pas' {CancelBillingModal};
 
 {$R *.res}
 
@@ -25,5 +28,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TSalesScreen, SalesScreen);
+  Application.CreateForm(TCancelBillingModal, CancelBillingModal);
   Application.Run;
 end.

@@ -102,7 +102,8 @@ implementation
 
 uses
   SystemPixApp.Sales.Screen,
-  PointOfSale.PaymentStatusEntity,
+  SystemPixApp.PaymentStatusEntity,
+
   PointOfSale.Styles,
 
   PointOfSale.QRCodeScreen.Functions,

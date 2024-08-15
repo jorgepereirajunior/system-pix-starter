@@ -124,6 +124,12 @@
         <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.InstantBilling.Functions.pas"/>
         <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.RequestedBilling.Functions.pas"/>
         <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.RevisedBilling.Functions.pas"/>
+        <DCCReference Include="frontend\src\modules\transactions\functions\SystemPixApp.QRCodeScreen.Functions.pas"/>
+        <DCCReference Include="frontend\src\helpers\payment\enitites\SystemPixApp.PaymentStatusEntity.pas"/>
+        <DCCReference Include="frontend\src\modules\modals\SystemPixApp.CancelBilling.Modal.pas">
+            <Form>CancelBillingModal</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
