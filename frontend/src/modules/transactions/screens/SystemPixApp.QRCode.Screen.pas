@@ -26,13 +26,11 @@ uses
   ACBrImage,
   ACBrDelphiZXingQRCode,
 
-  PointOfSale.Sale.Screen,
 
-  PointOfSale.BillingEntities,
-  PointOfSale.RequestedBillingEntity,
-  PointOfSale.CompleteBillingEntity,
-
-  PointOfSale.ConfigFile.Functions;
+  SystemPixApp.InstantBillingEntities,
+  SystemPixApp.RequestedBillingEntity,
+  SystemPixApp.GeneratedBillingEntity,
+  SystemPixApp.CompleteBillingEntity;
 
 type
   TQRCodeScreen = class(TForm)
@@ -91,11 +89,10 @@ type
 var
   QRCodeScreen: TQRCodeScreen;
 
-  InstantBilling  : TInstantBillingEntity;
-  RequestedBilling: TRequestedBillingEntity;
-  GeneratedBilling: TGeneratedBillingEntity;
-  CompletedBilling: TCompletedBillingEntity;
-  RevisedBilling  : TReviseddBillingEntity;
+  InstantBilling  : TAppInstantBillingEntity;
+  RequestedBilling: TAppRequestedBillingEntity;
+  GeneratedBilling: TAppGeneratedBillingEntity;
+  CompletedBilling: TAppCompletedBillingEntity;
 
 implementation
 
@@ -104,11 +101,15 @@ implementation
 { TQRCodeScreen }
 
 uses
+  SystemPixApp.Sales.Screen,
   PointOfSale.PaymentStatusEntity,
   PointOfSale.Styles,
 
   PointOfSale.QRCodeScreen.Functions,
-  PointOfSale.CompleteBilling.Functions;
+
+  SystemPixApp.CompleteBilling.Functions,
+
+  SystemPixApi.ConfigFile.Functions;
 
 
 constructor TQRCodeScreen.Create(AOwner: TComponent);

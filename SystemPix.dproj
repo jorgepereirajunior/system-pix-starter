@@ -113,6 +113,12 @@
             <Form>QRCodeScreen</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="frontend\src\modules\billings\entities\SystemPixApp.CompleteBillingEntity.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\entities\PointOfSale.DevolutionEntity.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\entities\SystemPixApp.GeneratedBillingEntity.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\entities\PointOfSale.PixEntity.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\entities\SystemPixApp.RequestedBillingEntity.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\entities\SystemPixApp.InstantBillingEntities.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
