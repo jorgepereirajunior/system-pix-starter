@@ -16,7 +16,12 @@ uses
   Vcl.Dialogs,
   Vcl.StdCtrls,
   Vcl.Buttons,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls,
+
+  ACBrPIXCD,
+  ACBrPIXPSPBancoDoBrasil,
+  ACBrBase,
+  ACBrPIXBase;
 
 type
   TSalesScreen = class(TForm)
