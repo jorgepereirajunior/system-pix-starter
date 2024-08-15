@@ -109,6 +109,10 @@
         <DCCReference Include="backend\src\config\SystemPixApi.ConfigFile.Constants.pas"/>
         <DCCReference Include="backend\src\config\SystemPixApi.ConfigFile.Functions.pas"/>
         <DCCReference Include="backend\src\config\SystemPixApi.ConfigFile.Utils.pas"/>
+        <DCCReference Include="frontend\src\modules\transactions\screens\SystemPixApp.QRCode.Screen.pas">
+            <Form>QRCodeScreen</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
