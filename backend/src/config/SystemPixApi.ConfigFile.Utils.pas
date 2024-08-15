@@ -1,4 +1,4 @@
-unit PointOfSale.ConfigFile.Utils;
+unit SystemPixApi.ConfigFile.Utils;
 
 interface
 
@@ -6,7 +6,7 @@ uses
   System.SysUtils;
 
 type
-  TConfigFileUtils = class
+  TApiConfigFileUtils = class
     private
 
     public
@@ -19,9 +19,9 @@ implementation
 { TConfigFileUtils }
 
 uses
-  PointOfSale.ConfigFile.Constants;
+  SystemPixApi.ConfigFile.Constants;
 
-class function TConfigFileUtils.GetPhysicalFile: string;
+class function TApiConfigFileUtils.GetPhysicalFile: string;
 begin
   Result := GetCurrentDir+ '\' +CONFIG_FILE_PHYSICAL;
 end;

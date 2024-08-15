@@ -1,4 +1,4 @@
-unit PointOfSale.ConfigFile.Constants;
+unit SystemPixApi.ConfigFile.Constants;
 
 interface
 

@@ -1,4 +1,4 @@
-unit PointOfSale.ConfigFile.Functions;
+unit SystemPixApi.ConfigFile.Functions;
 
 interface
 
@@ -9,7 +9,7 @@ uses
   Vcl.Dialogs;
 
 type
-  TConfigFileFunctions = class
+  TApiConfigFileFunctions = class
     private
     public
       class function ReadStringValue(Section, FieldValue: string): string;
@@ -25,16 +25,16 @@ implementation
 { TConfigFileFunctions }
 
 uses
-  PointOfSale.ConfigFile.Constants,
-  PointOfSale.ConfigFile.Utils;
+  SystemPixApi.ConfigFile.Constants,
+  SystemPixApi.ConfigFile.Utils;
 
-class function TConfigFileFunctions.ReadIntegerValue(Section, FieldValue: string): integer;
+class function TApiConfigFileFunctions.ReadIntegerValue(Section, FieldValue: string): integer;
 begin
 
 end;
 
 
-class procedure TConfigFileFunctions.WriteIntegerValue(Section, FieldValue: string; AIntegerValue: integer);
+class procedure TApiConfigFileFunctions.WriteIntegerValue(Section, FieldValue: string; AIntegerValue: integer);
 begin
 
 end;
@@ -47,7 +47,7 @@ end;
 
 
 
-class function TConfigFileFunctions.ReadStringValue(Section, FieldValue: string): string;
+class function TApiConfigFileFunctions.ReadStringValue(Section, FieldValue: string): string;
 
 var
   CONFIG_FILE_IN_MEMORY: TIniFile;
@@ -55,7 +55,7 @@ var
   ResultValue: string;
 
 begin
-  CONFIG_FILE_IN_MEMORY := TIniFile.Create(TConfigFileUtils.GetPhysicalFile);
+  CONFIG_FILE_IN_MEMORY := TIniFile.Create(TApiConfigFileUtils.GetPhysicalFile);
 
   try
 
@@ -72,13 +72,13 @@ end;
 
 
 
-class procedure TConfigFileFunctions.WriteStringValue(Section, FieldValue, AStringValue: string);
+class procedure TApiConfigFileFunctions.WriteStringValue(Section, FieldValue, AStringValue: string);
 
 var
   CONFIG_FILE_IN_MEMORY: TIniFile;
 
 begin
-  CONFIG_FILE_IN_MEMORY := TIniFile.Create(TConfigFileUtils.GetPhysicalFile);
+  CONFIG_FILE_IN_MEMORY := TIniFile.Create(TApiConfigFileUtils.GetPhysicalFile);
 
   try
     CONFIG_FILE_IN_MEMORY.WriteString(Section, FieldValue, AStringValue);

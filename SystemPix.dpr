@@ -3,9 +3,9 @@ program SystemPix;
 uses
   Vcl.Forms,
   SystemPixApp.Sales.Screen in 'frontend\src\modules\transactions\screens\SystemPixApp.Sales.Screen.pas' {SalesScreen},
-  PointOfSale.ConfigFile.Constants in 'backend\src\config\PointOfSale.ConfigFile.Constants.pas',
-  PointOfSale.ConfigFile.Functions in 'backend\src\config\PointOfSale.ConfigFile.Functions.pas',
-  PointOfSale.ConfigFile.Utils in 'backend\src\config\PointOfSale.ConfigFile.Utils.pas';
+  SystemPixApi.ConfigFile.Constants in 'backend\src\config\SystemPixApi.ConfigFile.Constants.pas',
+  SystemPixApi.ConfigFile.Functions in 'backend\src\config\SystemPixApi.ConfigFile.Functions.pas',
+  SystemPixApi.ConfigFile.Utils in 'backend\src\config\SystemPixApi.ConfigFile.Utils.pas';
 
 {$R *.res}
 
