@@ -81,8 +81,9 @@ type
     LabelGrandTotal: TLabel;
 
     procedure FormCreate(Sender: TObject);
+
   private
-    { Private declarations }
+    procedure ConfirmButtonAction(Sender: TObject);
 
   public
     { Public declarations }
@@ -97,10 +98,34 @@ var
 
 implementation
 
+
+uses
+  SystemPixApp.QRCode.Screen,
+
+  SystemPixApp.SaleScreen.Functions,
+  SystemPixApp.QRCodeScreen.Functions,
+
+  SystemPixApi.ConfigFile.Functions,
+  SystemPixApi.ConfigFile.Constants;
+
 {$R *.dfm}
+
 
 procedure TSalesScreen.FormCreate(Sender: TObject);
 begin
+  TSaleFunctions.SetReceiverInformation;
+  TSaleFunctions.SetPspBBInitialConfiguration;
+
+  PIXComponent.PSP := PSPBancoBrasil;
+
+  PIXComponent.AboutACBr := ACBrAbout;
+  PIXComponent.Ambiente := TACBrPixCDAmbiente(0); //Default Test
+  PIXComponent.TimeOut := 9000;
+
+
+  ConfirmButton.OnClick := ConfirmButtonAction;
+
+
   BgConfirmButton.Brush.Color := $00E99014;
   BgConfirmButton.Pen.Style   := psClear;
 
@@ -236,6 +261,15 @@ begin
   LabelGrandTotal.Font.Style := [fsBold];
   LabelGrandTotal.Font.Size  := 30;
   LabelGrandTotal.Caption    := '152,40';
+end;
+
+
+
+procedure TSalesScreen.ConfirmButtonAction(Sender: TObject);
+begin
+  TQRCodeScreenFunctions.CreateNewInstantBilling;
+
+  TQRCodeScreenFunctions.OpenReadQRCodeModal;
 end;
 
 

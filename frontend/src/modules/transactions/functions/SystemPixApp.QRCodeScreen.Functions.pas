@@ -53,16 +53,11 @@ type
 
 implementation
 
-{ TQRCodeFunctions }
-
 uses
   SystemPixApp.Sales.Screen,
   SystemPixApp.QRCode.Screen,
 
-  PointOfSale.CancelPayment.Modal,
-
-  PointOfSale.Styles,
-  PointOfSale.Constants,
+  SystemPixApp.CancelBilling.Modal,
 
   SystemPixApp.InstantBillingEntities,
 
@@ -72,7 +67,12 @@ uses
   SystemPixApp.RevisedBilling.Functions,
   SystemPixApp.GeneratedBilling.Functions,
 
-  SystemPixApi.ConfigFile.Functions;
+  SystemPixApi.ConfigFile.Functions,
+
+  SystemPixApp.Styles,
+  SystemPixApp.Constants;
+
+{ TQRCodeFunctions }
 
 
 class procedure TQRCodeScreenFunctions.CreateNewInstantBilling;
@@ -145,11 +145,11 @@ end;
 
 class procedure TQRCodeScreenFunctions.ReviewInstantBilling;
 begin
-  TRevisedBillingFunctions.UpdateStatus;
+  TAppRevisedBillingFunctions.UpdateStatus;
 
-  RevisedBilling.Status := PDV_PIX.PSP.epCob.CobRevisada.status;
+//  RevisedBilling.Status := PDV_PIX.PSP.epCob.CobRevisada.status;
 
-  PDV_PIX.PSP.epCob.RevisarCobrancaImediata(GeneratedBilling.TxID)
+  PIXComponent.PSP.epCob.RevisarCobrancaImediata(GeneratedBilling.TxID)
 end;
 
 
@@ -157,7 +157,7 @@ end;
 
 
 
-class procedure TQRCodeScreenFunctions.UpdateBoxPaymentStatus(aComponent: TComponent; aStatusType: TPaymentStatus);
+class procedure TQRCodeScreenFunctions.UpdateBoxPaymentStatus(aComponent: TComponent; aStatusType: TAppPaymentStatus);
 
 var
   LQRCodeScreen: TQRCodeScreen;
@@ -259,7 +259,7 @@ begin
   LQRCodeScreen.CopyNPasteMemo.Lines.Clear;
   LQRCodeScreen.CopyNPasteMemo.Lines.Add(GeneratedBilling.CopyAndPaste);
 
-  TConfigFileFunctions.WriteStringValue('TERMINAL','ConsoleLog', GeneratedBilling.TxID);
+  TApiConfigFileFunctions.WriteStringValue('TERMINAL','ConsoleLog', GeneratedBilling.TxID);
 
   PintarQRCode(GeneratedBilling.Location, LQRCodeScreen.QRCodeImage.Picture.Bitmap, qrUTF8BOM);
 
@@ -432,14 +432,14 @@ begin
     ReviewInstantBilling;
   end;
 
-  CancelPaymentModal := TCancelPaymentModal.Create(
+  CancelBillingModal := TCancelBillingModal.Create(
     Application,
     'Deseja cancelar o pagamento ?',
     ActionProcedure
   );
 
-  CancelPaymentModal.Position := poScreenCenter;
-  CancelPaymentModal.ShowModal;
+  CancelBillingModal.Position := poScreenCenter;
+  CancelBillingModal.ShowModal;
 
 end;
 

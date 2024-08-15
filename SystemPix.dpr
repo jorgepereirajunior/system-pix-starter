@@ -20,7 +20,10 @@ uses
   SystemPixApp.RevisedBilling.Functions in 'frontend\src\modules\billings\functions\SystemPixApp.RevisedBilling.Functions.pas',
   SystemPixApp.QRCodeScreen.Functions in 'frontend\src\modules\transactions\functions\SystemPixApp.QRCodeScreen.Functions.pas',
   SystemPixApp.PaymentStatusEntity in 'frontend\src\helpers\payment\enitites\SystemPixApp.PaymentStatusEntity.pas',
-  SystemPixApp.CancelBilling.Modal in 'frontend\src\modules\modals\SystemPixApp.CancelBilling.Modal.pas' {CancelBillingModal};
+  SystemPixApp.CancelBilling.Modal in 'frontend\src\modules\modals\SystemPixApp.CancelBilling.Modal.pas' {CancelBillingModal},
+  SystemPixApp.Constants in 'frontend\src\shared\constants\SystemPixApp.Constants.pas',
+  SystemPixApp.Styles in 'frontend\src\shared\styles\SystemPixApp.Styles.pas',
+  SystemPixApp.SaleScreen.Functions in 'frontend\src\modules\transactions\functions\SystemPixApp.SaleScreen.Functions.pas';
 
 {$R *.res}
 

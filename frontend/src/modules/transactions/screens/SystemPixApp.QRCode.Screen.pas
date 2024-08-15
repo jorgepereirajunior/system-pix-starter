@@ -104,13 +104,13 @@ uses
   SystemPixApp.Sales.Screen,
   SystemPixApp.PaymentStatusEntity,
 
-  PointOfSale.Styles,
-
-  PointOfSale.QRCodeScreen.Functions,
+  SystemPixApp.QRCodeScreen.Functions,
 
   SystemPixApp.CompleteBilling.Functions,
 
-  SystemPixApi.ConfigFile.Functions;
+  SystemPixApi.ConfigFile.Functions,
+
+  SystemPixApp.Styles;
 
 
 constructor TQRCodeScreen.Create(AOwner: TComponent);
@@ -181,7 +181,7 @@ begin
 
               InstantBillingTimer.Enabled := false;
 
-              TCompleteBillingFunctions.UpdateAllPix;
+              TAppCompleteBillingFunctions.UpdateAllPix;
 
               exit;
             end;
@@ -332,17 +332,17 @@ end;
 
 
 Initialization
-  InstantBilling   := TInstantBillingEntity.Create;
-  RequestedBilling := TRequestedBillingEntity.Create;
-  GeneratedBilling := TGeneratedBillingEntity.Create;
-  CompletedBilling := TCompletedBillingEntity.Create;
-  RevisedBilling   := TReviseddBillingEntity.Create;
+  InstantBilling   := TAppInstantBillingEntity.Create;
+  RequestedBilling := TAppRequestedBillingEntity.Create;
+  GeneratedBilling := TAppGeneratedBillingEntity.Create;
+  CompletedBilling := TAppCompletedBillingEntity.Create;
+//  RevisedBilling   := TReviseddBillingEntity.Create;
 
 Finalization
   InstantBilling.Free;
   RequestedBilling.Free;
   GeneratedBilling.Free;
   CompletedBilling.Free;
-  RevisedBilling.Free;
-  
+//  RevisedBilling.Free;
+
 end.

@@ -15,7 +15,9 @@ uses
   Vcl.Forms,
   Vcl.Dialogs,
   Vcl.Buttons,
-  Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Imaging.pngimage;
+  Vcl.ExtCtrls,
+  Vcl.StdCtrls,
+  Vcl.Imaging.pngimage;
 
 type
   TCancelBillingModal = class(TForm)
@@ -61,7 +63,7 @@ implementation
 {$R *.dfm}
 
 uses
-  PointOfSale.Styles;
+  SystemPixApp.Styles;
 
 { TCancelPaymentModal }
 

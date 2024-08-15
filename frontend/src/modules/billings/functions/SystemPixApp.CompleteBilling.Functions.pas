@@ -41,10 +41,10 @@ type
 implementation
 
 uses
-  PointOfSale.Sale.Screen,
-  PointOfSale.QRCode.Screen,
+  SystemPixApp.Sales.Screen,
+  SystemPixApp.QRCode.Screen,
 
-  PointOfSale.CompleteBillingEntity,
+  SystemPixApp.CompleteBillingEntity,
   PointOfSale.PixEntity,
   PointOfSale.DevolutionEntity;
 
@@ -68,7 +68,7 @@ end;
 
 class procedure TAppCompleteBillingFunctions.UpdateExists;
 begin
-  CompletedBilling.Exists := not PDV_PIX.PSP.epCob.CobCompleta.IsEmpty;
+  CompletedBilling.Exists := not PIXComponent.PSP.epCob.CobCompleta.IsEmpty;
 end;
 
 
@@ -76,14 +76,14 @@ end;
 
 class procedure TAppCompleteBillingFunctions.UpdateTxID;
 begin
-  CompletedBilling.TxID := PDV_PIX.PSP.epCob.CobCompleta.txId;
+  CompletedBilling.TxID := PIXComponent.PSP.epCob.CobCompleta.txId;
 end;
 
 
 
 class procedure TAppCompleteBillingFunctions.UpdateLocation;
 begin
-  CompletedBilling.Location := PDV_PIX.PSP.epCob.CobCompleta.location;
+  CompletedBilling.Location := PIXComponent.PSP.epCob.CobCompleta.location;
 end;
 
 
@@ -91,21 +91,21 @@ end;
 
 class procedure TAppCompleteBillingFunctions.UpdateStatus;
 begin
-  CompletedBilling.Status := PDV_PIX.PSP.epCob.CobCompleta.status;
+  CompletedBilling.Status := PIXComponent.PSP.epCob.CobCompleta.status;
 end;
 
 
 
 class procedure TAppCompleteBillingFunctions.UpdateValue;
 begin
-  CompletedBilling.Value := PDV_PIX.PSP.epCob.CobCompleta.valor.original;
+  CompletedBilling.Value := PIXComponent.PSP.epCob.CobCompleta.valor.original;
 end;
 
 
 
 class procedure TAppCompleteBillingFunctions.UpdateCopyAndPaste;
 begin
-  CompletedBilling.CopyAndPaste := PDV_PIX.PSP.epCob.CobCompleta.pixCopiaECola;
+  CompletedBilling.CopyAndPaste := PIXComponent.PSP.epCob.CobCompleta.pixCopiaECola;
 end;
 
 
@@ -119,18 +119,18 @@ begin
 
   CompletedBilling.HasPix                    := true;
 
-  CompletedBilling.Pix.Items.Last.TxID       := PDV_PIX.PSP.epCob.CobCompleta.pix[0].txid;
-  CompletedBilling.Pix.Items.Last.EndToEndId := PDV_PIX.PSP.epCob.CobCompleta.pix[0].endToEndId;
-  CompletedBilling.Pix.Items.Last.Key        := PDV_PIX.PSP.epCob.CobCompleta.pix[0].chave;
-  CompletedBilling.Pix.Items.Last.Value      := PDV_PIX.PSP.epCob.CobCompleta.pix[0].valor;
-  CompletedBilling.Pix.Items.Last.Time       := PDV_PIX.PSP.epCob.CobCompleta.pix[0].horario;
+  CompletedBilling.Pix.Items.Last.TxID       := PIXComponent.PSP.epCob.CobCompleta.pix[0].txid;
+  CompletedBilling.Pix.Items.Last.EndToEndId := PIXComponent.PSP.epCob.CobCompleta.pix[0].endToEndId;
+  CompletedBilling.Pix.Items.Last.Key        := PIXComponent.PSP.epCob.CobCompleta.pix[0].chave;
+  CompletedBilling.Pix.Items.Last.Value      := PIXComponent.PSP.epCob.CobCompleta.pix[0].valor;
+  CompletedBilling.Pix.Items.Last.Time       := PIXComponent.PSP.epCob.CobCompleta.pix[0].horario;
 end;
 
 
 
 class function TAppCompleteBillingFunctions.PixExistsWithEndToEnd(AE2E: string): boolean;
 begin
-  result := PDV_PIX.PSP.epPix.ConsultarPix(AE2E);
+  result := PIXComponent.PSP.epPix.ConsultarPix(AE2E);
 end;
 
 
@@ -139,7 +139,7 @@ end;
 
 class procedure TAppCompleteBillingFunctions.ClearDevolution;
 begin
-  PDV_PIX.PSP.epPix.DevolucaoSolicitada.Clear;
+  PIXComponent.PSP.epPix.DevolucaoSolicitada.Clear;
 end;
 
 
@@ -149,11 +149,11 @@ begin
   CompletedBilling.Pix.Items[0].Devolutions.Items.Add(TDevolutionEntity.Create);
 
   CompletedBilling.Pix.HasDevolution                          := true;
-  CompletedBilling.Pix.Items[0].Devolutions.Items.Last.ID     := PDV_PIX.PSP.epPix.Pix.devolucoes[0].id;
-  CompletedBilling.Pix.Items[0].Devolutions.Items.Last.RtrID  := PDV_PIX.PSP.epPix.Pix.devolucoes[0].rtrId;
-  CompletedBilling.Pix.Items[0].Devolutions.Items.Last.Time   := PDV_PIX.PSP.epPix.Pix.devolucoes[0].horario.liquidacao;
-  CompletedBilling.Pix.Items[0].Devolutions.Items.Last.Status := PDV_PIX.PSP.epPix.Pix.devolucoes[0].status;
-  CompletedBilling.Pix.Items[0].Devolutions.Items.Last.Reason := PDV_PIX.PSP.epPix.Pix.devolucoes[0].motivo;
+  CompletedBilling.Pix.Items[0].Devolutions.Items.Last.ID     := PIXComponent.PSP.epPix.Pix.devolucoes[0].id;
+  CompletedBilling.Pix.Items[0].Devolutions.Items.Last.RtrID  := PIXComponent.PSP.epPix.Pix.devolucoes[0].rtrId;
+  CompletedBilling.Pix.Items[0].Devolutions.Items.Last.Time   := PIXComponent.PSP.epPix.Pix.devolucoes[0].horario.liquidacao;
+  CompletedBilling.Pix.Items[0].Devolutions.Items.Last.Status := PIXComponent.PSP.epPix.Pix.devolucoes[0].status;
+  CompletedBilling.Pix.Items[0].Devolutions.Items.Last.Reason := PIXComponent.PSP.epPix.Pix.devolucoes[0].motivo;
 end;
 
 
@@ -162,24 +162,24 @@ end;
 
 
 
-class procedure TCompleteBillingFunctions.SetDevolutionDescription(ADescription: string);
+class procedure TAppCompleteBillingFunctions.SetDevolutionDescription(ADescription: string);
 begin
-  PDV_PIX.PSP.epPix.DevolucaoSolicitada.descricao := ADescription;
+  PIXComponent.PSP.epPix.DevolucaoSolicitada.descricao := ADescription;
 end;
 
 
 
 
-class procedure TCompleteBillingFunctions.SetDevolutionValue(AValue: real);
+class procedure TAppCompleteBillingFunctions.SetDevolutionValue(AValue: real);
 begin
-  PDV_PIX.PSP.epPix.DevolucaoSolicitada.valor := AValue;
+  PIXComponent.PSP.epPix.DevolucaoSolicitada.valor := AValue;
 end;
 
 
 
-class procedure TCompleteBillingFunctions.SetDevolutionNature(ANature: TACBrPIXNaturezaDevolucao);
+class procedure TAppCompleteBillingFunctions.SetDevolutionNature(ANature: TACBrPIXNaturezaDevolucao);
 begin
-  PDV_PIX.PSP.epPix.DevolucaoSolicitada.natureza := ANature;
+  PIXComponent.PSP.epPix.DevolucaoSolicitada.natureza := ANature;
 end;
 
 
@@ -189,9 +189,9 @@ end;
 
 
 
-class function TCompleteBillingFunctions.DevolutionWasSuccessful: boolean;
+class function TAppCompleteBillingFunctions.DevolutionWasSuccessful: boolean;
 begin
-  result := PDV_PIX.PSP.epPix.SolicitarDevolucaoPix(
+  result := PIXComponent.PSP.epPix.SolicitarDevolucaoPix(
     CompletedBilling.Pix.Items[0].EndToEndId,
     StringReplace(CompletedBilling.Pix.Items[0].endToEndId, 'E','D', [rfReplaceAll])
   );

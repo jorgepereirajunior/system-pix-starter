@@ -23,8 +23,8 @@ implementation
 { TGeneratedBillingFunctions }
 
 uses
-  PointOfSale.Sale.Screen,
-  PointOfSale.QRCode.Screen;
+  SystemPixApp.Sales.Screen,
+  SystemPixApp.QRCode.Screen;
 
 
 class procedure TAppGeneratedBillingFunctions.UpdateAll;
@@ -43,21 +43,21 @@ end;
 
 class procedure TAppGeneratedBillingFunctions.UpdateExists;
 begin
-  GeneratedBilling.Exists       := not PDV_PIX.PSP.epCob.CobGerada.IsEmpty;
+  GeneratedBilling.Exists       := not PIXComponent.PSP.epCob.CobGerada.IsEmpty;
 end;
 
 
 
 class procedure TAppGeneratedBillingFunctions.UpdateTxID;
 begin
-  GeneratedBilling.TxID := PDV_PIX.PSP.epCob.CobGerada.txId;
+  GeneratedBilling.TxID := PIXComponent.PSP.epCob.CobGerada.txId;
 end;
 
 
 
 class procedure TAppGeneratedBillingFunctions.UpdateLocation;
 begin
-  GeneratedBilling.Location     := PDV_PIX.PSP.epCob.CobGerada.location;
+  GeneratedBilling.Location := PIXComponent.PSP.epCob.CobGerada.location;
 end;
 
 
@@ -78,7 +78,7 @@ end;
 
 class procedure TAppGeneratedBillingFunctions.UpdateCopyAndPaste;
 begin
-  GeneratedBilling.CopyAndPaste := PDV_PIX.PSP.epCob.CobGerada.pixCopiaECola;
+  GeneratedBilling.CopyAndPaste := PIXComponent.PSP.epCob.CobGerada.pixCopiaECola;
 end;
 
 end.
