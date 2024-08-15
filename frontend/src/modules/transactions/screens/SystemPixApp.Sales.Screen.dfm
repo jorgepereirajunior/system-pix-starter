@@ -1,9 +1,9 @@
-object Form1: TForm1
+object SalesScreen: TSalesScreen
   Left = 0
   Top = 0
-  Caption = 'Form1'
-  ClientHeight = 299
-  ClientWidth = 635
+  Caption = 'SalesScreen'
+  ClientHeight = 861
+  ClientWidth = 1584
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,4 +13,647 @@ object Form1: TForm1
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
+  object Container: TPanel
+    Left = 0
+    Top = 0
+    Width = 1584
+    Height = 861
+    Align = alClient
+    BevelOuter = bvNone
+    Color = clWindow
+    ParentBackground = False
+    TabOrder = 0
+    object BoxLeftMenu: TPanel
+      Left = 0
+      Top = 0
+      Width = 330
+      Height = 861
+      Align = alLeft
+      Color = clWindow
+      ParentBackground = False
+      TabOrder = 0
+      object BoxButtons1: TPanel
+        Left = 1
+        Top = 780
+        Width = 328
+        Height = 80
+        Align = alBottom
+        TabOrder = 0
+        object BoxButtons1LeftBlock: TPanel
+          Left = 1
+          Top = 1
+          Width = 164
+          Height = 78
+          Align = alLeft
+          BevelOuter = bvNone
+          TabOrder = 0
+        end
+        object BoxButtons1RightBlock: TPanel
+          Left = 163
+          Top = 1
+          Width = 164
+          Height = 78
+          Align = alRight
+          BevelOuter = bvNone
+          Padding.Left = 10
+          Padding.Top = 10
+          Padding.Right = 10
+          Padding.Bottom = 10
+          TabOrder = 1
+          object BoxConfirmButton: TPanel
+            Left = 10
+            Top = 10
+            Width = 144
+            Height = 58
+            Align = alClient
+            BevelOuter = bvNone
+            TabOrder = 0
+            object BgConfirmButton: TShape
+              Left = 0
+              Top = 0
+              Width = 144
+              Height = 58
+              Align = alClient
+              ExplicitLeft = 40
+              ExplicitTop = -16
+              ExplicitWidth = 65
+              ExplicitHeight = 65
+            end
+            object ConfirmButton: TSpeedButton
+              Left = 0
+              Top = 0
+              Width = 144
+              Height = 58
+              Cursor = crHandPoint
+              Align = alClient
+              Caption = 'ConfirmButton'
+              Flat = True
+              ExplicitLeft = 72
+              ExplicitTop = 16
+              ExplicitWidth = 23
+              ExplicitHeight = 22
+            end
+          end
+        end
+      end
+    end
+    object BoxContent: TPanel
+      Left = 330
+      Top = 0
+      Width = 1254
+      Height = 861
+      Align = alClient
+      Color = clWindow
+      ParentBackground = False
+      TabOrder = 1
+      object BoxTopBar: TPanel
+        Left = 1
+        Top = 1
+        Width = 1252
+        Height = 110
+        Align = alTop
+        BevelOuter = bvNone
+        Color = clWindow
+        ParentBackground = False
+        TabOrder = 0
+        object TopBarLeftBlock: TPanel
+          Left = 0
+          Top = 0
+          Width = 370
+          Height = 110
+          Align = alLeft
+          BevelOuter = bvNone
+          Color = clWindow
+          ParentBackground = False
+          TabOrder = 0
+          object TopBarLeftTrack: TShape
+            Left = 0
+            Top = 0
+            Width = 370
+            Height = 110
+            Align = alClient
+            Pen.Style = psClear
+            ExplicitLeft = 152
+            ExplicitTop = 24
+            ExplicitWidth = 65
+            ExplicitHeight = 65
+          end
+        end
+        object TopBarRightBlock: TPanel
+          Left = 370
+          Top = 0
+          Width = 882
+          Height = 110
+          Align = alClient
+          BevelOuter = bvNone
+          Color = clWindow
+          ParentBackground = False
+          TabOrder = 1
+          object TopBarRightTrack: TShape
+            Left = 0
+            Top = 0
+            Width = 882
+            Height = 110
+            Align = alClient
+            Pen.Style = psClear
+            ExplicitLeft = 152
+            ExplicitTop = 24
+            ExplicitWidth = 65
+            ExplicitHeight = 65
+          end
+          object LabelTopBar: TLabel
+            Left = 0
+            Top = 0
+            Width = 882
+            Height = 110
+            Align = alClient
+            Caption = '.'
+            Color = clWhite
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -32
+            Font.Name = 'Roboto'
+            Font.Style = []
+            ParentColor = False
+            ParentFont = False
+            Layout = tlCenter
+            ExplicitWidth = 9
+            ExplicitHeight = 38
+          end
+        end
+      end
+      object BoxQuantityNPrices: TPanel
+        Left = 1
+        Top = 111
+        Width = 370
+        Height = 749
+        Align = alLeft
+        Color = clWindow
+        ParentBackground = False
+        TabOrder = 1
+      end
+      object BoxProductTableList: TPanel
+        Left = 371
+        Top = 111
+        Width = 882
+        Height = 749
+        Align = alClient
+        Color = clWindow
+        Padding.Left = 20
+        Padding.Right = 20
+        ParentBackground = False
+        TabOrder = 2
+        object ShapeDivisor: TShape
+          AlignWithMargins = True
+          Left = 21
+          Top = 87
+          Width = 840
+          Height = 2
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 0
+          Margins.Bottom = 4
+          Align = alTop
+          Pen.Style = psClear
+          ExplicitLeft = 1
+          ExplicitWidth = 880
+        end
+        object BoxCostumerData: TPanel
+          Left = 21
+          Top = 1
+          Width = 840
+          Height = 41
+          Align = alTop
+          BevelOuter = bvNone
+          TabOrder = 0
+          object LabelCostumerData: TLabel
+            Left = 0
+            Top = 0
+            Width = 840
+            Height = 41
+            Align = alClient
+            Caption = 'LabelCostumerData'
+            Layout = tlCenter
+            ExplicitWidth = 94
+            ExplicitHeight = 13
+          end
+        end
+        object ProductTableListHeader: TPanel
+          AlignWithMargins = True
+          Left = 21
+          Top = 42
+          Width = 840
+          Height = 41
+          Margins.Left = 0
+          Margins.Top = 0
+          Margins.Right = 0
+          Margins.Bottom = 4
+          Align = alTop
+          BevelOuter = bvNone
+          TabOrder = 1
+          object BoxCode: TPanel
+            Left = 0
+            Top = 0
+            Width = 57
+            Height = 41
+            Align = alLeft
+            BevelOuter = bvNone
+            Locked = True
+            TabOrder = 0
+            object LabelProductTableCode: TLabel
+              Left = 0
+              Top = 0
+              Width = 57
+              Height = 41
+              Margins.Left = 30
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 0
+              Align = alClient
+              Caption = 'Label1'
+              Layout = tlCenter
+              ExplicitWidth = 31
+              ExplicitHeight = 13
+            end
+          end
+          object BoxProductDescription: TPanel
+            Left = 57
+            Top = 0
+            Width = 304
+            Height = 41
+            Align = alLeft
+            BevelOuter = bvNone
+            Locked = True
+            TabOrder = 1
+            object LabelProductTableProduct: TLabel
+              Left = 0
+              Top = 0
+              Width = 304
+              Height = 41
+              Margins.Left = 30
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 0
+              Align = alClient
+              Caption = 'LabelProductTableProduct'
+              Layout = tlCenter
+              ExplicitWidth = 125
+              ExplicitHeight = 13
+            end
+          end
+          object BoxQuantity: TPanel
+            Left = 361
+            Top = 0
+            Width = 48
+            Height = 41
+            Align = alLeft
+            BevelOuter = bvNone
+            Locked = True
+            TabOrder = 2
+            object LabelProductTableQuatity: TLabel
+              Left = 0
+              Top = 0
+              Width = 48
+              Height = 41
+              Margins.Left = 30
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 0
+              Align = alClient
+              Caption = 'LabelProductTableQuantity'
+              Layout = tlCenter
+              ExplicitWidth = 130
+              ExplicitHeight = 13
+            end
+          end
+          object BoxUnity: TPanel
+            Left = 409
+            Top = 0
+            Width = 88
+            Height = 41
+            Align = alLeft
+            BevelOuter = bvNone
+            Locked = True
+            TabOrder = 3
+            object LabelProductTableUnity: TLabel
+              Left = 0
+              Top = 0
+              Width = 88
+              Height = 41
+              Margins.Left = 30
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 0
+              Align = alClient
+              Caption = 'LabelProductTableUnity'
+              Layout = tlCenter
+              ExplicitWidth = 113
+              ExplicitHeight = 13
+            end
+          end
+          object BoxPrice: TPanel
+            Left = 497
+            Top = 0
+            Width = 112
+            Height = 41
+            Align = alLeft
+            BevelOuter = bvNone
+            Locked = True
+            TabOrder = 4
+            object LabelProductTablePrice: TLabel
+              Left = 0
+              Top = 0
+              Width = 112
+              Height = 41
+              Margins.Left = 30
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 0
+              Align = alClient
+              Caption = 'LabelProductTablePrice'
+              Layout = tlCenter
+              ExplicitWidth = 111
+              ExplicitHeight = 13
+            end
+          end
+          object BoxTotal: TPanel
+            Left = 609
+            Top = 0
+            Width = 185
+            Height = 41
+            Align = alLeft
+            BevelOuter = bvNone
+            Locked = True
+            TabOrder = 5
+            object LabelProductTableTotal: TLabel
+              Left = 0
+              Top = 0
+              Width = 185
+              Height = 41
+              Margins.Left = 30
+              Margins.Top = 0
+              Margins.Right = 0
+              Margins.Bottom = 0
+              Align = alClient
+              Caption = 'LabelProductTableTotal'
+              Layout = tlCenter
+              ExplicitWidth = 112
+              ExplicitHeight = 13
+            end
+          end
+        end
+        object BoxProductItem1: TPanel
+          Left = 21
+          Top = 93
+          Width = 840
+          Height = 30
+          Align = alTop
+          BevelOuter = bvNone
+          TabOrder = 2
+          object BoxProductItem1Code: TPanel
+            Left = 0
+            Top = 0
+            Width = 100
+            Height = 30
+            Align = alLeft
+            BevelOuter = bvNone
+            Color = clWhite
+            Locked = True
+            Padding.Right = 10
+            ParentBackground = False
+            TabOrder = 0
+            object LabelProductItem1Code: TLabel
+              Left = 0
+              Top = 0
+              Width = 90
+              Height = 30
+              Align = alClient
+              Alignment = taRightJustify
+              Caption = 'LabelProductItem1Code'
+              Layout = tlCenter
+              ExplicitLeft = -25
+              ExplicitWidth = 115
+              ExplicitHeight = 13
+            end
+          end
+          object BoxProductItem1ProductDescription: TPanel
+            Left = 100
+            Top = 0
+            Width = 100
+            Height = 30
+            Align = alLeft
+            BevelOuter = bvNone
+            Color = clWhite
+            Locked = True
+            Padding.Left = 10
+            ParentBackground = False
+            TabOrder = 1
+            object LabelProductItem1ProductDescription: TLabel
+              Left = 10
+              Top = 0
+              Width = 90
+              Height = 30
+              Align = alClient
+              Caption = 'LabelProductItem1ProductDescription'
+              Layout = tlCenter
+              ExplicitWidth = 180
+              ExplicitHeight = 13
+            end
+          end
+          object BoxProductItem1ProductQuantity: TPanel
+            Left = 200
+            Top = 0
+            Width = 100
+            Height = 30
+            Align = alLeft
+            BevelOuter = bvNone
+            Color = clWhite
+            Locked = True
+            Padding.Left = 10
+            ParentBackground = False
+            TabOrder = 2
+            object LabelProductItem1ProductQuantity: TLabel
+              Left = 10
+              Top = 0
+              Width = 90
+              Height = 30
+              Align = alClient
+              Caption = 'LabelProductItem1ProductQuantity'
+              Layout = tlCenter
+              ExplicitWidth = 169
+              ExplicitHeight = 13
+            end
+          end
+          object BoxProductItem1ProductUnity: TPanel
+            Left = 300
+            Top = 0
+            Width = 150
+            Height = 30
+            Align = alLeft
+            BevelOuter = bvNone
+            Color = clWhite
+            Locked = True
+            Padding.Left = 10
+            ParentBackground = False
+            TabOrder = 3
+            object LabelProductItem1ProductUnity: TLabel
+              Left = 10
+              Top = 0
+              Width = 140
+              Height = 30
+              Align = alClient
+              Caption = 'LabelProductItem1ProductUnity'
+              Layout = tlCenter
+              ExplicitWidth = 152
+              ExplicitHeight = 13
+            end
+          end
+          object BoxProductItem1ProductPrice: TPanel
+            Left = 450
+            Top = 0
+            Width = 100
+            Height = 30
+            Align = alLeft
+            BevelOuter = bvNone
+            Color = clWhite
+            Locked = True
+            Padding.Left = 10
+            ParentBackground = False
+            TabOrder = 4
+            object LabelProductItem1ProductPrice: TLabel
+              Left = 10
+              Top = 0
+              Width = 90
+              Height = 30
+              Align = alClient
+              Caption = 'LabelProductItem1ProductPrice'
+              Layout = tlCenter
+              ExplicitWidth = 150
+              ExplicitHeight = 13
+            end
+          end
+          object BoxProductItem1ProductTotal: TPanel
+            Left = 550
+            Top = 0
+            Width = 100
+            Height = 30
+            Align = alLeft
+            BevelOuter = bvNone
+            Color = clWhite
+            Locked = True
+            Padding.Left = 10
+            ParentBackground = False
+            TabOrder = 5
+            object LabelProductItem1ProductTotal: TLabel
+              Left = 10
+              Top = 0
+              Width = 90
+              Height = 30
+              Align = alClient
+              Caption = 'LabelProductItem1ProductTotal'
+              Layout = tlCenter
+              ExplicitWidth = 151
+              ExplicitHeight = 13
+            end
+          end
+        end
+        object BoxTotalizers: TPanel
+          Left = 21
+          Top = 683
+          Width = 840
+          Height = 65
+          Align = alBottom
+          BevelOuter = bvNone
+          TabOrder = 3
+          object TotalizersLeftBlock: TPanel
+            Left = 0
+            Top = 0
+            Width = 153
+            Height = 65
+            Align = alLeft
+            BevelOuter = bvNone
+            TabOrder = 0
+            object TotalizersTopBlock: TPanel
+              Left = 0
+              Top = 0
+              Width = 153
+              Height = 26
+              Align = alTop
+              BevelOuter = bvNone
+              TabOrder = 0
+              object LabelNumOfItem: TLabel
+                Left = 0
+                Top = 0
+                Width = 153
+                Height = 26
+                Align = alClient
+                Alignment = taCenter
+                Caption = 'LabelNumOfItem'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -16
+                Font.Name = 'Roboto'
+                Font.Style = []
+                ParentFont = False
+                Layout = tlCenter
+                ExplicitWidth = 121
+                ExplicitHeight = 19
+              end
+            end
+            object TotalizersBottomBlock: TPanel
+              Left = 0
+              Top = 24
+              Width = 153
+              Height = 41
+              Align = alBottom
+              BevelOuter = bvNone
+              Padding.Right = 10
+              TabOrder = 1
+              object LabelTotItem: TLabel
+                Left = 0
+                Top = 0
+                Width = 143
+                Height = 41
+                Align = alClient
+                Alignment = taRightJustify
+                Caption = 'LabelTotItem'
+                Layout = tlCenter
+                ExplicitLeft = 80
+                ExplicitWidth = 63
+                ExplicitHeight = 13
+              end
+            end
+          end
+          object TotalizersRightBlock: TPanel
+            Left = 153
+            Top = 0
+            Width = 687
+            Height = 65
+            Align = alClient
+            BevelOuter = bvNone
+            TabOrder = 1
+            object LabelGrandTotal: TLabel
+              Left = 0
+              Top = 0
+              Width = 687
+              Height = 65
+              Align = alClient
+              Alignment = taRightJustify
+              Caption = 'GrandTotal'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -16
+              Font.Name = 'Roboto'
+              Font.Style = []
+              ParentFont = False
+              Layout = tlCenter
+              ExplicitLeft = 606
+              ExplicitWidth = 81
+              ExplicitHeight = 19
+            end
+          end
+        end
+      end
+    end
+  end
 end

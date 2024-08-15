@@ -99,7 +99,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="frontend\src\modules\transactions\screens\SystemPixApp.Sales.Screen.pas">
-            <Form>Form1</Form>
+            <Form>SalesScreen</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
