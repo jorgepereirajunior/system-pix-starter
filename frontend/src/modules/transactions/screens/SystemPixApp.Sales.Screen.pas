@@ -80,6 +80,7 @@ type
     TotalizersRightBlock: TPanel;
     LabelGrandTotal: TLabel;
 
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
 
@@ -91,8 +92,26 @@ type
 var
   SalesScreen: TSalesScreen;
 
+  PIXComponent: TACBrPixCD;
+  PSPBancoBrasil: TACBrPSPBancoDoBrasil;
+
 implementation
 
 {$R *.dfm}
+
+procedure TSalesScreen.FormCreate(Sender: TObject);
+begin
+//
+end;
+
+
+
+initialization
+  PIXComponent := TACBrPixCD.Create(nil);
+  PSPBancoBrasil  := TACBrPSPBancoDoBrasil.Create(nil);
+
+finalization
+  PIXComponent.Free;
+  PSPBancoBrasil.Free;
 
 end.
