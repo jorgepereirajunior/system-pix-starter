@@ -101,7 +101,141 @@ implementation
 
 procedure TSalesScreen.FormCreate(Sender: TObject);
 begin
-//
+  BgConfirmButton.Brush.Color := $00E99014;
+  BgConfirmButton.Pen.Style   := psClear;
+
+  ConfirmButton.Font.Color := clWhite;
+  ConfirmButton.Font.Size  := 14;
+  ConfirmButton.Font.Style := [fsBold];
+  ConfirmButton.Caption := 'CONFIRMAR';
+
+  TopBarLeftBlock.Padding.Left   := 10;
+  TopBarLeftBlock.Padding.Top    := 10;
+  TopBarLeftBlock.Padding.Bottom := 10;
+
+  TopBarLeftTrack.Pen.Width := 1;
+  TopBarLeftTrack.Pen.Style := psSolid;
+  TopBarLeftTrack.Pen.Color := $00E99014;
+
+  TopBarLeftTrack.Brush.Color := $00E99014;
+
+
+
+  TopBarRightBlock.Padding.Right   := 10;
+  TopBarRightBlock.Padding.Top     := 10;
+  TopBarRightBlock.Padding.Bottom  := 10;
+
+  TopBarRightTrack.Pen.Width := 1;
+  TopBarRightTrack.Pen.Style := psSolid;
+  TopBarRightTrack.Pen.Color := $00E99014;
+
+  TopBarRightTrack.Brush.Color := $00E99014;
+
+  LabelTopBar.Caption    := '    TESTE PIX EM HOMOLOGAÇÃO';
+  LabelTopBar.Font.Size  := 26;
+  LabelTopBar.Font.Style := [fsBold];
+  LabelTopBar.Font.Color := clWhite;
+
+  LabelCostumerData.Font.Size := 18;
+  LabelCostumerData.Font.Style := [];
+  LabelCostumerData.Font.Color := clBlack;
+  LabelCostumerData.Caption := '1 - CLIENTE TESTE';
+
+  BoxCode.Width                    := 100;
+  LabelProductTableCode.Caption    := 'CÓDIGO';
+  LabelProductTableCode.Font.Size  := 12;
+  LabelProductTableCode.Font.Style := [fsBold];
+  LabelProductTableCode.Font.Color := $005A3802;
+
+  BoxProductDescription.Width         := 380;
+  LabelProductTableProduct.Caption    := 'PRODUTO';
+  LabelProductTableProduct.Font.Size  := 12;
+  LabelProductTableProduct.Font.Style := [fsBold];
+  LabelProductTableProduct.Font.Color := $005A3802;
+
+  BoxQuantity.Width                    := 90;
+  LabelProductTableQuatity.Caption    := 'QTDE';
+  LabelProductTableQuatity.Font.Size  := 12;
+  LabelProductTableQuatity.Font.Style := [fsBold];
+  LabelProductTableQuatity.Font.Color := $005A3802;
+
+  BoxUnity.Width                    := 90;
+  LabelProductTableUnity.Caption    := 'UNID';
+  LabelProductTableUnity.Font.Size  := 12;
+  LabelProductTableUnity.Font.Style := [fsBold];
+  LabelProductTableUnity.Font.Color := $005A3802;
+
+  BoxPrice.Width                    := 100;
+  LabelProductTablePrice.Caption    := 'PREÇO';
+  LabelProductTablePrice.Font.Size  := 12;
+  LabelProductTablePrice.Font.Style := [fsBold];
+  LabelProductTablePrice.Font.Color := $005A3802;
+
+  BoxTotal.Width                    := 100;
+  LabelProductTableTotal.Caption    := 'TOTAL';
+  LabelProductTableTotal.Font.Size  := 12;
+  LabelProductTableTotal.Font.Style := [fsBold];
+  LabelProductTableTotal.Font.Color := $005A3802;
+
+  ShapeDivisor.Brush.Color          := clSilver;
+  ShapeDivisor.Height               := 3;
+
+  BoxProductItem1Code.Color         := $00E99014;
+  BoxProductItem1Code.Width         := 100;
+  LabelProductItem1Code.Caption     := '1';
+  LabelProductItem1Code.Font.Size   := 11;
+  LabelProductItem1Code.Font.Style  := [fsBold];
+  LabelProductItem1Code.Font.Color  := clWhite;
+
+  BoxProductItem1ProductDescription.Color := clWhite;
+  BoxProductItem1ProductDescription.Width := 380;
+  LabelProductItem1ProductDescription.Caption     := 'Ráiniquen 600ml';
+  LabelProductItem1ProductDescription.Font.Size   := 11;
+  LabelProductItem1ProductDescription.Font.Style  := [fsBold];
+  LabelProductItem1ProductDescription.Font.Color  := cl3DDkShadow;
+
+  BoxProductItem1ProductQuantity.Color := clWhite;
+  BoxProductItem1ProductQuantity.Width := 90;
+  LabelProductItem1ProductQuantity.Caption     := '1';
+  LabelProductItem1ProductQuantity.Font.Size   := 11;
+  LabelProductItem1ProductQuantity.Font.Style  := [fsBold];
+  LabelProductItem1ProductQuantity.Font.Color  := cl3DDkShadow;
+
+  BoxProductItem1ProductUnity.Color := clWhite;
+  BoxProductItem1ProductUnity.Width := 90;
+  LabelProductItem1ProductUnity.Caption     := 'CX';
+  LabelProductItem1ProductUnity.Font.Size   := 11;
+  LabelProductItem1ProductUnity.Font.Style  := [fsBold];
+  LabelProductItem1ProductUnity.Font.Color  := cl3DDkShadow;
+
+  BoxProductItem1ProductPrice.Color := clWhite;
+  BoxProductItem1ProductPrice.Width := 100;
+  LabelProductItem1ProductPrice.Caption     := '152,40';
+  LabelProductItem1ProductPrice.Font.Size   := 11;
+  LabelProductItem1ProductPrice.Font.Style  := [fsBold];
+  LabelProductItem1ProductPrice.Font.Color  := cl3DDkShadow;
+
+  BoxProductItem1ProductTotal.Color := clWhite;
+  BoxProductItem1ProductTotal.Width := 100;
+  LabelProductItem1ProductTotal.Caption     := '152,40';
+  LabelProductItem1ProductTotal.Font.Size   := 11;
+  LabelProductItem1ProductTotal.Font.Style  := [fsBold];
+  LabelProductItem1ProductTotal.Font.Color  := cl3DDkShadow;
+
+  LabelNumOfItem.Font.Color := $005A3802;
+  LabelNumOfItem.Font.Style := [];
+  LabelNumOfItem.Font.Size  := 15;
+  LabelNumOfItem.Caption    := 'Número de Itens';
+
+  LabelTotItem.Font.Color := clBlack;
+  LabelTotItem.Font.Style := [fsBold];
+  LabelTotItem.Font.Size  := 19;
+  LabelTotItem.Caption    := '1';
+
+  LabelGrandTotal.Font.Color := clBlack;
+  LabelGrandTotal.Font.Style := [fsBold];
+  LabelGrandTotal.Font.Size  := 30;
+  LabelGrandTotal.Caption    := '152,40';
 end;
 
 
