@@ -134,6 +134,9 @@
         <DCCReference Include="frontend\src\shared\styles\SystemPixApp.Styles.pas"/>
         <DCCReference Include="frontend\src\modules\transactions\functions\SystemPixApp.SaleScreen.Functions.pas"/>
         <DCCReference Include="frontend\src\modules\transactions\utils\SystemPixApp.QRCodeScreen.Utils.pas"/>
+        <DCCReference Include="backend\src\logs\errors\SystemPixApi.LogErrorFile.Constants.pas"/>
+        <DCCReference Include="backend\src\logs\errors\SystemPixApi.LogErrorFile.Utils.pas"/>
+        <DCCReference Include="backend\src\logs\errors\SystemPixApi.LogErrorFile.Functions.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

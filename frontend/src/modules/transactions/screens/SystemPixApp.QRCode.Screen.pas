@@ -106,6 +106,7 @@ uses
   SystemPixApp.QRCodeScreen.Functions,
   SystemPixApp.QRCodeScreen.Utils,
 
+  SystemPixApp.RequestedBilling.Functions,
   SystemPixApp.CompleteBilling.Functions,
 
   SystemPixApi.ConfigFile.Functions,
@@ -119,6 +120,7 @@ begin
   inherited Create(AOwner);
 
   TQRCodeScreenUtils.BuildMainContent(Self);
+  TAppRequestedBillingFunctions.SetExpiration(RequestedBilling.Expiration);
 
 
   InstantBillingTimer  := TTimer.Create(Self);
@@ -154,8 +156,6 @@ begin
   CompleteBillingTimer.Enabled := false;
   CompleteBillingTimer.Free;
 end;
-
-
 
 
 

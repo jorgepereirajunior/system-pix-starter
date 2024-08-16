@@ -24,7 +24,10 @@ uses
   SystemPixApp.Constants in 'frontend\src\shared\constants\SystemPixApp.Constants.pas',
   SystemPixApp.Styles in 'frontend\src\shared\styles\SystemPixApp.Styles.pas',
   SystemPixApp.SaleScreen.Functions in 'frontend\src\modules\transactions\functions\SystemPixApp.SaleScreen.Functions.pas',
-  SystemPixApp.QRCodeScreen.Utils in 'frontend\src\modules\transactions\utils\SystemPixApp.QRCodeScreen.Utils.pas';
+  SystemPixApp.QRCodeScreen.Utils in 'frontend\src\modules\transactions\utils\SystemPixApp.QRCodeScreen.Utils.pas',
+  SystemPixApi.LogErrorFile.Constants in 'backend\src\logs\errors\SystemPixApi.LogErrorFile.Constants.pas',
+  SystemPixApi.LogErrorFile.Utils in 'backend\src\logs\errors\SystemPixApi.LogErrorFile.Utils.pas',
+  SystemPixApi.LogErrorFile.Functions in 'backend\src\logs\errors\SystemPixApi.LogErrorFile.Functions.pas';
 
 {$R *.res}
 

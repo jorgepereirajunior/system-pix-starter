@@ -55,6 +55,7 @@ uses
   SystemPixApp.GeneratedBilling.Functions,
 
   SystemPixApi.ConfigFile.Functions,
+  SystemPixApi.LogErrorFile.Functions,
 
   SystemPixApp.Styles,
   SystemPixApp.Constants;
@@ -63,6 +64,10 @@ uses
 
 
 class procedure TQRCodeScreenFunctions.CreateNewInstantBilling;
+
+var
+  LogFile: TextFile;
+
 begin
   TAppRequestedBillingFunctions.Clear;
 
@@ -78,7 +83,8 @@ begin
     TAppGeneratedBillingFunctions.UpdateAll;
 
   end else begin
-    ShowMessage('Erro de criar cobrança: ' +PSPBancoBrasil.epCob.Problema.detail);
+
+    TApiLogErrorFileFunctions.RegisterLastErrorInstantBilling(PSPBancoBrasil.epCob.Problema.detail);
   end;
 
 end;
