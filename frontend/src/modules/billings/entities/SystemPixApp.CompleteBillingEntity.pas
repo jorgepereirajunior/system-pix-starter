@@ -3,6 +3,7 @@ unit SystemPixApp.CompleteBillingEntity;
 interface
 
 uses
+  System.DateUtils,
   System.Generics.Collections,
 
   ACBrPIXBase,
@@ -20,6 +21,8 @@ type
       FLocation: string;
       FValue: real;
       FStatus: TACBrPIXStatusCobranca;
+      FCreatedAt: TDateTime;
+      FExpiration: integer;
       FHasPix: boolean;
       FPix: TCompletedBillingPixArray;
 
@@ -30,6 +33,8 @@ type
       property Location: string read FLocation write FLocation;
       property Value: real read FValue write FValue;
       property Status: TACBrPIXStatusCobranca read FStatus write FStatus;
+      property CreatedAt: TDateTime read FCreatedAt write FCreatedAt;
+      property Expiration: integer read FExpiration write FExpiration;
       property HasPix: boolean read FHasPix write FHasPix;
       property Pix: TCompletedBillingPixArray read FPix write FPix;
 
@@ -49,6 +54,7 @@ begin
   FCopyAndPaste := '';
   FValue        := 0;
   FStatus       := stcNENHUM;
+  FCreatedAt    := EncodeDateTime(1900, 1, 1, 12, 0, 0, 0);
   FHasPix       := false;
   FPix          := TCompletedBillingPixArray.Create;
 end;
