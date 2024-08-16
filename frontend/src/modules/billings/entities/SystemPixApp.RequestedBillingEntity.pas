@@ -24,6 +24,10 @@ type
 
 implementation
 
+uses
+  SystemPixApi.ConfigFile.Functions,
+  SystemPixApi.ConfigFile.Constants;
+
 { TRequestedBillingEntity }
 
 constructor TAppRequestedBillingEntity.Create;
@@ -31,7 +35,7 @@ begin
   FKeyPix     := '';
   FValue      := 152.40;
   FCreatedAt  := EncodeDateTime(1900, 1, 1, 12, 0, 0, 0);
-  FExpiration := 3600;
+  FExpiration := TApiConfigFileFunctions.ReadIntegerValue(REQUESTED_BILLING_CONFIG_SECTION, REQUESTED_BILLING_CONFIG_KEY_NAME);;
 end;
 
 end.

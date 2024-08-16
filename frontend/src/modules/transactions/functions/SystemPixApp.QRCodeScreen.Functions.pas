@@ -66,7 +66,7 @@ class procedure TQRCodeScreenFunctions.CreateNewInstantBilling;
 begin
   TAppRequestedBillingFunctions.Clear;
 
-//  TAppRequestedBillingFunctions.SetExpiration(RequestedBilling.Expiration);
+  TAppRequestedBillingFunctions.SetExpiration(RequestedBilling.Expiration);
 
   TAppRequestedBillingFunctions.SetKeyPix(PIXComponent.PSP.ChavePIX);
 
@@ -78,7 +78,7 @@ begin
     TAppGeneratedBillingFunctions.UpdateAll;
 
   end else begin
-    ShowMessage('Erro de criar cobrança: ' +PSPBancoBrasil.epCob.CobSolicitada);
+    ShowMessage('Erro de criar cobrança: ' +PSPBancoBrasil.epCob.Problema.detail);
   end;
 
 end;
