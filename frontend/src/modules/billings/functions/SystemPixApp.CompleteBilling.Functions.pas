@@ -21,6 +21,8 @@ type
       class procedure UpdateStatus;
       class procedure UpdateValue;
       class procedure UpdateCopyAndPaste;
+      class procedure UpdateCreationDate;
+      class procedure UpdateExpiration;
 
       class procedure UpdateAll;
 
@@ -59,6 +61,8 @@ begin
   UpdateStatus;
   UpdateValue;
   UpdateCopyAndPaste;
+  UpdateCreationDate;
+  UpdateExpiration;
 end;
 
 
@@ -108,6 +112,19 @@ begin
   CompletedBilling.CopyAndPaste := PIXComponent.PSP.epCob.CobCompleta.pixCopiaECola;
 end;
 
+
+
+class procedure TAppCompleteBillingFunctions.UpdateCreationDate;
+begin
+  CompletedBilling.CreatedAt := PIXComponent.PSP.epCob.CobCompleta.calendario.criacao;
+end;
+
+
+
+class procedure TAppCompleteBillingFunctions.UpdateExpiration;
+begin
+  CompletedBilling.Expiration := PIXComponent.PSP.epCob.CobCompleta.calendario.expiracao;
+end;
 
 
 
