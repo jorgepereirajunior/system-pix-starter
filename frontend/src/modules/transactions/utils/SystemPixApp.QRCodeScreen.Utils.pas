@@ -24,16 +24,18 @@ type
       class procedure ReviewInstantBilling;
 
     public
+      class procedure BuildMainContent(aComponent: TComponent);
+
       class procedure UpdateCancelPaymentButton(aComponent: TComponent; ButtonVisibility: TQRCodeScreenActionButtonsVisibility; ButtonStyle: TQRCodeScreenActionButtonsStyle);
       class procedure UpdateReversalPaymentButton(aComponent: TComponent; ButtonVisibility: TQRCodeScreenActionButtonsVisibility; ButtonStyle: TQRCodeScreenActionButtonsStyle);
       class procedure UpdateCloseButton(aComponent: TComponent;ButtonVisibility: TQRCodeScreenActionButtonsVisibility; ButtonStyle: TQRCodeScreenActionButtonsStyle; ButtonColor: integer);
 
       class procedure UpdateBoxPaymentStatus(aComponent: TComponent; aStatusType: TAppPaymentStatus);
-//
+
       class procedure SetQRCodeArea(aComponent: TComponent);
       class procedure SetCopyPasteArea(aComponent: TComponent);
       class procedure SetBillingData(aComponent: TComponent);
-//
+
       class procedure CopyToClipBoard(const Text: string);
 
   end;
@@ -57,6 +59,26 @@ begin
 end;
 
 
+
+
+
+
+
+class procedure TQRCodeScreenUtils.BuildMainContent(aComponent: TComponent);
+
+var
+  LQRCodeScreen: TQRCodeScreen;
+
+begin
+  LQRCodeScreen := TQRCodeScreen(aComponent);
+
+  UpdateBoxPaymentStatus(LQRCodeScreen, PAY_ON_HOLD);
+  UpdateCancelPaymentButton(LQRCodeScreen, IS_VISIBLE, IS_PRIMARY);
+
+  SetQRCodeArea(LQRCodeScreen);
+  SetCopyPasteArea(LQRCodeScreen);
+  SetBillingData(LQRCodeScreen);
+end;
 
 
 
@@ -322,6 +344,8 @@ begin
 
   PintarQRCode(GeneratedBilling.Location, LQRCodeScreen.QRCodeImage.Picture.Bitmap, qrUTF8BOM);
 end;
+
+
 
 
 

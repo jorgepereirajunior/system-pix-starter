@@ -34,7 +34,7 @@ type
       class procedure SetDevolutionValue(AValue: real);
       class procedure SetDevolutionNature(ANature: TACBrPIXNaturezaDevolucao);
 
-      class function DevolutionWasSuccessful: boolean;
+      class function RequestDevolutionWasSuccessful: boolean;
 
   end;
 
@@ -189,7 +189,7 @@ end;
 
 
 
-class function TAppCompleteBillingFunctions.DevolutionWasSuccessful: boolean;
+class function TAppCompleteBillingFunctions.RequestDevolutionWasSuccessful: boolean;
 begin
   result := PIXComponent.PSP.epPix.SolicitarDevolucaoPix(
     CompletedBilling.Pix.Items[0].EndToEndId,

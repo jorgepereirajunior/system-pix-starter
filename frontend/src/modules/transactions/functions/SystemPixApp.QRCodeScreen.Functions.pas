@@ -66,7 +66,7 @@ class procedure TQRCodeScreenFunctions.CreateNewInstantBilling;
 begin
   TAppRequestedBillingFunctions.Clear;
 
-  TAppRequestedBillingFunctions.SetExpiration(RequestedBilling.Expiration);
+//  TAppRequestedBillingFunctions.SetExpiration(RequestedBilling.Expiration);
 
   TAppRequestedBillingFunctions.SetKeyPix(PIXComponent.PSP.ChavePIX);
 
@@ -77,6 +77,8 @@ begin
 
     TAppGeneratedBillingFunctions.UpdateAll;
 
+  end else begin
+    ShowMessage('Erro de criar cobrança: ' +PSPBancoBrasil.epCob.CobSolicitada);
   end;
 
 end;
@@ -92,7 +94,7 @@ begin
 
   TAppCompleteBillingFunctions.SetDevolutionNature(ndORIGINAL);
 
-  if (TAppCompleteBillingFunctions.DevolutionWasSuccessful) then begin
+  if (TAppCompleteBillingFunctions.RequestDevolutionWasSuccessful) then begin
 
 
   end else begin

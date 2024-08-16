@@ -69,17 +69,16 @@ type
     CompleteBillingTimer: TTimer;
 
     procedure InstantBillingTimerAction(Sender: TObject);
-    procedure InstantBillingTimerThreadEnds(Sender: TObject);
-
     procedure CompleteBillingTimerAction(Sender: TObject);
-    procedure CompleteBillingTimerThreadEnds(Sender: TObject);
 
-    procedure HandleCopyToClipBoard(Sender: TObject);
-    procedure MakeMainContent;
+    procedure InstantBillingTimerThreadEnds(Sender: TObject);
+    procedure CompleteBillingTimerThreadEnds(Sender: TObject);
 
     procedure CancelPaymentButtonAction(Sender: TObject);
     procedure CloseButtonAction(Sender: TObject);
     procedure ReversalButtonAction(Sender: TObject);
+
+    procedure HandleCopyToClipBoard(Sender: TObject);
 
   public
     constructor Create(AOwner: TComponent);
@@ -119,9 +118,10 @@ constructor TQRCodeScreen.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
 
-  InstantBillingTimer := TTimer.Create(nil);
+  TQRCodeScreenUtils.BuildMainContent(Self);
 
-  MakeMainContent;
+
+  InstantBillingTimer  := TTimer.Create(Self);
 
   InstantBillingTimer.Enabled  := false;
   InstantBillingTimer.Interval := 5100;
@@ -129,8 +129,16 @@ begin
 
   InstantBillingTimer.OnTimer := InstantBillingTimerAction;
 
-  CopyNPasteButton.OnClick    := HandleCopyToClipBoard;
 
+  CompleteBillingTimer := TTimer.Create(Self);
+
+  CompleteBillingTimer.Enabled := false;
+  CompleteBillingTimer.Interval := 5000;
+
+  CompleteBillingTimer.OnTimer := CompleteBillingTimerAction;
+
+
+  CopyNPasteButton.OnClick    := HandleCopyToClipBoard;
   CancelPaymentButton.OnClick := CancelPaymentButtonAction;
   CloseButton.OnClick         := CloseButtonAction;
   ReversalButton.OnClick      := ReversalButtonAction;
@@ -143,12 +151,9 @@ begin
   InstantBillingTimer.Enabled := false;
   InstantBillingTimer.Free;
 
-  if (Assigned(CompleteBillingTimer)) then begin
-    CompleteBillingTimer.Enabled := false;
-    CompleteBillingTimer.Free;
-  end;
+  CompleteBillingTimer.Enabled := false;
+  CompleteBillingTimer.Free;
 end;
-
 
 
 
@@ -167,12 +172,12 @@ begin
 
       TQRCodeScreenFunctions.CheckCurrentInstantBilling;
 
-      TThread.Synchronize(TThread.CurrentThread,
-        procedure begin
+      if (CompletedBilling.Exists) then begin
 
-          if (CompletedBilling.Exists) then begin
+        if (CompletedBilling.status = stcCONCLUIDA) then begin
 
-            if (CompletedBilling.status = stcCONCLUIDA) then begin
+          TThread.Synchronize(TThread.CurrentThread,
+            procedure begin
 
               TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_MADE_EFFECTIVE);
 
@@ -185,10 +190,16 @@ begin
               TAppCompleteBillingFunctions.UpdateAllPix;
 
               exit;
-            end;
+            end
+          );
 
-            if (CompletedBilling.status = stcREMOVIDA_PELO_USUARIO_RECEBEDOR) then begin
+        end;
 
+
+        if (CompletedBilling.status = stcREMOVIDA_PELO_USUARIO_RECEBEDOR) then begin
+
+          TThread.Synchronize(TThread.CurrentThread,
+            procedure begin
               TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_CANCELED);
 
               TQRCodeScreenUtils.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
@@ -197,12 +208,12 @@ begin
               InstantBillingTimer.Enabled := false;
 
               exit;
-            end;
+            end
+          );
 
-          end;
+        end;
 
-        end
-      );
+      end;
 
     end
   );
@@ -210,33 +221,6 @@ begin
   InstantBillingThread.Start;
   InstantBillingThread.OnTerminate := InstantBillingTimerThreadEnds;
 end;
-
-
-
-procedure TQRCodeScreen.InstantBillingTimerThreadEnds(Sender: TObject);
-begin
-
-  if Assigned(TThread(Sender).FatalException) then
-    exit;
-end;
-
-
-
-
-
-
-
-
-procedure TQRCodeScreen.MakeMainContent;
-begin
-  TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_ON_HOLD);
-  TQRCodeScreenUtils.UpdateCancelPaymentButton(Self, IS_VISIBLE, IS_PRIMARY);
-  
-  TQRCodeScreenUtils.SetQRCodeArea(Self);
-  TQRCodeScreenUtils.SetCopyPasteArea(Self);
-  TQRCodeScreenUtils.SetBillingData(Self);
-end;
-
 
 
 
@@ -254,13 +238,12 @@ begin
 
       TQRCodeScreenFunctions.CheckCurrentBillingDevolution;
 
-      TThread.Synchronize(TThread.CurrentThread,
-        procedure begin
+      if (CompletedBilling.Pix.HasDevolution) then begin
 
-          if (CompletedBilling.Pix.HasDevolution) then begin
+        if (CompletedBilling.Pix.Items[0].Devolutions.Items.Last.Status = stdDEVOLVIDO) then begin
 
-            if (CompletedBilling.Pix.Items[0].Devolutions.Items.Last.Status = stdDEVOLVIDO) then begin
-
+          TThread.Synchronize(TThread.CurrentThread,
+            procedure begin
               TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_EXTORTED);
 
               TQRCodeScreenUtils.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
@@ -268,18 +251,32 @@ begin
               TQRCodeScreenUtils.UpdateCloseButton(Self, IS_VISIBLE, IS_PRIMARY, PDV_COLOR_PAYMENT_EXTORTED);
 
               CompleteBillingTimer.Enabled := false;
-            end;
+            end
+          );
+        end;
 
-          end;
+      end;
 
-        end
-      );
     end
   );
 
   CompleteBillingThread.Start;
   CompleteBillingThread.OnTerminate := CompleteBillingTimerThreadEnds;
 end;
+
+
+
+
+
+
+
+procedure TQRCodeScreen.InstantBillingTimerThreadEnds(Sender: TObject);
+begin
+  if Assigned(TThread(Sender).FatalException) then begin
+    exit;
+  end;
+end;
+
 
 
 
@@ -295,13 +292,6 @@ end;
 procedure TQRCodeScreen.ReversalButtonAction(Sender: TObject);
 
 begin
-  CompleteBillingTimer := TTimer.Create(nil);
-
-  CompleteBillingTimer.Enabled := false;
-  CompleteBillingTimer.Interval := 5000;
-
-  CompleteBillingTimer.OnTimer := CompleteBillingTimerAction;
-
   TQRCodeScreenFunctions.CreateNewBillingDevolution;
 
   CompleteBillingTimer.Enabled := true;
@@ -327,6 +317,7 @@ procedure TQRCodeScreen.HandleCopyToClipBoard(Sender: TObject);
 begin
   TQRCodeScreenUtils.CopyToClipBoard(CopyNPasteMemo.Text);
 end;
+
 
 
 
