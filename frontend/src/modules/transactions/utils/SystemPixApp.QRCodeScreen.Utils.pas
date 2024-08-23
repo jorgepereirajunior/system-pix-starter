@@ -19,6 +19,8 @@ type
   TQRCodeScreenActionButtonsVisibility = (IS_VISIBLE, IS_HIDDEN);
   TQRCodeScreenActionButtonsStyle      = (IS_PRIMARY, IS_SECONDARY);
 
+  TQRCodeScreenCopyButtonStatus        = (IS_ENABLED, IS_NOT_ENABLED);
+
   TQRCodeScreenUtils = class
     private
       class procedure ReviewInstantBilling;
@@ -35,6 +37,8 @@ type
       class procedure SetQRCodeArea(aComponent: TComponent);
       class procedure SetCopyPasteArea(aComponent: TComponent);
       class procedure SetBillingData(aComponent: TComponent);
+
+      class procedure UpdateBillingDataToCanceled(aComponent: TComponent; ButtonStatus: TQRCodeScreenCopyButtonStatus);
 
       class procedure CopyToClipBoard(const Text: string);
 
@@ -349,6 +353,31 @@ end;
 
 
 
+
+
+
+class procedure TQRCodeScreenUtils.UpdateBillingDataToCanceled(aComponent: TComponent; ButtonStatus: TQRCodeScreenCopyButtonStatus);
+
+var
+  LQRCodeScreen: TQRCodeScreen;
+
+begin
+  LQRCodeScreen := TQRCodeScreen(aComponent);
+
+  case (ButtonStatus) of
+    IS_ENABLED: LQRCodeScreen.BoxCopyNPasteButton.Visible := true;
+
+    IS_NOT_ENABLED: begin
+      LQRCodeScreen.QRCodeImage.Picture.Assign(nil);
+      LQRCodeScreen.CopyNPasteMemo.Lines.Clear;
+      LQRCodeScreen.CopyNPasteMemo.Lines.Add('Não é mais possível copiar o PIX');
+
+      LQRCodeScreen.BoxCopyNPasteButton.Visible := false;
+    end;
+  end;
+
+
+end;
 
 
 class procedure TQRCodeScreenUtils.CopyToClipBoard(const Text: string);

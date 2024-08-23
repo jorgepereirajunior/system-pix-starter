@@ -24,11 +24,12 @@ type
 
   TQRCodeScreenFunctions = class
     private
-      class procedure ReviewInstantBilling;
 
     public
+      class procedure ReviewInstantBilling;
+
       class procedure CreateNewInstantBilling;
-      class procedure CheckCurrentInstantBilling;
+      class procedure CheckCurrentBilling;
 
       class procedure CreateNewBillingDevolution;
       class procedure CheckCurrentBillingDevolution;
@@ -46,13 +47,19 @@ uses
 
   SystemPixApp.CancelBilling.Modal,
 
+  SystemPixApi.ACBrRequestBilling.Functions,
+  SystemPixApi.ACBrInstantBilling.Functions,
+
   SystemPixApp.InstantBillingEntities,
+  SystemPixApp.BillingEntity,
 
   SystemPixApp.InstantBilling.Functions,
-  SystemPixApp.RequestedBilling.Functions,
   SystemPixApp.CompleteBilling.Functions,
   SystemPixApp.RevisedBilling.Functions,
   SystemPixApp.GeneratedBilling.Functions,
+  SystemPixApp.CurrentBillingAsGenerated.Functions,
+  SystemPixApp.CurrentBillingAsCompleted.Functions,
+
 
   SystemPixApi.ConfigFile.Functions,
   SystemPixApi.LogErrorFile.Functions,
@@ -69,18 +76,18 @@ var
   LogFile: TextFile;
 
 begin
-  TAppRequestedBillingFunctions.Clear;
-
-  TAppRequestedBillingFunctions.SetExpiration(RequestedBilling.Expiration);
-
-  TAppRequestedBillingFunctions.SetKeyPix(PIXComponent.PSP.ChavePIX);
-
-  TAppRequestedBillingFunctions.SetValue(RequestedBilling.Value);
+  TApiACBrRequestBillingFunctions.ConfigRequesteFields(
+    CurrentBilling.Expiration,
+    PIXComponent.PSP.ChavePIX,
+    CurrentBilling.Value
+  );
 
 
   if (TAppInstantBillingFunctions.CreationWasSuccessful) then begin
 
     TAppGeneratedBillingFunctions.UpdateAll;
+
+    TAppCurrentBillingAsGeneratedFunctions.UpdateAll;
 
   end else begin
 
@@ -122,13 +129,16 @@ begin
   end;
 end;
 
-class procedure TQRCodeScreenFunctions.CheckCurrentInstantBilling;
+class procedure TQRCodeScreenFunctions.CheckCurrentBilling;
 begin
+  if (TApiACBrInstantBillingFunctions.ExistsWithID(CurrentBilling.TxID)) then begin
 
-  if (TAppInstantBillingFunctions.ExistsWithID(GeneratedBilling.TxID)) then begin
+    TAppCurrentBillingAsCompletedFunctions.UpdateAll;
+    TAppCurrentBillingAsCompletedFunctions.UpdateIsChecked(true);
 
-    TAppCompleteBillingFunctions.UpdateAll;
+  end else begin
 
+    ShowMessage('Ainda não tem, atualize antes');
   end;
 
 end;
@@ -144,7 +154,10 @@ begin
 
 //  RevisedBilling.Status := PDV_PIX.PSP.epCob.CobRevisada.status;
 
-  PIXComponent.PSP.epCob.RevisarCobrancaImediata(GeneratedBilling.TxID)
+//  if (PIXComponent.PSP.epCob.RevisarCobrancaImediata(GeneratedBilling.TxID)) then
+//    ShowMessage('Chave revisar: ' +PIXComponent.PSP.epCob.CobRevisada.chave)
+//  else
+//    ShowMessage('Erro revisar: ' +PIXComponent.PSP.epCob.Problema.detail);
 end;
 
 

@@ -117,12 +117,10 @@
         <DCCReference Include="frontend\src\modules\billings\entities\PointOfSale.DevolutionEntity.pas"/>
         <DCCReference Include="frontend\src\modules\billings\entities\SystemPixApp.GeneratedBillingEntity.pas"/>
         <DCCReference Include="frontend\src\modules\billings\entities\PointOfSale.PixEntity.pas"/>
-        <DCCReference Include="frontend\src\modules\billings\entities\SystemPixApp.RequestedBillingEntity.pas"/>
         <DCCReference Include="frontend\src\modules\billings\entities\SystemPixApp.InstantBillingEntities.pas"/>
         <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.CompleteBilling.Functions.pas"/>
         <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.GeneratedBilling.Functions.pas"/>
         <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.InstantBilling.Functions.pas"/>
-        <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.RequestedBilling.Functions.pas"/>
         <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.RevisedBilling.Functions.pas"/>
         <DCCReference Include="frontend\src\modules\transactions\functions\SystemPixApp.QRCodeScreen.Functions.pas"/>
         <DCCReference Include="frontend\src\helpers\payment\enitites\SystemPixApp.PaymentStatusEntity.pas"/>
@@ -137,6 +135,14 @@
         <DCCReference Include="backend\src\logs\errors\SystemPixApi.LogErrorFile.Constants.pas"/>
         <DCCReference Include="backend\src\logs\errors\SystemPixApi.LogErrorFile.Utils.pas"/>
         <DCCReference Include="backend\src\logs\errors\SystemPixApi.LogErrorFile.Functions.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\entities\SystemPixApp.BillingEntity.pas"/>
+        <DCCReference Include="frontend\src\modules\pix\entities\SystemPixApp.PixEntity.pas"/>
+        <DCCReference Include="frontend\src\modules\devolutions\entities\SystemPixApp.DevolutionEntity.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.CurrentBillingAsGenerated.Functions.pas"/>
+        <DCCReference Include="backend\src\external\acbrpix\SystemPixApi.ACBrRequestBilling.Functions.pas"/>
+        <DCCReference Include="backend\src\external\acbrpix\SystemPixApi.ACBrInstantBilling.Functions.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\utils\SystemPixApp.CurrentBilling.Utils.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.CurrentBillingAsCompleted.Functions.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
