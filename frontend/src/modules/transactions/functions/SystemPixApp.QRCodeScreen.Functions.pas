@@ -5,6 +5,7 @@ interface
 uses
   System.Classes,
   System.SysUtils,
+  System.TypInfo,
 
   Vcl.Dialogs,
   Vcl.Forms,
@@ -49,6 +50,7 @@ uses
 
   SystemPixApi.ACBrRequestBilling.Functions,
   SystemPixApi.ACBrInstantBilling.Functions,
+  SystemPixApi.ACBrRevisedBilling.Functions,
 
   SystemPixApp.InstantBillingEntities,
   SystemPixApp.BillingEntity,
@@ -59,7 +61,7 @@ uses
   SystemPixApp.GeneratedBilling.Functions,
   SystemPixApp.CurrentBillingAsGenerated.Functions,
   SystemPixApp.CurrentBillingAsCompleted.Functions,
-
+  SystemPixApp.CurrentBillingAsRevised.Functions,
 
   SystemPixApi.ConfigFile.Functions,
   SystemPixApi.LogErrorFile.Functions,
@@ -83,9 +85,9 @@ begin
   );
 
 
-  if (TAppInstantBillingFunctions.CreationWasSuccessful) then begin
+  if (TApiACBrInstantBillingFunctions.CreationWasSuccessful) then begin
 
-    TAppGeneratedBillingFunctions.UpdateAll;
+//    TAppGeneratedBillingFunctions.UpdateAll;
 
     TAppCurrentBillingAsGeneratedFunctions.UpdateAll;
 
@@ -150,14 +152,16 @@ end;
 
 class procedure TQRCodeScreenFunctions.ReviewInstantBilling;
 begin
-  TAppRevisedBillingFunctions.UpdateStatus;
+  TApiACBrRevisedBillingFunctions.UpdateStatus;
 
-//  RevisedBilling.Status := PDV_PIX.PSP.epCob.CobRevisada.status;
+  if (TApiACBrRevisedBillingFunctions.RevisionWasSuccessful) then begin
 
-//  if (PIXComponent.PSP.epCob.RevisarCobrancaImediata(GeneratedBilling.TxID)) then
-//    ShowMessage('Chave revisar: ' +PIXComponent.PSP.epCob.CobRevisada.chave)
-//  else
-//    ShowMessage('Erro revisar: ' +PIXComponent.PSP.epCob.Problema.detail);
+    TApiACBrRevisedBillingFunctions.UpdateStatus;
+
+  end else begin
+
+  end;
+
 end;
 
 
@@ -192,7 +196,7 @@ end;
 class procedure TQRCodeScreenFunctions.OpenReadQRCodeModal;
 begin
 
-  if (GeneratedBilling.Exists) then begin
+  if (CurrentBilling.Exists) then begin
 
     QRCodeScreen := TQRCodeScreen.Create(Application);
 

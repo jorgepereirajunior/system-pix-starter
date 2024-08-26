@@ -143,6 +143,8 @@
         <DCCReference Include="backend\src\external\acbrpix\SystemPixApi.ACBrInstantBilling.Functions.pas"/>
         <DCCReference Include="frontend\src\modules\billings\utils\SystemPixApp.CurrentBilling.Utils.pas"/>
         <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.CurrentBillingAsCompleted.Functions.pas"/>
+        <DCCReference Include="backend\src\external\acbrpix\SystemPixApi.ACBrRevisedBilling.Functions.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.CurrentBillingAsRevised.Functions.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

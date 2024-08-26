@@ -16,7 +16,7 @@ type
       class procedure UpdateCreationDate;
       class procedure UpdateExpiration;
 
-      class procedure UpdateAll;
+//      class procedure UpdateAll;
 
   end;
 
@@ -29,17 +29,17 @@ uses
   SystemPixApp.QRCode.Screen;
 
 
-class procedure TAppGeneratedBillingFunctions.UpdateAll;
-begin
-  UpdateExists;
-  UpdateTxID;
-  UpdateLocation;
-  UpdateStatus;
-  UpdateValue;
-  UpdateCopyAndPaste;
-  UpdateCreationDate;
-  UpdateExpiration;
-end;
+//class procedure TAppGeneratedBillingFunctions.UpdateAll;
+//begin
+//  UpdateExists;
+//  UpdateTxID;
+//  UpdateLocation;
+//  UpdateStatus;
+//  UpdateValue;
+//  UpdateCopyAndPaste;
+//  UpdateCreationDate;
+//  UpdateExpiration;
+//end;
 
 
 

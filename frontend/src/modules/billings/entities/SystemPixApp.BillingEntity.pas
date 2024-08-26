@@ -25,6 +25,7 @@ type
       FDebtorsName: string;
       FCreatedAt: TDateTime;
       FExpiration: integer;
+      FExists: boolean;
       FIsChecked: boolean;
       FPix: TPixArrayEntity;
 
@@ -39,6 +40,7 @@ type
       property DebtorsName: string read FDebtorsName write FDebtorsName;
       property CreatedAt: TDateTime read FCreatedAt write FCreatedAt;
       property Expiration: integer read FExpiration write FExpiration;
+      property Exists: boolean read FExists write FExists;
       property IsChecked: boolean read FIsChecked write FIsChecked;
       property Pix: TPixArrayEntity read FPix write FPix;
 
@@ -62,11 +64,12 @@ begin
   FCopyAndPaste   := EmptyStr;
   FLocation       := EmptyStr;
   FRevisionNumber := 0;
-  FValue          := 25.00;
+  FValue          := 29.90;
   FStatus         := NONE;
   FDebtorsName    := EmptyStr;
   FCreatedAt      := EncodeDateTime(1900, 1, 1, 12, 0, 0, 0);
   FExpiration     := TApiConfigFileFunctions.ReadIntegerValue(REQUESTED_BILLING_CONFIG_SECTION, REQUESTED_BILLING_CONFIG_KEY_NAME);
+  FExists         := false;
   FIsChecked      := false;
 
   FPix            := TPixArrayEntity.Create;

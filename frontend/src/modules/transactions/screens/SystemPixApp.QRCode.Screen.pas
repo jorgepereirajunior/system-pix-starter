@@ -216,7 +216,7 @@ begin
         end;
 
 
-        if (CompletedBilling.status = stcREMOVIDA_PELO_USUARIO_RECEBEDOR) then begin
+        if (CurrentBilling.status = REMOVED_BY_USER) then begin
 
           TThread.Synchronize(TThread.CurrentThread,
             procedure begin

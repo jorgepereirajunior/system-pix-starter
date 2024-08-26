@@ -33,7 +33,9 @@ uses
   SystemPixApi.ACBrRequestBilling.Functions in 'backend\src\external\acbrpix\SystemPixApi.ACBrRequestBilling.Functions.pas',
   SystemPixApi.ACBrInstantBilling.Functions in 'backend\src\external\acbrpix\SystemPixApi.ACBrInstantBilling.Functions.pas',
   SystemPixApp.CurrentBilling.Utils in 'frontend\src\modules\billings\utils\SystemPixApp.CurrentBilling.Utils.pas',
-  SystemPixApp.CurrentBillingAsCompleted.Functions in 'frontend\src\modules\billings\functions\SystemPixApp.CurrentBillingAsCompleted.Functions.pas';
+  SystemPixApp.CurrentBillingAsCompleted.Functions in 'frontend\src\modules\billings\functions\SystemPixApp.CurrentBillingAsCompleted.Functions.pas',
+  SystemPixApi.ACBrRevisedBilling.Functions in 'backend\src\external\acbrpix\SystemPixApi.ACBrRevisedBilling.Functions.pas',
+  SystemPixApp.CurrentBillingAsRevised.Functions in 'frontend\src\modules\billings\functions\SystemPixApp.CurrentBillingAsRevised.Functions.pas';
 
 {$R *.res}
 

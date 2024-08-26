@@ -342,11 +342,11 @@ begin
   LQRCodeScreen := TQRCodeScreen(aComponent);
 
   LQRCodeScreen.CopyNPasteMemo.Lines.Clear;
-  LQRCodeScreen.CopyNPasteMemo.Lines.Add(GeneratedBilling.CopyAndPaste);
+  LQRCodeScreen.CopyNPasteMemo.Lines.Add(CurrentBilling.CopyAndPaste);
 
-  TApiConfigFileFunctions.WriteStringValue('TERMINAL','ConsoleLog', GeneratedBilling.TxID);
+  TApiConfigFileFunctions.WriteStringValue('TERMINAL','ConsoleLog', CurrentBilling.TxID);
 
-  PintarQRCode(GeneratedBilling.Location, LQRCodeScreen.QRCodeImage.Picture.Bitmap, qrUTF8BOM);
+  PintarQRCode(CurrentBilling.Location, LQRCodeScreen.QRCodeImage.Picture.Bitmap, qrUTF8BOM);
 end;
 
 

@@ -25,6 +25,7 @@ type
       class procedure UpdateCopyAndPaste;
       class procedure UpdateCreationDate;
       class procedure UpdateExpiration;
+      class procedure UpdateExists;
       class procedure UpdateIsChecked(CheckValue: boolean);
 
       class procedure UpdateAll;
@@ -50,6 +51,7 @@ begin
   UpdateValue;
   UpdateCopyAndPaste;
   UpdateCreationDate;
+  UpdateExists;
   UpdateExpiration;
 end;
 
@@ -119,6 +121,13 @@ end;
 class procedure TAppCurrentBillingAsGeneratedFunctions.UpdateExpiration;
 begin
   CurrentBilling.Expiration := PIXComponent.PSP.epCob.CobGerada.calendario.expiracao;
+end;
+
+
+
+class procedure TAppCurrentBillingAsGeneratedFunctions.UpdateExists;
+begin
+  CurrentBilling.Exists := not PIXComponent.PSP.epCob.CobGerada.IsEmpty;
 end;
 
 
