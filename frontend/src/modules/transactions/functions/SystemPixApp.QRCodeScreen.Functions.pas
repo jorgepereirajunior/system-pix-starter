@@ -50,7 +50,7 @@ uses
 
   SystemPixApi.ACBrRequestBilling.Functions,
   SystemPixApi.ACBrInstantBilling.Functions,
-  SystemPixApi.ACBrRevisedBilling.Functions,
+  SystemPixApi.ACBrDevolution.Functions,
 
   SystemPixApp.InstantBillingEntities,
   SystemPixApp.BillingEntity,
@@ -108,14 +108,14 @@ end;
 
 class procedure TQRCodeScreenFunctions.CreateNewBillingDevolution;
 begin
-  TDevolutionFunctions.ClearDevolutions;
+  TApiACBrDevolutionFunctions.ConfigRequesteFields(
+    '',
+    ndORIGINAL,
+    CurrentBilling.Value
+  );
 
-  TDevolutionFunctions.SetDevolutionValue(CurrentBilling.Value);
 
-  TDevolutionFunctions.SetDevolutionNature(ndORIGINAL);
-
-
-  if (TDevolutionFunctions.RequestDevolutionWasSuccessful) then begin
+  if (TApiACBrDevolutionFunctions.RequestDevolutionWasSuccessful) then begin
 
 
   end else begin
@@ -130,10 +130,13 @@ end;
 
 class procedure TQRCodeScreenFunctions.CheckCurrentBillingDevolution;
 begin
-  if (PIXComponent.PSP.epPix.ConsultarPix(CompletedBilling.Pix.Items[0].EndToEndId)) then begin
+  if (TApiACBrDevolutionFunctions.ExistsWithE2E(CurrentBilling.Pix.Items[0].EndToEndId)) then begin
 
-    TAppCompleteBillingFunctions.UpdateAllDevolution;
+    TAppDevolutionFunctions.UpdateCurrentBillingDevolution;
 
+  end else begin
+
+    ShowMessage('Falha da API ao tentar consultar devolução');
   end;
 end;
 
@@ -157,9 +160,9 @@ end;
 
 class procedure TQRCodeScreenFunctions.ReviewInstantBilling;
 begin
-  TApiACBrRevisedBillingFunctions.UpdateStatus;
+  TApiACBrDevolutionFunctions.UpdateStatus;
 
-  if (not TApiACBrRevisedBillingFunctions.RevisionWasSuccessful) then
+  if (not TApiACBrDevolutionFunctions.RequestDevolutionWasSuccessful) then
     ShowMessage('Falha da API ao tentar cancelar Cobrança Imediata');
 
 end;

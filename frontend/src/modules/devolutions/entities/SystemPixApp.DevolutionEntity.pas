@@ -8,18 +8,18 @@ uses
   System.DateUtils;
 
 type
-  TDevolutionStatus = (
+  TAppDevolutionStatus = (
     NONE, IN_PROCESSING, RETURNED, UNREALIZED
   );
 
-  TDevolutionEntity = class
+  TAppDevolutionEntity = class
     private
       FID: string;
       FRtrID: string;
       FValue: real;
       FDescription: string;
       FRequestTime: TDateTime;
-      FStatus: TDevolutionStatus;
+      FStatus: TAppDevolutionStatus;
       FReason: string;
 
     public
@@ -28,7 +28,7 @@ type
       property Value: real read FValue write FValue;
       property Description: string read FDescription write FDescription;
       property RequestTime: TDateTime read FRequestTime write FRequestTime;
-      property Status: TDevolutionStatus read FStatus write FStatus;
+      property Status: TAppDevolutionStatus read FStatus write FStatus;
       property Reason: string read FReason write FReason;
 
       constructor Create;
@@ -36,10 +36,10 @@ type
 
   TDevolutionArrayEntity = class
     private
-      FItems: TObjectList<TDevolutionEntity>;
+      FItems: TObjectList<TAppDevolutionEntity>;
 
     public
-      property Items: TObjectList<TDevolutionEntity> read FItems write FItems;
+      property Items: TObjectList<TAppDevolutionEntity> read FItems write FItems;
 
       constructor Create;
       destructor Destroy; override;
@@ -49,7 +49,7 @@ implementation
 
 { TDevolutionEntity }
 
-constructor TDevolutionEntity.Create;
+constructor TAppDevolutionEntity.Create;
 begin
   FID          := EmptyStr;
   FRtrID       := EmptyStr;
@@ -66,7 +66,7 @@ end;
 
 constructor TDevolutionArrayEntity.Create;
 begin
-  FItems := TObjectList<TDevolutionEntity>.Create;
+  FItems := TObjectList<TAppDevolutionEntity>.Create;
 end;
 
 destructor TDevolutionArrayEntity.Destroy;

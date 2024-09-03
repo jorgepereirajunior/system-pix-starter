@@ -8,66 +8,39 @@ uses
   ACBrPIXBase;
 
 type
-  TDevolutionFunctions = class
+  TAppDevolutionFunctions = class
     private
 
     public
-      class procedure ClearDevolutions;
+      class procedure UpdateCurrentBillingDevolution;
 
-      class procedure SetDevolutionDescription(ADescription: string);
-      class procedure SetDevolutionValue(AValue: real);
-      class procedure SetDevolutionNature(ANature: TACBrPIXNaturezaDevolucao);
-
-      class function RequestDevolutionWasSuccessful: boolean;
   end;
 
 implementation
 
 uses
   SystemPixApp.Sales.Screen,
-  SystemPixApp.QRCode.Screen;
+  SystemPixApp.QRCode.Screen,
 
-{ TDevolutionFnctions }
+  SystemPixApp.DevolutionEntity,
 
-class procedure TDevolutionFunctions.ClearDevolutions;
+  SystemPixApp.Devolution.Utils;
+
+{ TAppDevolutionFunctions }
+
+class procedure TAppDevolutionFunctions.UpdateCurrentBillingDevolution;
 begin
-  PIXComponent.PSP.epPix.DevolucaoSolicitada.Clear;
-end;
+  CurrentBilling.Pix.Items[0].Devolutions.Items.Add(TAppDevolutionEntity.Create);
 
+  CurrentBilling.Pix.Items[0].Devolutions.Items.Last.ID := PIXComponent.PSP.epPix.Pix.devolucoes[0].id;
+  CurrentBilling.Pix.Items[0].Devolutions.Items.Last.RtrID := PIXComponent.PSP.epPix.Pix.devolucoes[0].rtrId;
+  CurrentBilling.Pix.Items[0].Devolutions.Items.Last.RequestTime := PIXComponent.PSP.epPix.Pix.devolucoes[0].horario.solicitacao;
 
+  CurrentBilling.Pix.Items[0].Devolutions.Items.Last.Status :=
+    TAppDevolutionUtils.PassToInvalidEnumBillingDevolutionStatus(PIXComponent.PSP.epPix.Pix.devolucoes[0].status);
 
-
-
-class procedure TDevolutionFunctions.SetDevolutionDescription(ADescription: string);
-begin
-  PIXComponent.PSP.epPix.DevolucaoSolicitada.descricao := ADescription;
-end;
-
-
-
-class procedure TDevolutionFunctions.SetDevolutionNature(ANature: TACBrPIXNaturezaDevolucao);
-begin
-  PIXComponent.PSP.epPix.DevolucaoSolicitada.natureza := ANature;
-end;
-
-
-
-class procedure TDevolutionFunctions.SetDevolutionValue(AValue: real);
-begin
-  PIXComponent.PSP.epPix.DevolucaoSolicitada.valor := AValue;
-end;
-
-
-
-
-
-
-class function TDevolutionFunctions.RequestDevolutionWasSuccessful: boolean;
-begin
-  result := PIXComponent.PSP.epPix.SolicitarDevolucaoPix(
-    CurrentBilling.Pix.Items[0].EndToEndId,
-    StringReplace(CurrentBilling.Pix.Items[0].endToEndId, 'E','D', [rfReplaceAll])
-  );
+  CurrentBilling.Pix.Items[0].Devolutions.Items.Last.Reason := PIXComponent.PSP.epPix.Pix.devolucoes[0].motivo;
+  CurrentBilling.Pix.Items[0].Devolutions.Items.Last.Value := PIXComponent.PSP.epPix.Pix.devolucoes[0].valor;
 end;
 
 end.

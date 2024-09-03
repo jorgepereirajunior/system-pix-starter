@@ -34,10 +34,11 @@ uses
   SystemPixApi.ACBrInstantBilling.Functions in 'backend\src\external\acbrpix\SystemPixApi.ACBrInstantBilling.Functions.pas',
   SystemPixApp.CurrentBilling.Utils in 'frontend\src\modules\billings\utils\SystemPixApp.CurrentBilling.Utils.pas',
   SystemPixApp.CurrentBillingAsCompleted.Functions in 'frontend\src\modules\billings\functions\SystemPixApp.CurrentBillingAsCompleted.Functions.pas',
-  SystemPixApi.ACBrRevisedBilling.Functions in 'backend\src\external\acbrpix\SystemPixApi.ACBrRevisedBilling.Functions.pas',
+  SystemPixApi.ACBrDevolution.Functions in 'backend\src\external\acbrpix\SystemPixApi.ACBrDevolution.Functions.pas',
   SystemPixApp.CurrentBillingAsRevised.Functions in 'frontend\src\modules\billings\functions\SystemPixApp.CurrentBillingAsRevised.Functions.pas',
   SystemPixApp.Pix.Functions in 'frontend\src\modules\pix\functions\SystemPixApp.Pix.Functions.pas',
-  SystemPixApp.Devolution.Functions in 'frontend\src\modules\devolutions\functions\SystemPixApp.Devolution.Functions.pas';
+  SystemPixApp.Devolution.Functions in 'frontend\src\modules\devolutions\functions\SystemPixApp.Devolution.Functions.pas',
+  SystemPixApp.Devolution.Utils in 'frontend\src\modules\devolutions\utils\SystemPixApp.Devolution.Utils.pas';
 
 {$R *.res}
 

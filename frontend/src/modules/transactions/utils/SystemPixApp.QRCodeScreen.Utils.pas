@@ -349,7 +349,7 @@ begin
   LQRCodeScreen.CopyNPasteMemo.Lines.Clear;
   LQRCodeScreen.CopyNPasteMemo.Lines.Add(CurrentBilling.CopyAndPaste);
 
-  TApiConfigFileFunctions.WriteStringValue('TERMINAL','ConsoleLog', CurrentBilling.TxID);
+  TApiConfigFileFunctions.WriteStringValue('TERMINAL','ConsoleLogBillingID', CurrentBilling.TxID);
 
   PintarQRCode(CurrentBilling.Location, LQRCodeScreen.QRCodeImage.Picture.Bitmap, qrUTF8BOM);
 end;

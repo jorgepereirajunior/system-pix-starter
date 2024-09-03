@@ -29,7 +29,9 @@ uses
   SystemPixApp.InstantBillingEntities,
   SystemPixApp.GeneratedBillingEntity,
   SystemPixApp.CompleteBillingEntity,
-  SystemPixApp.BillingEntity;
+  SystemPixApp.BillingEntity,
+
+  SystemPixApp.DevolutionEntity;
 
 type
   TStopwatchThread = class(TThread)
@@ -266,9 +268,10 @@ end;
 procedure TQRCodeScreen.ReversalButtonAction(Sender: TObject);
 
 begin
-//  ShowMessage('Pix E2E: ' +CurrentBilling.Pix.Items[0].EndToEndId);
   TQRCodeScreenFunctions.CreateNewBillingDevolution;
-//
+
+  TBillingToReverseThread.Create(false, Self);
+
 //  CompleteBillingTimer.Enabled := true;
 end;
 
@@ -375,7 +378,7 @@ end;
 
 
 
-{ TBillingThread }
+{ TBillingToCompletOrCancelThread }
 
 constructor TBillingToCompletOrCancelThread.Create(AIsTerminated: boolean; AScreen: TComponent);
 begin
@@ -492,15 +495,23 @@ begin
 
     TQRCodeScreenFunctions.CheckCurrentBillingDevolution;
 
-    if (CompletedBilling.Pix.HasDevolution) then begin
+    if (CurrentBilling.Pix.Items[0].Devolutions.Items.Count > 0) then begin
 
-      if (CompletedBilling.Pix.Items[0].Devolutions.Items.Last.Status = stdDEVOLVIDO) then begin
+      if (CurrentBilling.Pix.Items[0].Devolutions.Items[0].Status = RETURNED) then begin
 
-        TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_EXTORTED);
+        Synchronize(
+          procedure begin
+            TQRCodeScreenUtils.UpdateBoxPaymentStatus(TargetScreen, PAY_EXTORTED);
 
-        TQRCodeScreenUtils.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
-        TQRCodeScreenUtils.UpdateReversalPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
-        TQRCodeScreenUtils.UpdateCloseButton(Self, IS_VISIBLE, IS_PRIMARY, PDV_COLOR_PAYMENT_EXTORTED);
+            TQRCodeScreenUtils.UpdateCancelPaymentButton(TargetScreen, IS_HIDDEN, IS_PRIMARY);
+            TQRCodeScreenUtils.UpdateReversalPaymentButton(TargetScreen, IS_HIDDEN, IS_PRIMARY);
+            TQRCodeScreenUtils.UpdateCloseButton(TargetScreen, IS_VISIBLE, IS_PRIMARY, PDV_COLOR_PAYMENT_EXTORTED);
+          end
+        );
+
+        Sleep(60);
+
+        TerminateThread;
 
       end;
 

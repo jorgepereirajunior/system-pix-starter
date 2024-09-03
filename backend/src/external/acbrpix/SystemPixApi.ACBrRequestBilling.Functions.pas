@@ -7,10 +7,6 @@ type
     private
 
     public
-//      class procedure Clear;
-//      class procedure SetExpiration(AExpiration: integer);
-//      class procedure SetKeyPix(AKeyPix: string);
-//      class procedure SetValue(AValue: real);
 
       class procedure ConfigRequesteFields(expiration: integer; key: string; amount: real);
   end;
