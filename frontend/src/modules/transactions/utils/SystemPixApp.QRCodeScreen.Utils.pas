@@ -9,6 +9,7 @@ uses
   Vcl.Forms,
   Vcl.Graphics,
   Vcl.Clipbrd,
+  Vcl.ExtCtrls,
 
   ACBrImage,
   ACBrDelphiZXingQRCode,
@@ -28,7 +29,11 @@ type
     public
       class procedure BuildMainContent(aComponent: TComponent);
 
-      class procedure UpdateCancelPaymentButton(aComponent: TComponent; ButtonVisibility: TQRCodeScreenActionButtonsVisibility; ButtonStyle: TQRCodeScreenActionButtonsStyle);
+      class procedure UpdateCancelPaymentButton(
+  aComponent: TComponent;
+  ButtonVisibility: TQRCodeScreenActionButtonsVisibility;
+  ButtonStyle: TQRCodeScreenActionButtonsStyle
+);
       class procedure UpdateReversalPaymentButton(aComponent: TComponent; ButtonVisibility: TQRCodeScreenActionButtonsVisibility; ButtonStyle: TQRCodeScreenActionButtonsStyle);
       class procedure UpdateCloseButton(aComponent: TComponent;ButtonVisibility: TQRCodeScreenActionButtonsVisibility; ButtonStyle: TQRCodeScreenActionButtonsStyle; ButtonColor: integer);
 
@@ -38,8 +43,8 @@ type
       class procedure SetCopyPasteArea(aComponent: TComponent);
       class procedure SetBillingData(aComponent: TComponent);
 
+      class procedure UpdateBillingDataToPaymentDone(aComponent: TComponent; ButtonStatus: TQRCodeScreenCopyButtonStatus);
       class procedure UpdateBillingDataToCanceled(aComponent: TComponent; ButtonStatus: TQRCodeScreenCopyButtonStatus);
-
       class procedure CopyToClipBoard(const Text: string);
 
   end;
@@ -355,6 +360,28 @@ end;
 
 
 
+class procedure TQRCodeScreenUtils.UpdateBillingDataToPaymentDone(aComponent: TComponent; ButtonStatus: TQRCodeScreenCopyButtonStatus);
+var
+  LQRCodeScreen: TQRCodeScreen;
+
+begin
+  LQRCodeScreen := TQRCodeScreen(aComponent);
+
+  case (ButtonStatus) of
+    IS_ENABLED: LQRCodeScreen.BoxCopyNPasteButton.Visible := true;
+
+    IS_NOT_ENABLED: begin
+      LQRCodeScreen.QRCodeImage.Picture.Assign(nil);
+      LQRCodeScreen.CopyNPasteMemo.Lines.Clear;
+      LQRCodeScreen.CopyNPasteMemo.Lines.Add('Não é mais possível copiar o PIX');
+
+      LQRCodeScreen.BoxCopyNPasteButton.Visible := false;
+    end;
+  end;
+
+end;
+
+
 
 class procedure TQRCodeScreenUtils.UpdateBillingDataToCanceled(aComponent: TComponent; ButtonStatus: TQRCodeScreenCopyButtonStatus);
 
@@ -376,8 +403,9 @@ begin
     end;
   end;
 
-
 end;
+
+
 
 
 class procedure TQRCodeScreenUtils.CopyToClipBoard(const Text: string);

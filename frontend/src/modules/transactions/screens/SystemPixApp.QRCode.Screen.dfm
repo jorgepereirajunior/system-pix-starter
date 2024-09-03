@@ -133,10 +133,10 @@ object QRCodeScreen: TQRCodeScreen
     end
     object BoxCopyNPaste: TPanel
       Left = 0
-      Top = 432
+      Top = 403
       Width = 534
       Height = 200
-      Align = alBottom
+      Align = alTop
       BevelOuter = bvNone
       Padding.Top = 30
       TabOrder = 2
@@ -382,16 +382,16 @@ object QRCodeScreen: TQRCodeScreen
         Height = 40
         Align = alClient
         Alignment = taCenter
-        Caption = '02:00'
+        Caption = 'Tempo restante para pagar: 01:30'
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBackground
-        Font.Height = -20
+        Font.Color = clBtnShadow
+        Font.Height = -17
         Font.Name = 'Roboto'
         Font.Style = [fsBold]
         ParentFont = False
         Layout = tlCenter
-        ExplicitWidth = 50
-        ExplicitHeight = 24
+        ExplicitWidth = 262
+        ExplicitHeight = 20
       end
     end
   end

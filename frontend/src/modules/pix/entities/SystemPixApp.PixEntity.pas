@@ -32,7 +32,7 @@ type
       destructor Destroy; override;
   end;
 
-  TPixArrayEntity = class
+  TPixEntityArray = class
     private
       FItems: TObjectList<TPixEntity>;
 
@@ -68,14 +68,14 @@ end;
 
 
 
-{ TPixArrayEntity }
+{ TPixEntityArray }
 
-constructor TPixArrayEntity.Create;
+constructor TPixEntityArray.Create;
 begin
   FItems := TObjectList<TPixEntity>.Create;
 end;
 
-destructor TPixArrayEntity.Destroy;
+destructor TPixEntityArray.Destroy;
 begin
   FItems.Free;
 

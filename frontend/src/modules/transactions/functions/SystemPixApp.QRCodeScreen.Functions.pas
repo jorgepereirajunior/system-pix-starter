@@ -63,6 +63,8 @@ uses
   SystemPixApp.CurrentBillingAsCompleted.Functions,
   SystemPixApp.CurrentBillingAsRevised.Functions,
 
+  SystemPixApp.Devolution.Functions,
+
   SystemPixApi.ConfigFile.Functions,
   SystemPixApi.LogErrorFile.Functions,
 
@@ -91,7 +93,10 @@ begin
 
     TAppCurrentBillingAsGeneratedFunctions.UpdateAll;
 
+    TQRCodeScreenFunctions.OpenReadQRCodeModal;
+
   end else begin
+    ShowMessage('Falha da API ao tentar criar nova Cobrança Imediata');
 
     TApiLogErrorFileFunctions.RegisterLastErrorInstantBilling(PSPBancoBrasil.epCob.Problema.detail);
   end;
@@ -103,18 +108,19 @@ end;
 
 class procedure TQRCodeScreenFunctions.CreateNewBillingDevolution;
 begin
-  TAppCompleteBillingFunctions.ClearDevolution;
+  TDevolutionFunctions.ClearDevolutions;
 
-  TAppCompleteBillingFunctions.SetDevolutionValue(CompletedBilling.Value);
+  TDevolutionFunctions.SetDevolutionValue(CurrentBilling.Value);
 
-  TAppCompleteBillingFunctions.SetDevolutionNature(ndORIGINAL);
+  TDevolutionFunctions.SetDevolutionNature(ndORIGINAL);
 
-  if (TAppCompleteBillingFunctions.RequestDevolutionWasSuccessful) then begin
+
+  if (TDevolutionFunctions.RequestDevolutionWasSuccessful) then begin
 
 
   end else begin
 
-    ShowMessage('Não foi possível extornar o pagamento');
+    ShowMessage('Falha da API ao tentar extornar o pagamento');
   end;
 end;
 
@@ -140,9 +146,8 @@ begin
 
   end else begin
 
-    ShowMessage('Ainda não tem, atualize antes');
+    ShowMessage('Falha da API ao tentar consultar Cobrança Imediata');
   end;
-
 end;
 
 
@@ -154,13 +159,8 @@ class procedure TQRCodeScreenFunctions.ReviewInstantBilling;
 begin
   TApiACBrRevisedBillingFunctions.UpdateStatus;
 
-  if (TApiACBrRevisedBillingFunctions.RevisionWasSuccessful) then begin
-
-    TApiACBrRevisedBillingFunctions.UpdateStatus;
-
-  end else begin
-
-  end;
+  if (not TApiACBrRevisedBillingFunctions.RevisionWasSuccessful) then
+    ShowMessage('Falha da API ao tentar cancelar Cobrança Imediata');
 
 end;
 
@@ -196,20 +196,11 @@ end;
 class procedure TQRCodeScreenFunctions.OpenReadQRCodeModal;
 begin
 
-  if (CurrentBilling.Exists) then begin
+  QRCodeScreen := TQRCodeScreen.Create(Application);
 
-    QRCodeScreen := TQRCodeScreen.Create(Application);
-
-    QRCodeScreen.Position := poScreenCenter;
-    QRCodeScreen.ShowModal;
-
-  end else begin
-
-    ShowMessage('Erro ao criar! Não abrir tela de QRCode');
-    exit;
-  end;
+  QRCodeScreen.Position := poScreenCenter;
+  QRCodeScreen.ShowModal;
 
 end;
-
 
 end.

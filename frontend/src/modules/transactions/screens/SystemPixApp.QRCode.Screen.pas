@@ -26,13 +26,52 @@ uses
   ACBrImage,
   ACBrDelphiZXingQRCode,
 
-
   SystemPixApp.InstantBillingEntities,
   SystemPixApp.GeneratedBillingEntity,
   SystemPixApp.CompleteBillingEntity,
   SystemPixApp.BillingEntity;
 
 type
+  TStopwatchThread = class(TThread)
+    private
+      TimeLeft: Integer;
+      TargetForm: TComponent;
+      TerminatedRequested: boolean;
+
+    protected
+      procedure Execute; override;
+
+    public
+      constructor Create(ATimeLeft: Integer; AScreen: TComponent);
+      procedure TerminateThread;
+  end;
+
+  TBillingToCompletOrCancelThread = class(TThread)
+    private
+      TerminatedRequested: boolean;
+      TargetScreen: TComponent;
+
+    protected
+      procedure Execute; override;
+
+    public
+      constructor Create(AIsTerminated: boolean; AScreen: TComponent);
+      procedure TerminateThread;
+  end;
+
+  TBillingToReverseThread = class(TThread)
+    private
+      TerminatedRequested: boolean;
+      TargetScreen: TComponent;
+
+    protected
+      procedure Execute; override;
+
+    public
+      constructor Create(AIsTerminated: boolean; AScreen: TComponent);
+      procedure TerminateThread;
+  end;
+
   TQRCodeScreen = class(TForm)
     Container: TPanel;
     BoxPaymentStatus: TPanel;
@@ -67,10 +106,10 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
 
   private
+    StopwatchThread     : TStopwatchThread;
     InstantBillingTimer : TTimer;
     CompleteBillingTimer: TTimer;
 
-    procedure InstantBillingTimerAction(Sender: TObject);
     procedure CompleteBillingTimerAction(Sender: TObject);
 
     procedure InstantBillingTimerThreadEnds(Sender: TObject);
@@ -85,23 +124,11 @@ type
     procedure MoveByScreen(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 
     procedure UpdateStopWatchLabel(TimeLeft: integer);
-    procedure StopwatchEnds;
+    procedure OnResettingStopwatch;
 
   public
     constructor Create(AOwner: TComponent);
 
-  end;
-
-  TStopwatchThread = class(TThread)
-    private
-      TimeLeft: Integer;
-      TargetForm: TQRCodeScreen;
-
-    protected
-      procedure Execute; override;
-
-    public
-      constructor Create(ATimeLeft: Integer; AForm: TQRCodeScreen);
   end;
 
 var
@@ -125,6 +152,7 @@ uses
   SystemPixApp.QRCodeScreen.Functions,
   SystemPixApp.QRCodeScreen.Utils,
 
+  SystemPixApp.Pix.Functions,
   SystemPixApp.CompleteBilling.Functions,
 
   SystemPixApi.ConfigFile.Functions,
@@ -138,14 +166,6 @@ begin
   inherited Create(AOwner);
 
   TQRCodeScreenUtils.BuildMainContent(Self);
-
-  InstantBillingTimer  := TTimer.Create(Self);
-
-  InstantBillingTimer.Enabled  := false;
-  InstantBillingTimer.Interval := 5000;
-  InstantBillingTimer.Enabled  := true;
-
-  InstantBillingTimer.OnTimer := InstantBillingTimerAction;
 
 
   CompleteBillingTimer := TTimer.Create(Self);
@@ -163,88 +183,21 @@ begin
   CloseButton.OnClick         := CloseButtonAction;
   ReversalButton.OnClick      := ReversalButtonAction;
 
-//  TStopwatchThread.Create(30, Self);
-end;
 
+  StopwatchThread := TStopwatchThread.Create(90, Self);
+  StopwatchThread.Start;
+
+  TBillingToCompletOrCancelThread.Create(false, Self);
+end;
 
 
 procedure TQRCodeScreen.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  InstantBillingTimer.Enabled := false;
-  InstantBillingTimer.Free;
-
   CompleteBillingTimer.Enabled := false;
   CompleteBillingTimer.Free;
+
+  StopwatchThread.TerminateThread;
 end;
-
-
-
-
-
-procedure TQRCodeScreen.InstantBillingTimerAction(Sender: TObject);
-
-var
-  InstantBillingThread: TThread;
-
-begin
-  InstantBillingThread := TThread.CreateAnonymousThread(
-    procedure begin
-
-      TQRCodeScreenFunctions.CheckCurrentBilling;
-
-      if (CurrentBilling.IsChecked) then begin
-
-        if (CurrentBilling.status = COMPLETED) then begin
-
-          TThread.Synchronize(TThread.CurrentThread,
-            procedure begin
-
-              TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_MADE_EFFECTIVE);
-
-              TQRCodeScreenUtils.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
-              TQRCodeScreenUtils.UpdateReversalPaymentButton(Self, IS_VISIBLE, IS_PRIMARY);
-              TQRCodeScreenUtils.UpdateCloseButton(Self, IS_VISIBLE, IS_SECONDARY, PDV_COLOR_PAYMENT_EFFECTIVE);
-
-              InstantBillingTimer.Enabled := false;
-
-              TAppCompleteBillingFunctions.UpdateAllPix;
-
-              exit;
-            end
-          );
-
-        end;
-
-
-        if (CurrentBilling.status = REMOVED_BY_USER) then begin
-
-          TThread.Synchronize(TThread.CurrentThread,
-            procedure begin
-              TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_CANCELED);
-
-              TQRCodeScreenUtils.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
-              TQRCodeScreenUtils.UpdateCloseButton(Self, IS_VISIBLE, IS_PRIMARY, PDV_COLOR_PAYMENT_CANCELED);
-              TQRCodeScreenUtils.UpdateBillingDataToCanceled(Self, IS_NOT_ENABLED);
-
-              InstantBillingTimer.Enabled := false;
-
-              exit;
-            end
-          );
-
-        end;
-
-      end;
-
-    end
-  );
-
-  InstantBillingThread.Start;
-  InstantBillingThread.OnTerminate := InstantBillingTimerThreadEnds;
-end;
-
-
-
 
 
 
@@ -313,10 +266,13 @@ end;
 procedure TQRCodeScreen.ReversalButtonAction(Sender: TObject);
 
 begin
+//  ShowMessage('Pix E2E: ' +CurrentBilling.Pix.Items[0].EndToEndId);
   TQRCodeScreenFunctions.CreateNewBillingDevolution;
-
-  CompleteBillingTimer.Enabled := true;
+//
+//  CompleteBillingTimer.Enabled := true;
 end;
+
+
 
 
 procedure TQRCodeScreen.CancelPaymentButtonAction(Sender: TObject);
@@ -359,48 +315,204 @@ var
 begin
   Min := TimeLeft div 60;
   Sec := TimeLeft mod 60;
-  StopwatchLabel .Caption := Format('%.2d:%.2d', [Min, Sec]);
+  StopwatchLabel .Caption := 'Tempo restante para pagar: ' +Format('%.2d:%.2d', [Min, Sec]);
 end;
 
-procedure TQRCodeScreen.StopwatchEnds;
+
+procedure TQRCodeScreen.OnResettingStopwatch;
 begin
-//  ShowMessage('Tempo esgotado!');
   TQRCodeScreenFunctions.ReviewInstantBilling;
 end;
 
+
 { TStopwatchThread }
 
-constructor TStopwatchThread.Create(ATimeLeft: Integer; AForm: TQRCodeScreen);
+constructor TStopwatchThread.Create(ATimeLeft: Integer; AScreen: TComponent);
 begin
-  inherited Create(False);
+  inherited Create(true);
+
   FreeOnTerminate := True;
   TimeLeft := ATimeLeft;
-  TargetForm := AForm;
+  TargetForm := AScreen;
 end;
-
-
 
 
 procedure TStopwatchThread.Execute;
+
+var
+  LTargetScreen: TQRCodeScreen;
+
 begin
   inherited;
 
-  while TimeLeft > 0 do begin
+  if (TerminatedRequested) then
+    exit;
+
+  LTargetScreen := TQRCodeScreen(TargetForm);
+
+  while (TimeLeft > 0) and (not TerminatedRequested) do begin
     Sleep(1000);
     Dec(TimeLeft);
 
-
     Synchronize(procedure begin
-      TargetForm.UpdateStopWatchLabel(TimeLeft);
+      if ( not TerminatedRequested) then
+        LTargetScreen.UpdateStopWatchLabel(TimeLeft);
     end);
   end;
 
-  TargetForm.StopwatchEnds;
-//  Synchronize(procedure begin
-//    TargetForm.StopwatchEnds;
-//  end);
+  if (TimeLeft = 0) and (not TerminatedRequested) then begin
+    TerminatedRequested := true;
+    LTargetScreen.OnResettingStopwatch;
+  end;
+
 end;
 
+
+procedure TStopwatchThread.TerminateThread;
+begin
+  TerminatedRequested := true;
+end;
+
+
+
+{ TBillingThread }
+
+constructor TBillingToCompletOrCancelThread.Create(AIsTerminated: boolean; AScreen: TComponent);
+begin
+  inherited Create(False);
+
+  FreeOnTerminate := True;
+  TerminatedRequested := AIsTerminated;
+  TargetScreen := AScreen;
+end;
+
+
+procedure TBillingToCompletOrCancelThread.Execute;
+
+var
+  LTargetScreen: TQRCodeScreen;
+
+begin
+  inherited;
+
+  LTargetScreen := TQRCodeScreen(TargetScreen);
+
+  while (not TerminatedRequested) do begin
+    sleep(5000);
+
+    TQRCodeScreenFunctions.CheckCurrentBilling;
+
+    if (CurrentBilling.IsChecked) then begin
+
+      if (CurrentBilling.status = COMPLETED) then begin
+
+        TThread.Synchronize(TThread.CurrentThread,
+          procedure begin
+
+            TQRCodeScreenUtils.UpdateBoxPaymentStatus(TargetScreen, PAY_MADE_EFFECTIVE);
+
+            TQRCodeScreenUtils.UpdateCancelPaymentButton(TargetScreen, IS_HIDDEN, IS_PRIMARY);
+            TQRCodeScreenUtils.UpdateReversalPaymentButton(TargetScreen, IS_VISIBLE, IS_PRIMARY);
+            TQRCodeScreenUtils.UpdateCloseButton(TargetScreen, IS_VISIBLE, IS_SECONDARY, PDV_COLOR_PAYMENT_EFFECTIVE);
+            TQRCodeScreenUtils.UpdateBillingDataToPaymentDone(TargetScreen, IS_NOT_ENABLED);
+
+            TerminateThread;
+
+            LTargetScreen.StopwatchThread.TerminateThread;
+            LTargetScreen.UpdateStopWatchLabel(0);
+
+            TPixFunctions.UpdateCurrentBillingPix;
+
+            exit;
+          end
+        );
+
+      end;
+
+
+      if (CurrentBilling.status = REMOVED_BY_USER) then begin
+
+        TThread.Synchronize(TThread.CurrentThread,
+          procedure begin
+            TQRCodeScreenUtils.UpdateBoxPaymentStatus(TargetScreen, PAY_CANCELED);
+
+            TQRCodeScreenUtils.UpdateCancelPaymentButton(TargetScreen, IS_HIDDEN, IS_PRIMARY);
+            TQRCodeScreenUtils.UpdateCloseButton(TargetScreen, IS_VISIBLE, IS_PRIMARY, PDV_COLOR_PAYMENT_CANCELED);
+            TQRCodeScreenUtils.UpdateBillingDataToCanceled(TargetScreen, IS_NOT_ENABLED);
+
+            TerminateThread;
+
+            LTargetScreen.StopwatchThread.TerminateThread;
+            LTargetScreen.UpdateStopWatchLabel(0);
+
+            exit;
+          end
+        );
+
+      end;
+
+    end;
+
+  end;
+
+end;
+
+
+procedure TBillingToCompletOrCancelThread.TerminateThread;
+begin
+  TerminatedRequested := true;
+end;
+
+
+
+{ TBillingToReverseThread }
+
+constructor TBillingToReverseThread.Create(AIsTerminated: boolean; AScreen: TComponent);
+begin
+  inherited Create(False);
+
+  FreeOnTerminate := True;
+  TerminatedRequested := AIsTerminated;
+  TargetScreen := AScreen;
+end;
+
+
+procedure TBillingToReverseThread.Execute;
+
+var
+  LTargetScreen: TQRCodeScreen;
+
+begin
+  inherited;
+
+  LTargetScreen := TQRCodeScreen(TargetScreen);
+
+  while (not TerminatedRequested) do begin
+    sleep(5000);
+
+    TQRCodeScreenFunctions.CheckCurrentBillingDevolution;
+
+    if (CompletedBilling.Pix.HasDevolution) then begin
+
+      if (CompletedBilling.Pix.Items[0].Devolutions.Items.Last.Status = stdDEVOLVIDO) then begin
+
+        TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_EXTORTED);
+
+        TQRCodeScreenUtils.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
+        TQRCodeScreenUtils.UpdateReversalPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
+        TQRCodeScreenUtils.UpdateCloseButton(Self, IS_VISIBLE, IS_PRIMARY, PDV_COLOR_PAYMENT_EXTORTED);
+
+      end;
+
+    end;
+  end;
+end;
+
+
+procedure TBillingToReverseThread.TerminateThread;
+begin
+  TerminatedRequested := true;
+end;
 
 
 

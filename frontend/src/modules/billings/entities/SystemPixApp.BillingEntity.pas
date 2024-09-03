@@ -27,7 +27,7 @@ type
       FExpiration: integer;
       FExists: boolean;
       FIsChecked: boolean;
-      FPix: TPixArrayEntity;
+      FPix: TPixEntityArray;
 
     public
       property Key: string read FKey write FKey;
@@ -42,7 +42,7 @@ type
       property Expiration: integer read FExpiration write FExpiration;
       property Exists: boolean read FExists write FExists;
       property IsChecked: boolean read FIsChecked write FIsChecked;
-      property Pix: TPixArrayEntity read FPix write FPix;
+      property Pix: TPixEntityArray read FPix write FPix;
 
       constructor Create;
       destructor Destroy; override;
@@ -72,7 +72,7 @@ begin
   FExists         := false;
   FIsChecked      := false;
 
-  FPix            := TPixArrayEntity.Create;
+  FPix            := TPixEntityArray.Create;
 end;
 
 destructor TAppMainBillingEntity.Destroy;

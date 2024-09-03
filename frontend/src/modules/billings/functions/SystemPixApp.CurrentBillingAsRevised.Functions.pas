@@ -16,7 +16,7 @@ type
 //      class procedure UpdateKey;
 //      class procedure UpdateTxID;
 //      class procedure UpdateLocation;
-      class procedure UpdateStatus;
+//      class procedure UpdateStatus;
 //      class procedure UpdateValue;
 //      class procedure UpdateCopyAndPaste;
 //      class procedure UpdateCreationDate;
@@ -37,15 +37,15 @@ uses
 { TAppCurrentBillingAsRevisedFunctions }
 
 
-class procedure TAppCurrentBillingAsRevisedFunctions.UpdateStatus;
-
-var
-  LocalStatus: TMainBillingStatus;
-
-begin
-  CurrentBilling.Status :=
-    TAppCurrentBillingUtils.PassToInvalidEnumBillingStatus(PIXComponent.PSP.epCob.CobRevisada.status);
-
-end;
+//class procedure TAppCurrentBillingAsRevisedFunctions.UpdateStatus;
+//
+//var
+//  LocalStatus: TMainBillingStatus;
+//
+//begin
+//  CurrentBilling.Status :=
+//    TAppCurrentBillingUtils.PassToInvalidEnumBillingStatus(PIXComponent.PSP.epCob.CobRevisada.status);
+//
+//end;
 
 end.
