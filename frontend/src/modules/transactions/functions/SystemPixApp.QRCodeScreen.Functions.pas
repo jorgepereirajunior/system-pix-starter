@@ -20,8 +20,8 @@ uses
   SystemPixApp.PaymentStatusEntity;
 
 type
-  TButtonVisibility = (IS_VISIBLE, IS_HIDDEN);
-  TButtonStyle      = (IS_PRIMARY, IS_SECONDARY);
+//  TButtonVisibility = (IS_VISIBLE, IS_HIDDEN);
+//  TButtonStyle      = (IS_PRIMARY, IS_SECONDARY);
 
   TQRCodeScreenFunctions = class
     private
