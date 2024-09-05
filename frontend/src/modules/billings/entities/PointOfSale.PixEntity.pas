@@ -74,6 +74,7 @@ end;
 constructor TCompletedBillingPixArray.Create;
 begin
   HasDevolution := false;
+
   FItems := TObjectList<TCompletedBillingPixEntity>.Create;
 end;
 

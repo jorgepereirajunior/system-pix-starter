@@ -267,9 +267,9 @@ end;
 
 procedure TSalesScreen.ConfirmButtonAction(Sender: TObject);
 begin
-  TQRCodeScreenFunctions.CreateNewInstantBilling;
+  TQRCodeScreenFunctions.CreateNewBilling;
 
-  TQRCodeScreenFunctions.OpenReadQRCodeModal;
+//  TQRCodeScreenFunctions.OpenReadQRCodeModal;
 end;
 
 

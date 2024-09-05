@@ -29,7 +29,7 @@ uses
 
 class procedure TAppRevisedBillingFunctions.UpdateStatus;
 begin
-  PIXComponent.PSP.epCob.CobRevisada.status := stcREMOVIDA_PELO_USUARIO_RECEBEDOR;
+//  PIXComponent.PSP.epCob.CobRevisada.status := stcREMOVIDA_PELO_USUARIO_RECEBEDOR;
 end;
 
 end.

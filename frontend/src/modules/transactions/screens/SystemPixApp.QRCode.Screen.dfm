@@ -2,9 +2,10 @@ object QRCodeScreen: TQRCodeScreen
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
-  BorderStyle = bsSingle
+  BorderStyle = bsNone
+  BorderWidth = 3
   Caption = 'QRCodeScreen'
-  ClientHeight = 709
+  ClientHeight = 732
   ClientWidth = 534
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,7 +22,7 @@ object QRCodeScreen: TQRCodeScreen
     Left = 0
     Top = 0
     Width = 534
-    Height = 709
+    Height = 732
     Align = alClient
     BevelOuter = bvNone
     Color = clWindow
@@ -31,7 +32,7 @@ object QRCodeScreen: TQRCodeScreen
     object BoxPaymentStatus: TPanel
       AlignWithMargins = True
       Left = 10
-      Top = 10
+      Top = 50
       Width = 514
       Height = 80
       Margins.Left = 10
@@ -64,7 +65,7 @@ object QRCodeScreen: TQRCodeScreen
     end
     object BoxQRCode: TPanel
       Left = 0
-      Top = 90
+      Top = 130
       Width = 534
       Height = 273
       Align = alTop
@@ -132,7 +133,7 @@ object QRCodeScreen: TQRCodeScreen
     end
     object BoxCopyNPaste: TPanel
       Left = 0
-      Top = 363
+      Top = 403
       Width = 534
       Height = 200
       Align = alTop
@@ -230,7 +231,7 @@ object QRCodeScreen: TQRCodeScreen
     end
     object BoxActionButtons: TPanel
       Left = 0
-      Top = 609
+      Top = 632
       Width = 534
       Height = 90
       Align = alBottom
@@ -321,7 +322,7 @@ object QRCodeScreen: TQRCodeScreen
           ExplicitHeight = 22
         end
       end
-      object BoxReversalPaymentButton: TPanel
+      object BoxExtornPaymentButton: TPanel
         Left = 10
         Top = 0
         Width = 514
@@ -330,7 +331,7 @@ object QRCodeScreen: TQRCodeScreen
         BevelOuter = bvNone
         TabOrder = 2
         Visible = False
-        object BGReversalButton: TShape
+        object BGExtornButton: TShape
           Left = 0
           Top = 0
           Width = 514
@@ -342,7 +343,7 @@ object QRCodeScreen: TQRCodeScreen
           ExplicitWidth = 65
           ExplicitHeight = 65
         end
-        object ReversalButton: TSpeedButton
+        object ExtornButton: TSpeedButton
           Left = 0
           Top = 0
           Width = 514
@@ -362,6 +363,35 @@ object QRCodeScreen: TQRCodeScreen
           ExplicitWidth = 23
           ExplicitHeight = 22
         end
+      end
+    end
+    object BoxTitle: TPanel
+      Left = 0
+      Top = 0
+      Width = 534
+      Height = 40
+      Align = alTop
+      BevelOuter = bvNone
+      Color = clWhite
+      ParentBackground = False
+      TabOrder = 4
+      object StopwatchLabel: TLabel
+        Left = 0
+        Top = 0
+        Width = 534
+        Height = 40
+        Align = alClient
+        Alignment = taCenter
+        Caption = 'Tempo restante para pagar: 01:30'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBtnShadow
+        Font.Height = -17
+        Font.Name = 'Roboto'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Layout = tlCenter
+        ExplicitWidth = 262
+        ExplicitHeight = 20
       end
     end
   end

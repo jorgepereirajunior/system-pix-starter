@@ -9,6 +9,7 @@ uses
   Vcl.Forms,
   Vcl.Graphics,
   Vcl.Clipbrd,
+  Vcl.ExtCtrls,
 
   ACBrImage,
   ACBrDelphiZXingQRCode,
@@ -19,6 +20,8 @@ type
   TQRCodeScreenActionButtonsVisibility = (IS_VISIBLE, IS_HIDDEN);
   TQRCodeScreenActionButtonsStyle      = (IS_PRIMARY, IS_SECONDARY);
 
+  TQRCodeScreenCopyButtonStatus        = (IS_ENABLED, IS_NOT_ENABLED);
+
   TQRCodeScreenUtils = class
     private
       class procedure ReviewInstantBilling;
@@ -26,7 +29,11 @@ type
     public
       class procedure BuildMainContent(aComponent: TComponent);
 
-      class procedure UpdateCancelPaymentButton(aComponent: TComponent; ButtonVisibility: TQRCodeScreenActionButtonsVisibility; ButtonStyle: TQRCodeScreenActionButtonsStyle);
+      class procedure UpdateCancelPaymentButton(
+  aComponent: TComponent;
+  ButtonVisibility: TQRCodeScreenActionButtonsVisibility;
+  ButtonStyle: TQRCodeScreenActionButtonsStyle
+);
       class procedure UpdateReversalPaymentButton(aComponent: TComponent; ButtonVisibility: TQRCodeScreenActionButtonsVisibility; ButtonStyle: TQRCodeScreenActionButtonsStyle);
       class procedure UpdateCloseButton(aComponent: TComponent;ButtonVisibility: TQRCodeScreenActionButtonsVisibility; ButtonStyle: TQRCodeScreenActionButtonsStyle; ButtonColor: integer);
 
@@ -36,6 +43,8 @@ type
       class procedure SetCopyPasteArea(aComponent: TComponent);
       class procedure SetBillingData(aComponent: TComponent);
 
+      class procedure UpdateBillingDataToPaymentDone(aComponent: TComponent; ButtonStatus: TQRCodeScreenCopyButtonStatus);
+      class procedure UpdateBillingDataToCanceled(aComponent: TComponent; ButtonStatus: TQRCodeScreenCopyButtonStatus);
       class procedure CopyToClipBoard(const Text: string);
 
   end;
@@ -145,34 +154,34 @@ begin
 
   case (ButtonVisibility) of
     IS_VISIBLE: begin
-      LQRCodeScreen.BoxReversalPaymentButton.Visible := true;
+      LQRCodeScreen.BoxExtornPaymentButton.Visible := true;
 
-      LQRCodeScreen.BoxReversalPaymentButton.Align   := alTop;
-      LQRCodeScreen.BoxReversalPaymentButton.Height  := 40;
+      LQRCodeScreen.BoxExtornPaymentButton.Align   := alTop;
+      LQRCodeScreen.BoxExtornPaymentButton.Height  := 40;
 
       case (ButtonStyle) of
         IS_PRIMARY: begin
-          LQRCodeScreen.BGReversalButton.Brush.Color := PDV_COLOR_PAYMENT_EFFECTIVE;
-          LQRCodeScreen.ReversalButton.Font.Color    := clWhite;
-          LQRCodeScreen.ReversalButton.Font.Style    := [fsBold];
+          LQRCodeScreen.BGExtornButton.Brush.Color := PDV_COLOR_PAYMENT_EFFECTIVE;
+          LQRCodeScreen.ExtornButton.Font.Color    := clWhite;
+          LQRCodeScreen.ExtornButton.Font.Style    := [fsBold];
         end;
 
 
         IS_SECONDARY: begin
-          LQRCodeScreen.BGReversalButton.Brush.Color := clWhite;
-          LQRCodeScreen.BGReversalButton.Pen.Style   := psSolid;
-          LQRCodeScreen.BGReversalButton.Pen.Width   := 1;
-          LQRCodeScreen.BGReversalButton.Pen.Color   := PDV_COLOR_PAYMENT_EFFECTIVE;
+          LQRCodeScreen.BGExtornButton.Brush.Color := clWhite;
+          LQRCodeScreen.BGExtornButton.Pen.Style   := psSolid;
+          LQRCodeScreen.BGExtornButton.Pen.Width   := 1;
+          LQRCodeScreen.BGExtornButton.Pen.Color   := PDV_COLOR_PAYMENT_EFFECTIVE;
 
-          LQRCodeScreen.ReversalButton.Font.Color    := PDV_COLOR_PAYMENT_EFFECTIVE;
-          LQRCodeScreen.ReversalButton.Font.Style    := [fsBold];
+          LQRCodeScreen.ExtornButton.Font.Color    := PDV_COLOR_PAYMENT_EFFECTIVE;
+          LQRCodeScreen.ExtornButton.Font.Style    := [fsBold];
         end;
       end;
 
     end;
 
     IS_HIDDEN: begin
-      LQRCodeScreen.BoxReversalPaymentButton.Visible := false;
+      LQRCodeScreen.BoxExtornPaymentButton.Visible := false;
     end;
 
   end;
@@ -338,15 +347,63 @@ begin
   LQRCodeScreen := TQRCodeScreen(aComponent);
 
   LQRCodeScreen.CopyNPasteMemo.Lines.Clear;
-  LQRCodeScreen.CopyNPasteMemo.Lines.Add(GeneratedBilling.CopyAndPaste);
+  LQRCodeScreen.CopyNPasteMemo.Lines.Add(CurrentBilling.CopyAndPaste);
 
-  TApiConfigFileFunctions.WriteStringValue('TERMINAL','ConsoleLog', GeneratedBilling.TxID);
+  TApiConfigFileFunctions.WriteStringValue('TERMINAL','ConsoleLogBillingID', CurrentBilling.TxID);
 
-  PintarQRCode(GeneratedBilling.Location, LQRCodeScreen.QRCodeImage.Picture.Bitmap, qrUTF8BOM);
+  PintarQRCode(CurrentBilling.Location, LQRCodeScreen.QRCodeImage.Picture.Bitmap, qrUTF8BOM);
 end;
 
 
 
+
+
+
+
+class procedure TQRCodeScreenUtils.UpdateBillingDataToPaymentDone(aComponent: TComponent; ButtonStatus: TQRCodeScreenCopyButtonStatus);
+var
+  LQRCodeScreen: TQRCodeScreen;
+
+begin
+  LQRCodeScreen := TQRCodeScreen(aComponent);
+
+  case (ButtonStatus) of
+    IS_ENABLED: LQRCodeScreen.BoxCopyNPasteButton.Visible := true;
+
+    IS_NOT_ENABLED: begin
+      LQRCodeScreen.QRCodeImage.Picture.Assign(nil);
+      LQRCodeScreen.CopyNPasteMemo.Lines.Clear;
+      LQRCodeScreen.CopyNPasteMemo.Lines.Add('Não é mais possível copiar o PIX');
+
+      LQRCodeScreen.BoxCopyNPasteButton.Visible := false;
+    end;
+  end;
+
+end;
+
+
+
+class procedure TQRCodeScreenUtils.UpdateBillingDataToCanceled(aComponent: TComponent; ButtonStatus: TQRCodeScreenCopyButtonStatus);
+
+var
+  LQRCodeScreen: TQRCodeScreen;
+
+begin
+  LQRCodeScreen := TQRCodeScreen(aComponent);
+
+  case (ButtonStatus) of
+    IS_ENABLED: LQRCodeScreen.BoxCopyNPasteButton.Visible := true;
+
+    IS_NOT_ENABLED: begin
+      LQRCodeScreen.QRCodeImage.Picture.Assign(nil);
+      LQRCodeScreen.CopyNPasteMemo.Lines.Clear;
+      LQRCodeScreen.CopyNPasteMemo.Lines.Add('Não é mais possível copiar o PIX');
+
+      LQRCodeScreen.BoxCopyNPasteButton.Visible := false;
+    end;
+  end;
+
+end;
 
 
 

@@ -26,11 +26,16 @@ uses
   ACBrImage,
   ACBrDelphiZXingQRCode,
 
-
   SystemPixApp.InstantBillingEntities,
-  SystemPixApp.RequestedBillingEntity,
   SystemPixApp.GeneratedBillingEntity,
-  SystemPixApp.CompleteBillingEntity;
+  SystemPixApp.CompleteBillingEntity,
+  SystemPixApp.BillingEntity,
+
+  SystemPixApp.DevolutionEntity,
+
+  SystemPixApp.QRCodeScreen.StopWatchThreads,
+  SystemPixApp.QRCodeScreen.BillingToCompleteOrCancelThreads,
+  SystemPixApp.QRCodeScreen.BillingToExtornThreads;
 
 type
   TQRCodeScreen = class(TForm)
@@ -58,29 +63,27 @@ type
     BoxCloseButton: TPanel;
     BGCloseButton: TShape;
     CloseButton: TSpeedButton;
-    BoxReversalPaymentButton: TPanel;
-    BGReversalButton: TShape;
-    ReversalButton: TSpeedButton;
+    BoxExtornPaymentButton: TPanel;
+    BGExtornButton: TShape;
+    ExtornButton: TSpeedButton;
+    BoxTitle: TPanel;
+    StopwatchLabel: TLabel;
 
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
 
   private
-    InstantBillingTimer : TTimer;
-    CompleteBillingTimer: TTimer;
-
-    procedure InstantBillingTimerAction(Sender: TObject);
-    procedure CompleteBillingTimerAction(Sender: TObject);
-
-    procedure InstantBillingTimerThreadEnds(Sender: TObject);
-    procedure CompleteBillingTimerThreadEnds(Sender: TObject);
-
     procedure CancelPaymentButtonAction(Sender: TObject);
     procedure CloseButtonAction(Sender: TObject);
-    procedure ReversalButtonAction(Sender: TObject);
+    procedure ExtornButtonAction(Sender: TObject);
 
     procedure HandleCopyToClipBoard(Sender: TObject);
 
+    procedure MoveByScreen(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+
   public
+    procedure UpdateStopWatchLabel(TimeLeft: integer);
+    procedure OnResettingStopwatch;
+
     constructor Create(AOwner: TComponent);
 
   end;
@@ -89,9 +92,9 @@ var
   QRCodeScreen: TQRCodeScreen;
 
   InstantBilling  : TAppInstantBillingEntity;
-  RequestedBilling: TAppRequestedBillingEntity;
   GeneratedBilling: TAppGeneratedBillingEntity;
   CompletedBilling: TAppCompletedBillingEntity;
+  CurrentBilling  : TAppMainBillingEntity;
 
 implementation
 
@@ -106,7 +109,7 @@ uses
   SystemPixApp.QRCodeScreen.Functions,
   SystemPixApp.QRCodeScreen.Utils,
 
-  SystemPixApp.RequestedBilling.Functions,
+  SystemPixApp.Pix.Functions,
   SystemPixApp.CompleteBilling.Functions,
 
   SystemPixApi.ConfigFile.Functions,
@@ -120,182 +123,40 @@ begin
   inherited Create(AOwner);
 
   TQRCodeScreenUtils.BuildMainContent(Self);
-  TAppRequestedBillingFunctions.SetExpiration(RequestedBilling.Expiration);
 
 
-  InstantBillingTimer  := TTimer.Create(Self);
-
-  InstantBillingTimer.Enabled  := false;
-  InstantBillingTimer.Interval := 5100;
-  InstantBillingTimer.Enabled  := true;
-
-  InstantBillingTimer.OnTimer := InstantBillingTimerAction;
-
-
-  CompleteBillingTimer := TTimer.Create(Self);
-
-  CompleteBillingTimer.Enabled := false;
-  CompleteBillingTimer.Interval := 5000;
-
-  CompleteBillingTimer.OnTimer := CompleteBillingTimerAction;
-
+  StopwatchLabel.OnMouseDown := MoveByScreen;
+  BoxTitle.OnMouseDown   := MoveByScreen;
 
   CopyNPasteButton.OnClick    := HandleCopyToClipBoard;
   CancelPaymentButton.OnClick := CancelPaymentButtonAction;
   CloseButton.OnClick         := CloseButtonAction;
-  ReversalButton.OnClick      := ReversalButtonAction;
-end;
+  ExtornButton.OnClick        := ExtornButtonAction;
 
+  TStopwatchThread.Create(90, Self);
+
+  TBillingToCompletOrCancelThread.Create(false, Self);
+end;
 
 
 procedure TQRCodeScreen.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  InstantBillingTimer.Enabled := false;
-  InstantBillingTimer.Free;
-
-  CompleteBillingTimer.Enabled := false;
-  CompleteBillingTimer.Free;
+//
 end;
 
 
 
 
 
-procedure TQRCodeScreen.InstantBillingTimerAction(Sender: TObject);
 
-var
-  InstantBillingThread: TThread;
+procedure TQRCodeScreen.ExtornButtonAction(Sender: TObject);
 
 begin
-  InstantBillingThread := TThread.CreateAnonymousThread(
-    procedure begin
+  TQRCodeScreenFunctions.ExtornCurrentBilling;
 
-      TQRCodeScreenFunctions.CheckCurrentInstantBilling;
-
-      if (CompletedBilling.Exists) then begin
-
-        if (CompletedBilling.status = stcCONCLUIDA) then begin
-
-          TThread.Synchronize(TThread.CurrentThread,
-            procedure begin
-
-              TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_MADE_EFFECTIVE);
-
-              TQRCodeScreenUtils.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
-              TQRCodeScreenUtils.UpdateReversalPaymentButton(Self, IS_VISIBLE, IS_PRIMARY);
-              TQRCodeScreenUtils.UpdateCloseButton(Self, IS_VISIBLE, IS_SECONDARY, PDV_COLOR_PAYMENT_EFFECTIVE);
-
-              InstantBillingTimer.Enabled := false;
-
-              TAppCompleteBillingFunctions.UpdateAllPix;
-
-              exit;
-            end
-          );
-
-        end;
-
-
-        if (CompletedBilling.status = stcREMOVIDA_PELO_USUARIO_RECEBEDOR) then begin
-
-          TThread.Synchronize(TThread.CurrentThread,
-            procedure begin
-              TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_CANCELED);
-
-              TQRCodeScreenUtils.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
-              TQRCodeScreenUtils.UpdateCloseButton(Self, IS_VISIBLE, IS_PRIMARY, PDV_COLOR_PAYMENT_CANCELED);
-
-              InstantBillingTimer.Enabled := false;
-
-              exit;
-            end
-          );
-
-        end;
-
-      end;
-
-    end
-  );
-
-  InstantBillingThread.Start;
-  InstantBillingThread.OnTerminate := InstantBillingTimerThreadEnds;
+  TBillingToExtornThread.Create(false, Self);
 end;
 
-
-
-
-
-
-procedure TQRCodeScreen.CompleteBillingTimerAction(Sender: TObject);
-
-var
-  CompleteBillingThread: TThread;
-
-begin
-  CompleteBillingThread := TThread.CreateAnonymousThread(
-    procedure begin
-
-      TQRCodeScreenFunctions.CheckCurrentBillingDevolution;
-
-      if (CompletedBilling.Pix.HasDevolution) then begin
-
-        if (CompletedBilling.Pix.Items[0].Devolutions.Items.Last.Status = stdDEVOLVIDO) then begin
-
-          TThread.Synchronize(TThread.CurrentThread,
-            procedure begin
-              TQRCodeScreenUtils.UpdateBoxPaymentStatus(Self, PAY_EXTORTED);
-
-              TQRCodeScreenUtils.UpdateCancelPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
-              TQRCodeScreenUtils.UpdateReversalPaymentButton(Self, IS_HIDDEN, IS_PRIMARY);
-              TQRCodeScreenUtils.UpdateCloseButton(Self, IS_VISIBLE, IS_PRIMARY, PDV_COLOR_PAYMENT_EXTORTED);
-
-              CompleteBillingTimer.Enabled := false;
-            end
-          );
-        end;
-
-      end;
-
-    end
-  );
-
-  CompleteBillingThread.Start;
-  CompleteBillingThread.OnTerminate := CompleteBillingTimerThreadEnds;
-end;
-
-
-
-
-
-
-
-procedure TQRCodeScreen.InstantBillingTimerThreadEnds(Sender: TObject);
-begin
-  if Assigned(TThread(Sender).FatalException) then begin
-    exit;
-  end;
-end;
-
-
-
-
-procedure TQRCodeScreen.CompleteBillingTimerThreadEnds(Sender: TObject);
-begin
-  exit;
-end;
-
-
-
-
-
-procedure TQRCodeScreen.ReversalButtonAction(Sender: TObject);
-
-begin
-  TQRCodeScreenFunctions.CreateNewBillingDevolution;
-
-  CompleteBillingTimer.Enabled := true;
-end;
 
 
 procedure TQRCodeScreen.CancelPaymentButtonAction(Sender: TObject);
@@ -322,19 +183,48 @@ end;
 
 
 
+procedure TQRCodeScreen.MoveByScreen(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  Screen.Cursor := crSizeAll;
+  ReleaseCapture;
+  Self.Perform(WM_NCLBUTTONDOWN, HTCAPTION, 0);
+  Screen.Cursor := crDefault;
+end;
+
+
+
+
+procedure TQRCodeScreen.UpdateStopWatchLabel(TimeLeft: integer);
+var
+  Min, Sec: Integer;
+
+begin
+  Min := TimeLeft div 60;
+  Sec := TimeLeft mod 60;
+  StopwatchLabel .Caption := 'Tempo restante para pagar: ' +Format('%.2d:%.2d', [Min, Sec]);
+end;
+
+
+procedure TQRCodeScreen.OnResettingStopwatch;
+begin
+  TQRCodeScreenFunctions.CancelCurrentBilling;
+end;
+
+
+
+
 
 Initialization
   InstantBilling   := TAppInstantBillingEntity.Create;
-  RequestedBilling := TAppRequestedBillingEntity.Create;
   GeneratedBilling := TAppGeneratedBillingEntity.Create;
   CompletedBilling := TAppCompletedBillingEntity.Create;
-//  RevisedBilling   := TReviseddBillingEntity.Create;
+
+  CurrentBilling      := TAppMainBillingEntity.Create;
 
 Finalization
   InstantBilling.Free;
-  RequestedBilling.Free;
   GeneratedBilling.Free;
   CompletedBilling.Free;
-//  RevisedBilling.Free;
 
+  CurrentBilling.Free;
 end.

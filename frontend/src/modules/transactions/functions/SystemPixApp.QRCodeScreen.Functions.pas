@@ -5,6 +5,7 @@ interface
 uses
   System.Classes,
   System.SysUtils,
+  System.TypInfo,
 
   Vcl.Dialogs,
   Vcl.Forms,
@@ -19,18 +20,21 @@ uses
   SystemPixApp.PaymentStatusEntity;
 
 type
-  TButtonVisibility = (IS_VISIBLE, IS_HIDDEN);
-  TButtonStyle      = (IS_PRIMARY, IS_SECONDARY);
+//  TButtonVisibility = (IS_VISIBLE, IS_HIDDEN);
+//  TButtonStyle      = (IS_PRIMARY, IS_SECONDARY);
 
   TQRCodeScreenFunctions = class
     private
-      class procedure ReviewInstantBilling;
 
     public
-      class procedure CreateNewInstantBilling;
-      class procedure CheckCurrentInstantBilling;
+      class procedure CancelCurrentBilling;
 
-      class procedure CreateNewBillingDevolution;
+
+      class procedure CreateNewBilling;
+      class procedure CheckCurrentBilling;
+
+      class procedure ExtornCurrentBilling;
+//      class procedure CreateNewBillingDevolution;
       class procedure CheckCurrentBillingDevolution;
 
       class procedure OpenReadQRCodeModal;
@@ -46,13 +50,23 @@ uses
 
   SystemPixApp.CancelBilling.Modal,
 
+  SystemPixApi.ACBrRequestBilling.Functions,
+  SystemPixApi.ACBrInstantBilling.Functions,
+  SystemPixApi.ACBrRevisedBilling.Functions,
+  SystemPixApi.ACBrDevolution.Functions,
+
   SystemPixApp.InstantBillingEntities,
+  SystemPixApp.BillingEntity,
 
   SystemPixApp.InstantBilling.Functions,
-  SystemPixApp.RequestedBilling.Functions,
   SystemPixApp.CompleteBilling.Functions,
   SystemPixApp.RevisedBilling.Functions,
   SystemPixApp.GeneratedBilling.Functions,
+  SystemPixApp.CurrentBillingAsGenerated.Functions,
+  SystemPixApp.CurrentBillingAsCompleted.Functions,
+  SystemPixApp.CurrentBillingAsRevised.Functions,
+
+  SystemPixApp.Devolution.Functions,
 
   SystemPixApi.ConfigFile.Functions,
   SystemPixApi.LogErrorFile.Functions,
@@ -63,26 +77,43 @@ uses
 { TQRCodeFunctions }
 
 
-class procedure TQRCodeScreenFunctions.CreateNewInstantBilling;
+class procedure TQRCodeScreenFunctions.CancelCurrentBilling;
+begin
+  TApiACBrRevisedBillingFunctions.UpdateStatus;
+
+  if (not TApiACBrRevisedBillingFunctions.CancelWasSuccessful) then
+    ShowMessage('Falha da API ao tentar cancelar Cobrança Imediata');
+end;
+
+
+
+
+
+
+
+class procedure TQRCodeScreenFunctions.CreateNewBilling;
 
 var
   LogFile: TextFile;
 
 begin
-  TAppRequestedBillingFunctions.Clear;
-
-  TAppRequestedBillingFunctions.SetExpiration(RequestedBilling.Expiration);
-
-  TAppRequestedBillingFunctions.SetKeyPix(PIXComponent.PSP.ChavePIX);
-
-  TAppRequestedBillingFunctions.SetValue(RequestedBilling.Value);
+  TApiACBrRequestBillingFunctions.ConfigRequesteFields(
+    CurrentBilling.Expiration,
+    PIXComponent.PSP.ChavePIX,
+    CurrentBilling.Value
+  );
 
 
-  if (TAppInstantBillingFunctions.CreationWasSuccessful) then begin
+  if (TApiACBrInstantBillingFunctions.CreationWasSuccessful) then begin
 
-    TAppGeneratedBillingFunctions.UpdateAll;
+//    TAppGeneratedBillingFunctions.UpdateAll;
+
+    TAppCurrentBillingAsGeneratedFunctions.UpdateAll;
+
+    TQRCodeScreenFunctions.OpenReadQRCodeModal;
 
   end else begin
+    ShowMessage('Falha da API ao tentar criar nova Cobrança Imediata');
 
     TApiLogErrorFileFunctions.RegisterLastErrorInstantBilling(PSPBancoBrasil.epCob.Problema.detail);
   end;
@@ -90,62 +121,60 @@ begin
 end;
 
 
-
-
-class procedure TQRCodeScreenFunctions.CreateNewBillingDevolution;
+class procedure TQRCodeScreenFunctions.CheckCurrentBilling;
 begin
-  TAppCompleteBillingFunctions.ClearDevolution;
+  if (TApiACBrInstantBillingFunctions.ExistsWithID(CurrentBilling.TxID)) then begin
 
-  TAppCompleteBillingFunctions.SetDevolutionValue(CompletedBilling.Value);
-
-  TAppCompleteBillingFunctions.SetDevolutionNature(ndORIGINAL);
-
-  if (TAppCompleteBillingFunctions.RequestDevolutionWasSuccessful) then begin
-
+    TAppCurrentBillingAsCompletedFunctions.UpdateAll;
+    TAppCurrentBillingAsCompletedFunctions.UpdateIsChecked(true);
 
   end else begin
 
-    ShowMessage('Não foi possível extornar o pagamento');
+    ShowMessage('Falha da API ao tentar consultar Cobrança Imediata');
   end;
 end;
 
 
 
+
+
+
+class procedure TQRCodeScreenFunctions.ExtornCurrentBilling;
+begin
+  TApiACBrDevolutionFunctions.ConfigRequesteFields(
+    '',
+    ndORIGINAL,
+    CurrentBilling.Value
+  );
+
+  if (not TApiACBrDevolutionFunctions.RequestDevolutionWasSuccessful) then
+    ShowMessage('Falha da API ao tentar extornar o pagamento');
+end;
 
 
 class procedure TQRCodeScreenFunctions.CheckCurrentBillingDevolution;
 begin
-  if (PIXComponent.PSP.epPix.ConsultarPix(CompletedBilling.Pix.Items[0].EndToEndId)) then begin
 
-    TAppCompleteBillingFunctions.UpdateAllDevolution;
+  if (TApiACBrDevolutionFunctions.Exists) then begin
 
+    TAppDevolutionFunctions.UpdateCurrentBillingDevolution;
+
+  end else begin
+
+    ShowMessage('Falha da API ao tentar consultar devolução');
   end;
 end;
 
-class procedure TQRCodeScreenFunctions.CheckCurrentInstantBilling;
-begin
-
-  if (TAppInstantBillingFunctions.ExistsWithID(GeneratedBilling.TxID)) then begin
-
-    TAppCompleteBillingFunctions.UpdateAll;
-
-  end;
-
-end;
 
 
 
 
 
 
-class procedure TQRCodeScreenFunctions.ReviewInstantBilling;
-begin
-  TAppRevisedBillingFunctions.UpdateStatus;
 
-//  RevisedBilling.Status := PDV_PIX.PSP.epCob.CobRevisada.status;
 
-  PIXComponent.PSP.epCob.RevisarCobrancaImediata(GeneratedBilling.TxID)
-end;
+
+
 
 
 
@@ -159,7 +188,7 @@ var
 
 begin
   ActionProcedure := procedure begin
-    ReviewInstantBilling;
+    CancelCurrentBilling;
   end;
 
   CancelBillingModal := TCancelBillingModal.Create(
@@ -179,20 +208,11 @@ end;
 class procedure TQRCodeScreenFunctions.OpenReadQRCodeModal;
 begin
 
-  if (GeneratedBilling.Exists) then begin
+  QRCodeScreen := TQRCodeScreen.Create(Application);
 
-    QRCodeScreen := TQRCodeScreen.Create(Application);
-
-    QRCodeScreen.Position := poScreenCenter;
-    QRCodeScreen.ShowModal;
-
-  end else begin
-
-    ShowMessage('Erro ao criar! Não abrir tela de QRCode');
-    exit;
-  end;
+  QRCodeScreen.Position := poScreenCenter;
+  QRCodeScreen.ShowModal;
 
 end;
-
 
 end.

@@ -86,7 +86,9 @@
         <DCC_ExeOutput>.\bin</DCC_ExeOutput>
         <DCC_DcuOutput>.\dcu</DCC_DcuOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_Locale>1046</VerInfo_Locale>
+        <VerInfo_Release>5</VerInfo_Release>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.5.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.5.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -117,12 +119,10 @@
         <DCCReference Include="frontend\src\modules\billings\entities\PointOfSale.DevolutionEntity.pas"/>
         <DCCReference Include="frontend\src\modules\billings\entities\SystemPixApp.GeneratedBillingEntity.pas"/>
         <DCCReference Include="frontend\src\modules\billings\entities\PointOfSale.PixEntity.pas"/>
-        <DCCReference Include="frontend\src\modules\billings\entities\SystemPixApp.RequestedBillingEntity.pas"/>
         <DCCReference Include="frontend\src\modules\billings\entities\SystemPixApp.InstantBillingEntities.pas"/>
         <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.CompleteBilling.Functions.pas"/>
         <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.GeneratedBilling.Functions.pas"/>
         <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.InstantBilling.Functions.pas"/>
-        <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.RequestedBilling.Functions.pas"/>
         <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.RevisedBilling.Functions.pas"/>
         <DCCReference Include="frontend\src\modules\transactions\functions\SystemPixApp.QRCodeScreen.Functions.pas"/>
         <DCCReference Include="frontend\src\helpers\payment\enitites\SystemPixApp.PaymentStatusEntity.pas"/>
@@ -137,6 +137,23 @@
         <DCCReference Include="backend\src\logs\errors\SystemPixApi.LogErrorFile.Constants.pas"/>
         <DCCReference Include="backend\src\logs\errors\SystemPixApi.LogErrorFile.Utils.pas"/>
         <DCCReference Include="backend\src\logs\errors\SystemPixApi.LogErrorFile.Functions.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\entities\SystemPixApp.BillingEntity.pas"/>
+        <DCCReference Include="frontend\src\modules\pix\entities\SystemPixApp.PixEntity.pas"/>
+        <DCCReference Include="frontend\src\modules\devolutions\entities\SystemPixApp.DevolutionEntity.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.CurrentBillingAsGenerated.Functions.pas"/>
+        <DCCReference Include="backend\src\external\acbrpix\SystemPixApi.ACBrRequestBilling.Functions.pas"/>
+        <DCCReference Include="backend\src\external\acbrpix\SystemPixApi.ACBrInstantBilling.Functions.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\utils\SystemPixApp.CurrentBilling.Utils.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.CurrentBillingAsCompleted.Functions.pas"/>
+        <DCCReference Include="backend\src\external\acbrpix\SystemPixApi.ACBrDevolution.Functions.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\functions\SystemPixApp.CurrentBillingAsRevised.Functions.pas"/>
+        <DCCReference Include="frontend\src\modules\pix\functions\SystemPixApp.Pix.Functions.pas"/>
+        <DCCReference Include="frontend\src\modules\devolutions\functions\SystemPixApp.Devolution.Functions.pas"/>
+        <DCCReference Include="frontend\src\modules\devolutions\utils\SystemPixApp.Devolution.Utils.pas"/>
+        <DCCReference Include="backend\src\external\acbrpix\SystemPixApi.ACBrRevisedBilling.Functions.pas"/>
+        <DCCReference Include="frontend\src\modules\transactions\threads\SystemPixApp.QRCodeScreen.StopWatchThreads.pas"/>
+        <DCCReference Include="frontend\src\modules\transactions\threads\SystemPixApp.QRCodeScreen.BillingToCompleteOrCancelThreads.pas"/>
+        <DCCReference Include="frontend\src\modules\transactions\threads\SystemPixApp.QRCodeScreen.BillingToExtornThreads.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
