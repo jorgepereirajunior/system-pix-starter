@@ -19,7 +19,7 @@ type
 
       class function RequestDevolutionWasSuccessful: boolean;
 
-      class function ExistsWithE2E(CurrentBillingPixE2E: string): boolean;
+      class function Exists: boolean;
   end;
 implementation
 
@@ -46,8 +46,6 @@ end;
 
 class function TApiACBrDevolutionFunctions.RequestDevolutionWasSuccessful: boolean;
 begin
-  //ShowMessage('E2E na requisicao: ' +CurrentBilling.Pix.Items[0].EndToEndId);
-  //ATÉ AQUI O E2E ESTÁ OK, CHEGANDO CORRETAMENTE DE ACORDO COM O CONSOLE.LOG
   result := PIXComponent.PSP.epPix.SolicitarDevolucaoPix(
     CurrentBilling.Pix.Items[0].EndToEndId,
     StringReplace(CurrentBilling.Pix.Items[0].endToEndId, 'E','D', [rfReplaceAll])
@@ -57,9 +55,12 @@ end;
 
 
 
-class function TApiACBrDevolutionFunctions.ExistsWithE2E(CurrentBillingPixE2E: string): boolean;
+class function TApiACBrDevolutionFunctions.Exists: boolean;
 begin
-  result := PIXComponent.PSP.epPix.ConsultarPix(CurrentBillingPixE2E);
+  result := PIXComponent.PSP.epPix.ConsultarDevolucaoPix(
+    PIXComponent.PSP.epCob.CobCompleta.pix[0].endToEndId,
+    PIXComponent.PSP.epPix.Devolucao.id
+  );
 end;
 
 

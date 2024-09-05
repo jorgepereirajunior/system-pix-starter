@@ -322,7 +322,7 @@ object QRCodeScreen: TQRCodeScreen
           ExplicitHeight = 22
         end
       end
-      object BoxReversalPaymentButton: TPanel
+      object BoxExtornPaymentButton: TPanel
         Left = 10
         Top = 0
         Width = 514
@@ -331,7 +331,7 @@ object QRCodeScreen: TQRCodeScreen
         BevelOuter = bvNone
         TabOrder = 2
         Visible = False
-        object BGReversalButton: TShape
+        object BGExtornButton: TShape
           Left = 0
           Top = 0
           Width = 514
@@ -343,7 +343,7 @@ object QRCodeScreen: TQRCodeScreen
           ExplicitWidth = 65
           ExplicitHeight = 65
         end
-        object ReversalButton: TSpeedButton
+        object ExtornButton: TSpeedButton
           Left = 0
           Top = 0
           Width = 514

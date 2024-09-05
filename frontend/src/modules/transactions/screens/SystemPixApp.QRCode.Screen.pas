@@ -99,9 +99,9 @@ type
     BoxCloseButton: TPanel;
     BGCloseButton: TShape;
     CloseButton: TSpeedButton;
-    BoxReversalPaymentButton: TPanel;
-    BGReversalButton: TShape;
-    ReversalButton: TSpeedButton;
+    BoxExtornPaymentButton: TPanel;
+    BGExtornButton: TShape;
+    ExtornButton: TSpeedButton;
     BoxTitle: TPanel;
     StopwatchLabel: TLabel;
 
@@ -183,7 +183,7 @@ begin
   CopyNPasteButton.OnClick    := HandleCopyToClipBoard;
   CancelPaymentButton.OnClick := CancelPaymentButtonAction;
   CloseButton.OnClick         := CloseButtonAction;
-  ReversalButton.OnClick      := ReversalButtonAction;
+  ExtornButton.OnClick      := ReversalButtonAction;
 
 
   StopwatchThread := TStopwatchThread.Create(90, Self);
@@ -268,7 +268,7 @@ end;
 procedure TQRCodeScreen.ReversalButtonAction(Sender: TObject);
 
 begin
-  TQRCodeScreenFunctions.CreateNewBillingDevolution;
+  TQRCodeScreenFunctions.ExtornCurrentBilling;
 
   TBillingToReverseThread.Create(false, Self);
 
@@ -324,7 +324,7 @@ end;
 
 procedure TQRCodeScreen.OnResettingStopwatch;
 begin
-  TQRCodeScreenFunctions.ReviewInstantBilling;
+  TQRCodeScreenFunctions.CancelCurrentBilling;
 end;
 
 

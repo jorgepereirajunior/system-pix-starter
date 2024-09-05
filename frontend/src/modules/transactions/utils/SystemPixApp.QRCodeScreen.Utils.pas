@@ -154,34 +154,34 @@ begin
 
   case (ButtonVisibility) of
     IS_VISIBLE: begin
-      LQRCodeScreen.BoxReversalPaymentButton.Visible := true;
+      LQRCodeScreen.BoxExtornPaymentButton.Visible := true;
 
-      LQRCodeScreen.BoxReversalPaymentButton.Align   := alTop;
-      LQRCodeScreen.BoxReversalPaymentButton.Height  := 40;
+      LQRCodeScreen.BoxExtornPaymentButton.Align   := alTop;
+      LQRCodeScreen.BoxExtornPaymentButton.Height  := 40;
 
       case (ButtonStyle) of
         IS_PRIMARY: begin
-          LQRCodeScreen.BGReversalButton.Brush.Color := PDV_COLOR_PAYMENT_EFFECTIVE;
-          LQRCodeScreen.ReversalButton.Font.Color    := clWhite;
-          LQRCodeScreen.ReversalButton.Font.Style    := [fsBold];
+          LQRCodeScreen.BGExtornButton.Brush.Color := PDV_COLOR_PAYMENT_EFFECTIVE;
+          LQRCodeScreen.ExtornButton.Font.Color    := clWhite;
+          LQRCodeScreen.ExtornButton.Font.Style    := [fsBold];
         end;
 
 
         IS_SECONDARY: begin
-          LQRCodeScreen.BGReversalButton.Brush.Color := clWhite;
-          LQRCodeScreen.BGReversalButton.Pen.Style   := psSolid;
-          LQRCodeScreen.BGReversalButton.Pen.Width   := 1;
-          LQRCodeScreen.BGReversalButton.Pen.Color   := PDV_COLOR_PAYMENT_EFFECTIVE;
+          LQRCodeScreen.BGExtornButton.Brush.Color := clWhite;
+          LQRCodeScreen.BGExtornButton.Pen.Style   := psSolid;
+          LQRCodeScreen.BGExtornButton.Pen.Width   := 1;
+          LQRCodeScreen.BGExtornButton.Pen.Color   := PDV_COLOR_PAYMENT_EFFECTIVE;
 
-          LQRCodeScreen.ReversalButton.Font.Color    := PDV_COLOR_PAYMENT_EFFECTIVE;
-          LQRCodeScreen.ReversalButton.Font.Style    := [fsBold];
+          LQRCodeScreen.ExtornButton.Font.Color    := PDV_COLOR_PAYMENT_EFFECTIVE;
+          LQRCodeScreen.ExtornButton.Font.Style    := [fsBold];
         end;
       end;
 
     end;
 
     IS_HIDDEN: begin
-      LQRCodeScreen.BoxReversalPaymentButton.Visible := false;
+      LQRCodeScreen.BoxExtornPaymentButton.Visible := false;
     end;
 
   end;

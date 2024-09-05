@@ -38,7 +38,8 @@ uses
   SystemPixApp.CurrentBillingAsRevised.Functions in 'frontend\src\modules\billings\functions\SystemPixApp.CurrentBillingAsRevised.Functions.pas',
   SystemPixApp.Pix.Functions in 'frontend\src\modules\pix\functions\SystemPixApp.Pix.Functions.pas',
   SystemPixApp.Devolution.Functions in 'frontend\src\modules\devolutions\functions\SystemPixApp.Devolution.Functions.pas',
-  SystemPixApp.Devolution.Utils in 'frontend\src\modules\devolutions\utils\SystemPixApp.Devolution.Utils.pas';
+  SystemPixApp.Devolution.Utils in 'frontend\src\modules\devolutions\utils\SystemPixApp.Devolution.Utils.pas',
+  SystemPixApi.ACBrRevisedBilling.Functions in 'backend\src\external\acbrpix\SystemPixApi.ACBrRevisedBilling.Functions.pas';
 
 {$R *.res}
 

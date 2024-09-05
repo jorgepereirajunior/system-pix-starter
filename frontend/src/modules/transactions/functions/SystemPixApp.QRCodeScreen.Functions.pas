@@ -27,12 +27,14 @@ type
     private
 
     public
-      class procedure ReviewInstantBilling;
+      class procedure CancelCurrentBilling;
 
-      class procedure CreateNewInstantBilling;
+
+      class procedure CreateNewBilling;
       class procedure CheckCurrentBilling;
 
-      class procedure CreateNewBillingDevolution;
+      class procedure ExtornCurrentBilling;
+//      class procedure CreateNewBillingDevolution;
       class procedure CheckCurrentBillingDevolution;
 
       class procedure OpenReadQRCodeModal;
@@ -50,6 +52,7 @@ uses
 
   SystemPixApi.ACBrRequestBilling.Functions,
   SystemPixApi.ACBrInstantBilling.Functions,
+  SystemPixApi.ACBrRevisedBilling.Functions,
   SystemPixApi.ACBrDevolution.Functions,
 
   SystemPixApp.InstantBillingEntities,
@@ -74,7 +77,21 @@ uses
 { TQRCodeFunctions }
 
 
-class procedure TQRCodeScreenFunctions.CreateNewInstantBilling;
+class procedure TQRCodeScreenFunctions.CancelCurrentBilling;
+begin
+  TApiACBrRevisedBillingFunctions.UpdateStatus;
+
+  if (not TApiACBrRevisedBillingFunctions.CancelWasSuccessful) then
+    ShowMessage('Falha da API ao tentar cancelar Cobrança Imediata');
+end;
+
+
+
+
+
+
+
+class procedure TQRCodeScreenFunctions.CreateNewBilling;
 
 var
   LogFile: TextFile;
@@ -104,42 +121,6 @@ begin
 end;
 
 
-
-
-class procedure TQRCodeScreenFunctions.CreateNewBillingDevolution;
-begin
-  TApiACBrDevolutionFunctions.ConfigRequesteFields(
-    '',
-    ndORIGINAL,
-    CurrentBilling.Value
-  );
-
-
-  if (TApiACBrDevolutionFunctions.RequestDevolutionWasSuccessful) then begin
-
-
-  end else begin
-
-    ShowMessage('Falha da API ao tentar extornar o pagamento');
-  end;
-end;
-
-
-
-
-
-class procedure TQRCodeScreenFunctions.CheckCurrentBillingDevolution;
-begin
-  if (TApiACBrDevolutionFunctions.ExistsWithE2E(CurrentBilling.Pix.Items[0].EndToEndId)) then begin
-
-    TAppDevolutionFunctions.UpdateCurrentBillingDevolution;
-
-  end else begin
-
-    ShowMessage('Falha da API ao tentar consultar devolução');
-  end;
-end;
-
 class procedure TQRCodeScreenFunctions.CheckCurrentBilling;
 begin
   if (TApiACBrInstantBillingFunctions.ExistsWithID(CurrentBilling.TxID)) then begin
@@ -158,14 +139,42 @@ end;
 
 
 
-class procedure TQRCodeScreenFunctions.ReviewInstantBilling;
+class procedure TQRCodeScreenFunctions.ExtornCurrentBilling;
 begin
-  TApiACBrDevolutionFunctions.UpdateStatus;
+  TApiACBrDevolutionFunctions.ConfigRequesteFields(
+    '',
+    ndORIGINAL,
+    CurrentBilling.Value
+  );
 
   if (not TApiACBrDevolutionFunctions.RequestDevolutionWasSuccessful) then
-    ShowMessage('Falha da API ao tentar cancelar Cobrança Imediata');
-
+    ShowMessage('Falha da API ao tentar extornar o pagamento');
 end;
+
+
+class procedure TQRCodeScreenFunctions.CheckCurrentBillingDevolution;
+begin
+
+  if (TApiACBrDevolutionFunctions.Exists) then begin
+
+    TAppDevolutionFunctions.UpdateCurrentBillingDevolution;
+
+  end else begin
+
+    ShowMessage('Falha da API ao tentar consultar devolução');
+  end;
+end;
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -179,7 +188,7 @@ var
 
 begin
   ActionProcedure := procedure begin
-    ReviewInstantBilling;
+    CancelCurrentBilling;
   end;
 
   CancelBillingModal := TCancelBillingModal.Create(
