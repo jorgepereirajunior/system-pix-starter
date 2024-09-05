@@ -1,4 +1,4 @@
-unit SystemPixApp.QRCodeScreen.StopWatchThreads;
+unit SystemPixApp.StopWatch.Threads;
 
 interface
 

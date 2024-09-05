@@ -33,9 +33,10 @@ uses
   SystemPixApp.Devolution.Functions in 'frontend\src\modules\devolutions\functions\SystemPixApp.Devolution.Functions.pas',
   SystemPixApp.Devolution.Utils in 'frontend\src\modules\devolutions\utils\SystemPixApp.Devolution.Utils.pas',
   SystemPixApi.ACBrRevisedBilling.Functions in 'backend\src\external\acbrpix\SystemPixApi.ACBrRevisedBilling.Functions.pas',
-  SystemPixApp.QRCodeScreen.StopWatchThreads in 'frontend\src\modules\transactions\threads\SystemPixApp.QRCodeScreen.StopWatchThreads.pas',
-  SystemPixApp.QRCodeScreen.BillingToCompleteOrCancelThreads in 'frontend\src\modules\transactions\threads\SystemPixApp.QRCodeScreen.BillingToCompleteOrCancelThreads.pas',
-  SystemPixApp.QRCodeScreen.BillingToExtornThreads in 'frontend\src\modules\transactions\threads\SystemPixApp.QRCodeScreen.BillingToExtornThreads.pas';
+  SystemPixApp.StopWatch.Threads in 'frontend\src\modules\transactions\threads\SystemPixApp.StopWatch.Threads.pas',
+  SystemPixApp.VerifyCompleteOrCanceledBilling.Threads in 'frontend\src\modules\transactions\threads\SystemPixApp.VerifyCompleteOrCanceledBilling.Threads.pas',
+  SystemPixApp.VerifyExtornedBilling.Threads in 'frontend\src\modules\transactions\threads\SystemPixApp.VerifyExtornedBilling.Threads.pas',
+  SystemPixApp.CheckCurrentBilling.Threads in 'frontend\src\modules\transactions\threads\SystemPixApp.CheckCurrentBilling.Threads.pas';
 
 {$R *.res}
 

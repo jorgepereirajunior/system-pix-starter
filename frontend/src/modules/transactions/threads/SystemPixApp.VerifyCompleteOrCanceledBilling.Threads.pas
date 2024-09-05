@@ -1,4 +1,4 @@
-unit SystemPixApp.QRCodeScreen.BillingToCompleteOrCancelThreads;
+unit SystemPixApp.VerifyCompleteOrCanceledBilling.Threads;
 
 interface
 
@@ -35,7 +35,7 @@ uses
   SystemPixApp.BillingEntity,
   SystemPixApp.PaymentStatusEntity,
 
-  SystemPixApp.QRCodeScreen.StopWatchThreads,
+  SystemPixApp.StopWatch.Threads,
 
   SystemPixApp.Styles;
 
@@ -84,7 +84,6 @@ begin
 
             TStopwatchThread.TerminateThread;
 
-//            LTargetScreen.StopwatchThread.TerminateThread;
             LTargetScreen.UpdateStopWatchLabel(0);
 
             TPixFunctions.UpdateCurrentBillingPix;
@@ -110,7 +109,6 @@ begin
 
             TStopwatchThread.TerminateThread;
 
-//            LTargetScreen.StopwatchThread.TerminateThread;
             LTargetScreen.UpdateStopWatchLabel(0);
 
             exit;

@@ -30,9 +30,12 @@ uses
 
   SystemPixApp.DevolutionEntity,
 
-  SystemPixApp.QRCodeScreen.StopWatchThreads,
-  SystemPixApp.QRCodeScreen.BillingToCompleteOrCancelThreads,
-  SystemPixApp.QRCodeScreen.BillingToExtornThreads;
+  SystemPixApp.StopWatch.Threads,
+
+  SystemPixApp.CheckCurrentBilling.Threads,
+
+  SystemPixApp.VerifyCompleteOrCanceledBilling.Threads,
+  SystemPixApp.VerifyExtornedBilling.Threads;
 
 type
   TQRCodeScreen = class(TForm)
@@ -67,6 +70,8 @@ type
     StopwatchLabel: TLabel;
 
   private
+    procedure StartCompleteOrCanceledThreads;
+
     procedure CancelPaymentButtonAction(Sender: TObject);
     procedure CloseButtonAction(Sender: TObject);
     procedure ExtornButtonAction(Sender: TObject);
@@ -123,11 +128,30 @@ begin
   CloseButton.OnClick         := CloseButtonAction;
   ExtornButton.OnClick        := ExtornButtonAction;
 
-  TStopwatchThread.Create(90, Self);
+  StartCompleteOrCanceledThreads;
 
-  TBillingToCompletOrCancelThread.Create(false, Self);
+//  TStopwatchThread.Create(90, Self);
+//
+//  TBillingToCompletOrCancelThread.Create(false, Self);
 end;
 
+
+
+
+
+procedure TQRCodeScreen.StartCompleteOrCanceledThreads;
+begin
+  TCheckCurrentBillingThread.Create(false, Self);
+
+  repeat begin
+
+    if (CurrentBilling.IsChecked) then begin
+      ShowMessage('TxID da cobrança completa: ' +CurrentBilling.TxID);
+    end;
+
+  end; until (CurrentBilling.IsChecked);
+
+end;
 
 
 
@@ -193,6 +217,8 @@ procedure TQRCodeScreen.OnResettingStopwatch;
 begin
   TQRCodeScreenFunctions.CancelCurrentBilling;
 end;
+
+
 
 
 
