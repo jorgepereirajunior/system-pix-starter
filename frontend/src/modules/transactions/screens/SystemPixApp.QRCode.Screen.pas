@@ -34,22 +34,10 @@ uses
   SystemPixApp.DevolutionEntity,
 
   SystemPixApp.QRCodeScreen.StopWatchThreads,
-  SystemPixApp.QRCodeScreen.BillingToCompleteOrCancelWatchThreads;
+  SystemPixApp.QRCodeScreen.BillingToCompleteOrCancelThreads,
+  SystemPixApp.QRCodeScreen.BillingToExtornThreads;
 
 type
-  TBillingToReverseThread = class(TThread)
-    private
-      TerminatedRequested: boolean;
-      TargetScreen: TComponent;
-
-    protected
-      procedure Execute; override;
-
-    public
-      constructor Create(AIsTerminated: boolean; AScreen: TComponent);
-      procedure TerminateThread;
-  end;
-
   TQRCodeScreen = class(TForm)
     Container: TPanel;
     BoxPaymentStatus: TPanel;
@@ -166,7 +154,7 @@ procedure TQRCodeScreen.ExtornButtonAction(Sender: TObject);
 begin
   TQRCodeScreenFunctions.ExtornCurrentBilling;
 
-  TBillingToReverseThread.Create(false, Self);
+  TBillingToExtornThread.Create(false, Self);
 end;
 
 
@@ -222,63 +210,6 @@ begin
   TQRCodeScreenFunctions.CancelCurrentBilling;
 end;
 
-
-{ TBillingToReverseThread }
-
-constructor TBillingToReverseThread.Create(AIsTerminated: boolean; AScreen: TComponent);
-begin
-  inherited Create(False);
-
-  FreeOnTerminate := True;
-  TerminatedRequested := AIsTerminated;
-  TargetScreen := AScreen;
-end;
-
-
-procedure TBillingToReverseThread.Execute;
-
-var
-  LTargetScreen: TQRCodeScreen;
-
-begin
-  inherited;
-
-  LTargetScreen := TQRCodeScreen(TargetScreen);
-
-  while (not TerminatedRequested) do begin
-    sleep(5000);
-
-    TQRCodeScreenFunctions.CheckCurrentBillingDevolution;
-
-    if (CurrentBilling.Pix.Items[0].Devolutions.Items.Count > 0) then begin
-
-      if (CurrentBilling.Pix.Items[0].Devolutions.Items[0].Status = RETURNED) then begin
-
-        Synchronize(
-          procedure begin
-            TQRCodeScreenUtils.UpdateBoxPaymentStatus(TargetScreen, PAY_EXTORTED);
-
-            TQRCodeScreenUtils.UpdateCancelPaymentButton(TargetScreen, IS_HIDDEN, IS_PRIMARY);
-            TQRCodeScreenUtils.UpdateReversalPaymentButton(TargetScreen, IS_HIDDEN, IS_PRIMARY);
-            TQRCodeScreenUtils.UpdateCloseButton(TargetScreen, IS_VISIBLE, IS_PRIMARY, PDV_COLOR_PAYMENT_EXTORTED);
-          end
-        );
-
-        Sleep(60);
-
-        TerminateThread;
-
-      end;
-
-    end;
-  end;
-end;
-
-
-procedure TBillingToReverseThread.TerminateThread;
-begin
-  TerminatedRequested := true;
-end;
 
 
 

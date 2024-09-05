@@ -1,4 +1,4 @@
-unit SystemPixApp.QRCodeScreen.BillingToCompleteOrCancelWatchThreads;
+unit SystemPixApp.QRCodeScreen.BillingToCompleteOrCancelThreads;
 
 interface
 
@@ -49,6 +49,7 @@ begin
   TerminatedRequested := AIsTerminated;
   TargetScreen := AScreen;
 end;
+
 
 
 procedure TBillingToCompletOrCancelThread.Execute;
@@ -122,6 +123,7 @@ begin
 
   end;
 end;
+
 
 
 class procedure TBillingToCompletOrCancelThread.TerminateThread;

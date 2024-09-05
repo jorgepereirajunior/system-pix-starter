@@ -41,7 +41,8 @@ uses
   SystemPixApp.Devolution.Utils in 'frontend\src\modules\devolutions\utils\SystemPixApp.Devolution.Utils.pas',
   SystemPixApi.ACBrRevisedBilling.Functions in 'backend\src\external\acbrpix\SystemPixApi.ACBrRevisedBilling.Functions.pas',
   SystemPixApp.QRCodeScreen.StopWatchThreads in 'frontend\src\modules\transactions\threads\SystemPixApp.QRCodeScreen.StopWatchThreads.pas',
-  SystemPixApp.QRCodeScreen.BillingToCompleteOrCancelWatchThreads in 'frontend\src\modules\transactions\threads\SystemPixApp.QRCodeScreen.BillingToCompleteOrCancelWatchThreads.pas';
+  SystemPixApp.QRCodeScreen.BillingToCompleteOrCancelThreads in 'frontend\src\modules\transactions\threads\SystemPixApp.QRCodeScreen.BillingToCompleteOrCancelThreads.pas',
+  SystemPixApp.QRCodeScreen.BillingToExtornThreads in 'frontend\src\modules\transactions\threads\SystemPixApp.QRCodeScreen.BillingToExtornThreads.pas';
 
 {$R *.res}
 

@@ -40,6 +40,8 @@ begin
   TargetForm := AScreen;
 end;
 
+
+
 procedure TStopwatchThread.Execute;
 
 var
@@ -69,6 +71,8 @@ begin
   end;
 
 end;
+
+
 
 class procedure TStopwatchThread.TerminateThread;
 begin
