@@ -31,23 +31,11 @@ uses
   SystemPixApp.CompleteBillingEntity,
   SystemPixApp.BillingEntity,
 
-  SystemPixApp.DevolutionEntity;
+  SystemPixApp.DevolutionEntity,
+
+  SystemPixApp.QRCodeScreen.StopWatchThreads;
 
 type
-  TStopwatchThread = class(TThread)
-    private
-      TimeLeft: Integer;
-      TargetForm: TComponent;
-      class var TerminatedRequested: boolean;
-
-    protected
-      procedure Execute; override;
-
-    public
-      constructor Create(ATimeLeft: Integer; AScreen: TComponent);
-      class procedure TerminateThread;
-  end;
-
   TBillingToCompletOrCancelThread = class(TThread)
     private
       TerminatedRequested: boolean;
@@ -60,6 +48,7 @@ type
       constructor Create(AIsTerminated: boolean; AScreen: TComponent);
       procedure TerminateThread;
   end;
+
 
   TBillingToReverseThread = class(TThread)
     private
@@ -121,10 +110,10 @@ type
 
     procedure MoveByScreen(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 
+  public
     procedure UpdateStopWatchLabel(TimeLeft: integer);
     procedure OnResettingStopwatch;
 
-  public
     constructor Create(AOwner: TComponent);
 
   end;
@@ -181,7 +170,7 @@ end;
 
 procedure TQRCodeScreen.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-//  StopwatchThread.TerminateThread;
+//
 end;
 
 
@@ -306,56 +295,6 @@ procedure TQRCodeScreen.OnResettingStopwatch;
 begin
   TQRCodeScreenFunctions.CancelCurrentBilling;
 end;
-
-
-{ TStopwatchThread }
-
-constructor TStopwatchThread.Create(ATimeLeft: Integer; AScreen: TComponent);
-begin
-  inherited Create(false);
-
-  FreeOnTerminate := True;
-  TimeLeft := ATimeLeft;
-  TargetForm := AScreen;
-end;
-
-
-procedure TStopwatchThread.Execute;
-
-var
-  LTargetScreen: TQRCodeScreen;
-
-begin
-  inherited;
-
-  if (TerminatedRequested) then
-    exit;
-
-  LTargetScreen := TQRCodeScreen(TargetForm);
-
-  while (TimeLeft > 0) and (not TerminatedRequested) do begin
-    Sleep(1000);
-    Dec(TimeLeft);
-
-    Synchronize(procedure begin
-      if ( not TerminatedRequested) then
-        LTargetScreen.UpdateStopWatchLabel(TimeLeft);
-    end);
-  end;
-
-  if (TimeLeft = 0) and (not TerminatedRequested) then begin
-    TerminatedRequested := true;
-    LTargetScreen.OnResettingStopwatch;
-  end;
-
-end;
-
-
-class procedure TStopwatchThread.TerminateThread;
-begin
-  TerminatedRequested := true;
-end;
-
 
 
 { TBillingToCompletOrCancelThread }
