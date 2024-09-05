@@ -9,11 +9,11 @@ uses
   SystemPixApp.PixEntity;
 
 type
-  TMainBillingStatus = (
+  TBillingStatus = (
     NONE, ACTIVED, COMPLETED, REMOVED_BY_USER, REMOVED_BY_PSP
   );
 
-  TAppMainBillingEntity = class
+  TAppBillingEntity = class
     private
       FKey: string;
       FTxID: string;
@@ -21,7 +21,7 @@ type
       FLocation: string;
       FValue: real;
       FRevisionNumber: integer;
-      FStatus: TMainBillingStatus;
+      FStatus: TBillingStatus;
       FDebtorsName: string;
       FCreatedAt: TDateTime;
       FExpiration: integer;
@@ -36,7 +36,7 @@ type
       property Location: string read FLocation write FLocation;
       property Value: real read FValue write FValue;
       property RevisionNumber: integer read FRevisionNumber write FRevisionNumber;
-      property Status: TMainBillingStatus read FStatus write FStatus;
+      property Status: TBillingStatus read FStatus write FStatus;
       property DebtorsName: string read FDebtorsName write FDebtorsName;
       property CreatedAt: TDateTime read FCreatedAt write FCreatedAt;
       property Expiration: integer read FExpiration write FExpiration;
@@ -57,7 +57,7 @@ uses
 
 { TAppMainBillingEntity }
 
-constructor TAppMainBillingEntity.Create;
+constructor TAppBillingEntity.Create;
 begin
   FKey            := EmptyStr;
   FTxID           := EmptyStr;
@@ -75,7 +75,7 @@ begin
   FPix            := TPixEntityArray.Create;
 end;
 
-destructor TAppMainBillingEntity.Destroy;
+destructor TAppBillingEntity.Destroy;
 begin
   Fpix.Free;
 

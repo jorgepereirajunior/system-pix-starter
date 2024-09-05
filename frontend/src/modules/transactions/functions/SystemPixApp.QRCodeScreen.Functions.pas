@@ -20,9 +20,6 @@ uses
   SystemPixApp.PaymentStatusEntity;
 
 type
-//  TButtonVisibility = (IS_VISIBLE, IS_HIDDEN);
-//  TButtonStyle      = (IS_PRIMARY, IS_SECONDARY);
-
   TQRCodeScreenFunctions = class
     private
 
@@ -34,7 +31,6 @@ type
       class procedure CheckCurrentBilling;
 
       class procedure ExtornCurrentBilling;
-//      class procedure CreateNewBillingDevolution;
       class procedure CheckCurrentBillingDevolution;
 
       class procedure OpenReadQRCodeModal;
@@ -55,13 +51,8 @@ uses
   SystemPixApi.ACBrRevisedBilling.Functions,
   SystemPixApi.ACBrDevolution.Functions,
 
-  SystemPixApp.InstantBillingEntities,
   SystemPixApp.BillingEntity,
 
-  SystemPixApp.InstantBilling.Functions,
-  SystemPixApp.CompleteBilling.Functions,
-  SystemPixApp.RevisedBilling.Functions,
-  SystemPixApp.GeneratedBilling.Functions,
   SystemPixApp.CurrentBillingAsGenerated.Functions,
   SystemPixApp.CurrentBillingAsCompleted.Functions,
   SystemPixApp.CurrentBillingAsRevised.Functions,
@@ -105,8 +96,6 @@ begin
 
 
   if (TApiACBrInstantBillingFunctions.CreationWasSuccessful) then begin
-
-//    TAppGeneratedBillingFunctions.UpdateAll;
 
     TAppCurrentBillingAsGeneratedFunctions.UpdateAll;
 

@@ -81,7 +81,7 @@ end;
 class procedure TAppCurrentBillingAsCompletedFunctions.UpdateStatus;
 
 var
-  LocalStatus: TMainBillingStatus;
+  LocalStatus: TBillingStatus;
 
 begin
   CurrentBilling.Status :=

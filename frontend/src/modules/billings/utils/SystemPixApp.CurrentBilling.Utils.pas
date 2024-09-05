@@ -12,14 +12,14 @@ type
     private
 
     public
-      class function PassToInvalidEnumBillingStatus(ValidEnum: TACBrPIXStatusCobranca): TMainBillingStatus;
+      class function PassToInvalidEnumBillingStatus(ValidEnum: TACBrPIXStatusCobranca): TBillingStatus;
 
   end;
 implementation
 
 { TAppCurrentBillingUtils }
 
-class function TAppCurrentBillingUtils.PassToInvalidEnumBillingStatus(ValidEnum: TACBrPIXStatusCobranca): TMainBillingStatus;
+class function TAppCurrentBillingUtils.PassToInvalidEnumBillingStatus(ValidEnum: TACBrPIXStatusCobranca): TBillingStatus;
 begin
   case (ValidEnum) of
     stcNENHUM                         : result := NONE;

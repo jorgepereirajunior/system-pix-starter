@@ -26,9 +26,6 @@ uses
   ACBrImage,
   ACBrDelphiZXingQRCode,
 
-  SystemPixApp.InstantBillingEntities,
-  SystemPixApp.GeneratedBillingEntity,
-  SystemPixApp.CompleteBillingEntity,
   SystemPixApp.BillingEntity,
 
   SystemPixApp.DevolutionEntity,
@@ -69,8 +66,6 @@ type
     BoxTitle: TPanel;
     StopwatchLabel: TLabel;
 
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
-
   private
     procedure CancelPaymentButtonAction(Sender: TObject);
     procedure CloseButtonAction(Sender: TObject);
@@ -91,16 +86,11 @@ type
 var
   QRCodeScreen: TQRCodeScreen;
 
-  InstantBilling  : TAppInstantBillingEntity;
-  GeneratedBilling: TAppGeneratedBillingEntity;
-  CompletedBilling: TAppCompletedBillingEntity;
-  CurrentBilling  : TAppMainBillingEntity;
+  CurrentBilling  : TAppBillingEntity;
 
 implementation
 
 {$R *.dfm}
-
-{ TQRCodeScreen }
 
 uses
   SystemPixApp.Sales.Screen,
@@ -110,12 +100,12 @@ uses
   SystemPixApp.QRCodeScreen.Utils,
 
   SystemPixApp.Pix.Functions,
-  SystemPixApp.CompleteBilling.Functions,
 
   SystemPixApi.ConfigFile.Functions,
 
   SystemPixApp.Styles;
 
+  { TQRCodeScreen }
 
 constructor TQRCodeScreen.Create(AOwner: TComponent);
 
@@ -136,12 +126,6 @@ begin
   TStopwatchThread.Create(90, Self);
 
   TBillingToCompletOrCancelThread.Create(false, Self);
-end;
-
-
-procedure TQRCodeScreen.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-//
 end;
 
 
@@ -215,16 +199,9 @@ end;
 
 
 Initialization
-  InstantBilling   := TAppInstantBillingEntity.Create;
-  GeneratedBilling := TAppGeneratedBillingEntity.Create;
-  CompletedBilling := TAppCompletedBillingEntity.Create;
-
-  CurrentBilling      := TAppMainBillingEntity.Create;
+  CurrentBilling := TAppBillingEntity.Create;
 
 Finalization
-  InstantBilling.Free;
-  GeneratedBilling.Free;
-  CompletedBilling.Free;
 
   CurrentBilling.Free;
 end.
