@@ -9,6 +9,8 @@ uses
   System.SysUtils,
   System.Variants,
   System.Classes,
+  System.SyncObjs,
+  System.Threading,
 
   Vcl.Graphics,
   Vcl.Controls,
@@ -32,10 +34,12 @@ uses
 
   SystemPixApp.StopWatch.Threads,
 
-  SystemPixApp.CheckCurrentBilling.Threads,
+  SystemPixApp.CheckCurrentBillingExists.Threads,
+  SystemPixApp.CheckCurrentBillingStatus.Threads,
 
-  SystemPixApp.VerifyCompleteOrCanceledBilling.Threads,
-  SystemPixApp.VerifyExtornedBilling.Threads;
+  SystemPixApp.CreateNewDevolution.Threads,
+  SystemPixApp.CheckCurrentDevolutionExists.Threads,
+  SystemPixApp.CheckCurrentDevolutionStatus.Threads;
 
 type
   TQRCodeScreen = class(TForm)
@@ -141,16 +145,9 @@ end;
 
 procedure TQRCodeScreen.StartCompleteOrCanceledThreads;
 begin
-  TCheckCurrentBillingThread.Create(false, Self);
+  TCheckCurrentBillingExistsThread.Create(false, Self);
 
-  repeat begin
-
-    if (CurrentBilling.IsChecked) then begin
-      ShowMessage('TxID da cobrança completa: ' +CurrentBilling.TxID);
-    end;
-
-  end; until (CurrentBilling.IsChecked);
-
+  TCheckCurrentbillingStatusThread.Create(false, Self);
 end;
 
 
@@ -160,9 +157,11 @@ end;
 procedure TQRCodeScreen.ExtornButtonAction(Sender: TObject);
 
 begin
-  TQRCodeScreenFunctions.ExtornCurrentBilling;
+  TCreateNewDevolutionThread.Create(false, Self);
 
-  TBillingToExtornThread.Create(false, Self);
+  TCheckCurrentDevolutionExistsThread.Create(false, Self);
+
+  TCheckCurrentDevolutionStatusThread.Create(false, Self);
 end;
 
 

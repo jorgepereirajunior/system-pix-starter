@@ -145,9 +145,11 @@
         <DCCReference Include="frontend\src\modules\devolutions\utils\SystemPixApp.Devolution.Utils.pas"/>
         <DCCReference Include="backend\src\external\acbrpix\SystemPixApi.ACBrRevisedBilling.Functions.pas"/>
         <DCCReference Include="frontend\src\modules\transactions\threads\SystemPixApp.StopWatch.Threads.pas"/>
-        <DCCReference Include="frontend\src\modules\transactions\threads\SystemPixApp.VerifyCompleteOrCanceledBilling.Threads.pas"/>
-        <DCCReference Include="frontend\src\modules\transactions\threads\SystemPixApp.VerifyExtornedBilling.Threads.pas"/>
-        <DCCReference Include="frontend\src\modules\transactions\threads\SystemPixApp.CheckCurrentBilling.Threads.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\threads\SystemPixApp.CheckCurrentBillingExists.Threads.pas"/>
+        <DCCReference Include="frontend\src\modules\billings\threads\SystemPixApp.CheckCurrentBillingStatus.Threads.pas"/>
+        <DCCReference Include="frontend\src\modules\devolutions\threads\SystemPixApp.CheckCurrentDevolutionStatus.Threads.pas"/>
+        <DCCReference Include="frontend\src\modules\devolutions\threads\SystemPixApp.CheckCurrentDevolutionExists.Threads.pas"/>
+        <DCCReference Include="frontend\src\modules\devolutions\threads\SystemPixApp.CreateNewDevolution.Threads.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

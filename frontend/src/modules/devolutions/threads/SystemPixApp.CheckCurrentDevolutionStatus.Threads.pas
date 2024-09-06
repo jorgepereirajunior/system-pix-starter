@@ -1,12 +1,15 @@
-unit SystemPixApp.VerifyExtornedBilling.Threads;
+unit SystemPixApp.CheckCurrentDevolutionStatus.Threads;
 
 interface
 
 uses
-  System.Classes;
+  System.Classes,
+  System.TypInfo,
+
+  Vcl.Dialogs;
 
 type
-  TBillingToExtornThread = class(TThread)
+  TCheckCurrentDevolutionStatusThread = class(TThread)
     private
       TargetScreen: TComponent;
 
@@ -42,7 +45,7 @@ uses
 
 { TBillingToExtornThread }
 
-constructor TBillingToExtornThread.Create(AIsTerminated: boolean; AScreen: TComponent);
+constructor TCheckCurrentDevolutionStatusThread.Create(AIsTerminated: boolean; AScreen: TComponent);
 begin
   inherited Create(False);
 
@@ -52,7 +55,7 @@ begin
 end;
 
 
-procedure TBillingToExtornThread.Execute;
+procedure TCheckCurrentDevolutionStatusThread.Execute;
 
 var
   LTargetScreen: TQRCodeScreen;
@@ -64,8 +67,6 @@ begin
 
   while (not TerminatedRequested) do begin
     sleep(5000);
-
-    TQRCodeScreenFunctions.CheckCurrentBillingDevolution;
 
     if (CurrentBilling.Pix.Items[0].Devolutions.Items.Count > 0) then begin
 
@@ -93,7 +94,7 @@ end;
 
 
 
-class procedure TBillingToExtornThread.TerminateThread;
+class procedure TCheckCurrentDevolutionStatusThread.TerminateThread;
 begin
   TerminatedRequested := true;
 end;

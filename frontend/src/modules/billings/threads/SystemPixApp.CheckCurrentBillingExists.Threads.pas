@@ -1,14 +1,17 @@
-unit SystemPixApp.CheckCurrentBilling.Threads;
+unit SystemPixApp.CheckCurrentBillingExists.Threads;
 
 interface
 
 uses
   System.Classes,
+  System.SyncObjs,
+
+  System.TypInfo,
 
   Vcl.Dialogs;
 
 type
-  TCheckCurrentBillingThread = class(TThread)
+  TCheckCurrentBillingExistsThread = class(TThread)
     private
       TargetScreen: TComponent;
 
@@ -30,22 +33,24 @@ uses
 
   SystemPixApi.ACBrInstantBilling.Functions,
 
+  SystemPixApp.BillingEntity,
+
   SystemPixApp.CurrentBillingAsCompleted.Functions;
 
 { TCheckCurrentBillingThread }
 
-constructor TCheckCurrentBillingThread.Create(AIsTerminated: boolean; AScreen: TComponent);
+constructor TCheckCurrentBillingExistsThread.Create(AIsTerminated: boolean; AScreen: TComponent);
 begin
   inherited Create(False);
 
   FreeOnTerminate := True;
-  IsTerminated := AIsTerminated;
-  TargetScreen := AScreen;
+  IsTerminated    := AIsTerminated;
+  TargetScreen    := AScreen;
 end;
 
 
 
-procedure TCheckCurrentBillingThread.Execute;
+procedure TCheckCurrentBillingExistsThread.Execute;
 
 var
   LTargetScreen: TQRCodeScreen;
@@ -55,7 +60,7 @@ begin
 
   LTargetScreen := TQRCodeScreen(TargetScreen);
 
-  while (not IsTerminated) do begin
+  while (CurrentBilling.Status = ACTIVED) do begin
     Sleep(5000);
 
     if (TApiACBrInstantBillingFunctions.ExistsWithID(CurrentBilling.TxID)) then begin
@@ -71,7 +76,7 @@ end;
 
 
 
-class procedure TCheckCurrentBillingThread.TerminateThread;
+class procedure TCheckCurrentBillingExistsThread.TerminateThread;
 begin
   IsTerminated := true;
 end;

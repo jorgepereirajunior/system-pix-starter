@@ -34,9 +34,11 @@ uses
   SystemPixApp.Devolution.Utils in 'frontend\src\modules\devolutions\utils\SystemPixApp.Devolution.Utils.pas',
   SystemPixApi.ACBrRevisedBilling.Functions in 'backend\src\external\acbrpix\SystemPixApi.ACBrRevisedBilling.Functions.pas',
   SystemPixApp.StopWatch.Threads in 'frontend\src\modules\transactions\threads\SystemPixApp.StopWatch.Threads.pas',
-  SystemPixApp.VerifyCompleteOrCanceledBilling.Threads in 'frontend\src\modules\transactions\threads\SystemPixApp.VerifyCompleteOrCanceledBilling.Threads.pas',
-  SystemPixApp.VerifyExtornedBilling.Threads in 'frontend\src\modules\transactions\threads\SystemPixApp.VerifyExtornedBilling.Threads.pas',
-  SystemPixApp.CheckCurrentBilling.Threads in 'frontend\src\modules\transactions\threads\SystemPixApp.CheckCurrentBilling.Threads.pas';
+  SystemPixApp.CheckCurrentBillingExists.Threads in 'frontend\src\modules\billings\threads\SystemPixApp.CheckCurrentBillingExists.Threads.pas',
+  SystemPixApp.CheckCurrentBillingStatus.Threads in 'frontend\src\modules\billings\threads\SystemPixApp.CheckCurrentBillingStatus.Threads.pas',
+  SystemPixApp.CheckCurrentDevolutionStatus.Threads in 'frontend\src\modules\devolutions\threads\SystemPixApp.CheckCurrentDevolutionStatus.Threads.pas',
+  SystemPixApp.CheckCurrentDevolutionExists.Threads in 'frontend\src\modules\devolutions\threads\SystemPixApp.CheckCurrentDevolutionExists.Threads.pas',
+  SystemPixApp.CreateNewDevolution.Threads in 'frontend\src\modules\devolutions\threads\SystemPixApp.CreateNewDevolution.Threads.pas';
 
 {$R *.res}
 
